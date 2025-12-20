@@ -5,6 +5,7 @@ import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/stores/manager"
 import { useState } from "react"
+import QRCode from "react-qr-code"
 
 type Props = {
   data: ManagerStatusDataMap["SHOW_ROOM"]
@@ -16,6 +17,9 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
   const { players } = useManagerStore()
   const [playerList, setPlayerList] = useState<Player[]>(players)
   const [totalPlayers, setTotalPlayers] = useState(0)
+
+  const origin = typeof window !== "undefined" ? window.location.origin : ""
+  const joinUrl = `${origin}?pin=${inviteCode}`
 
   useEvent("manager:newPlayer", (player) => {
     setPlayerList([...playerList, player])
@@ -46,6 +50,10 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
 
   return (
     <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-2">
+      <div className="mb-10 rounded-md bg-white p-4 shadow-lg">
+        <QRCode value={joinUrl} level="H" />
+      </div>
+
       <div className="mb-10 rotate-3 rounded-md bg-white px-6 py-4 text-6xl font-extrabold">
         {inviteCode}
       </div>
