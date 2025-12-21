@@ -2,6 +2,7 @@
 
 import { QuizzWithId } from "@rahoot/common/types/game"
 import { STATUS } from "@rahoot/common/types/game/status"
+import Button from "@rahoot/web/components/Button"
 import ManagerPassword from "@rahoot/web/components/game/create/ManagerPassword"
 import SelectQuizz from "@rahoot/web/components/game/create/SelectQuizz"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
@@ -35,11 +36,37 @@ const Manager = () => {
     socket?.emit("game:create", quizzId)
   }
 
+  const handleEdit = (quizzId: string) => {
+    router.push(`/manager/quizz/${quizzId}`)
+  }
+
   if (!isAuth) {
     return <ManagerPassword onSubmit={handleAuth} />
   }
 
-  return <SelectQuizz quizzList={quizzList} onSelect={handleCreate} />
+  return (
+    <div className="flex w-full max-w-md flex-col gap-4">
+      <div className="flex justify-end gap-2">
+        <Button
+          className="bg-primary w-fit"
+          onClick={() => router.push("/manager/quizz/create")}
+        >
+          Create Quiz
+        </Button>
+        <Button
+          className="w-fit bg-gray-500"
+          onClick={() => router.push("/manager/settings")}
+        >
+          Settings
+        </Button>
+      </div>
+      <SelectQuizz
+        quizzList={quizzList}
+        onSelect={handleCreate}
+        onEdit={handleEdit}
+      />
+    </div>
+  )
 }
 
 export default Manager
