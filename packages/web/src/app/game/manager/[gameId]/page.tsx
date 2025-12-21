@@ -21,7 +21,7 @@ const ManagerGame = () => {
   const router = useRouter()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
   const { socket } = useSocket()
-  const { gameId, status, setGameId, setStatus, setPlayers, reset } =
+  const { gameId, status, players, setGameId, setStatus, setPlayers, reset } =
     useManagerStore()
   const { setQuestionStates } = useQuestionStore()
 
@@ -61,6 +61,11 @@ const ManagerGame = () => {
 
     switch (status?.name) {
       case STATUS.SHOW_ROOM:
+        if (players.length === 0) {
+          toast.error("Wait for players to join")
+          return
+        }
+
         socket?.emit("manager:startGame", { gameId })
 
         break
@@ -127,7 +132,16 @@ const ManagerGame = () => {
   }
 
   return (
-    <GameWrapper statusName={status?.name} onNext={handleSkip} manager>
+    <GameWrapper
+      statusName={status?.name}
+      onNext={handleSkip}
+      onBack={
+        status?.name === STATUS.SHOW_ROOM
+          ? () => router.push("/manager")
+          : undefined
+      }
+      manager
+    >
       {component}
     </GameWrapper>
   )

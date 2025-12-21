@@ -15,10 +15,17 @@ import { PropsWithChildren, useEffect, useState } from "react"
 type Props = PropsWithChildren & {
   statusName: Status | undefined
   onNext?: () => void
+  onBack?: () => void
   manager?: boolean
 }
 
-const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
+const GameWrapper = ({
+  children,
+  statusName,
+  onNext,
+  onBack,
+  manager,
+}: Props) => {
   const { isConnected } = useSocket()
   const { player } = usePlayerStore()
   const { questionStates, setQuestionStates } = useQuestionStore()
@@ -59,6 +66,15 @@ const GameWrapper = ({ children, statusName, onNext, manager }: Props) => {
       ) : (
         <>
           <div className="flex w-full justify-between p-4">
+            {onBack && (
+              <Button
+                className="self-start bg-white px-4 text-black!"
+                onClick={onBack}
+              >
+                Back
+              </Button>
+            )}
+
             {questionStates && (
               <div className="shadow-inset flex items-center rounded-md bg-white p-2 px-4 text-lg font-bold text-black">
                 {`${questionStates.current} / ${questionStates.total}`}
