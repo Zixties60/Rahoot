@@ -1,6 +1,12 @@
 "use client"
 
-import { Status } from "@rahoot/common/types/game/status"
+import {
+  ArrowBack,
+  ArrowForward,
+  PlayArrow,
+  SkipNext,
+} from "@mui/icons-material"
+import { STATUS, Status } from "@rahoot/common/types/game/status"
 import background from "@rahoot/web/assets/background.webp"
 import Button from "@rahoot/web/components/Button"
 import Loader from "@rahoot/web/components/Loader"
@@ -70,6 +76,7 @@ const GameWrapper = ({
               <Button
                 className="self-start bg-white px-4 text-black!"
                 onClick={onBack}
+                startIcon={<ArrowBack />}
               >
                 Back
               </Button>
@@ -87,6 +94,15 @@ const GameWrapper = ({
                   "pointer-events-none": isDisabled,
                 })}
                 onClick={handleNext}
+                startIcon={
+                  statusName === STATUS.SHOW_ROOM ? (
+                    <PlayArrow />
+                  ) : statusName === STATUS.SELECT_ANSWER ? (
+                    <SkipNext />
+                  ) : (
+                    <ArrowForward />
+                  )
+                }
               >
                 {next}
               </Button>

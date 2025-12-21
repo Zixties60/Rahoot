@@ -1,5 +1,7 @@
 "use client"
 
+import { Cancel, Save } from "@mui/icons-material"
+
 import Button from "@rahoot/web/components/Button"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -97,10 +99,14 @@ const Settings = () => {
       </div>
 
       <div className="flex gap-2">
-        <Button onClick={() => router.back()} className="w-full bg-gray-500">
+        <Button
+          onClick={() => router.back()}
+          className="w-full bg-gray-500"
+          startIcon={<Cancel />}
+        >
           Cancel
         </Button>
-        <Button onClick={handleSave} className="w-full">
+        <Button onClick={handleSave} className="w-full" startIcon={<Save />}>
           Save
         </Button>
       </div>

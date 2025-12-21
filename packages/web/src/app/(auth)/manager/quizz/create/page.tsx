@@ -1,5 +1,6 @@
 "use client"
 
+import { Add, Close, Save } from "@mui/icons-material"
 import { Quizz } from "@rahoot/common/types/game"
 import Button from "@rahoot/web/components/Button"
 import { useRouter } from "next/navigation"
@@ -120,12 +121,6 @@ const CreateQuizz = () => {
     <div className="relative z-10 flex w-full max-w-2xl flex-col gap-6 p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">Create New Quiz</h1>
-        <div className="flex gap-2">
-          <Button onClick={() => router.back()} className="bg-gray-500">
-            Cancel
-          </Button>
-          <Button onClick={handleSave}>Save</Button>
-        </div>
       </div>
 
       <div className="rounded-md bg-white p-4 shadow-sm">
@@ -273,15 +268,23 @@ const CreateQuizz = () => {
         ))}
       </div>
 
-      <Button onClick={handleAddQuestion} className="w-full bg-blue-500">
+      <Button
+        onClick={handleAddQuestion}
+        className="w-full bg-blue-500"
+        startIcon={<Add />}
+      >
         + Add Question
       </Button>
 
       <div className="mt-4 flex gap-2">
-        <Button onClick={() => router.back()} className="w-full bg-gray-500">
+        <Button
+          onClick={() => router.back()}
+          className="w-full bg-gray-500"
+          startIcon={<Close />}
+        >
           Cancel
         </Button>
-        <Button onClick={handleSave} className="w-full">
+        <Button onClick={handleSave} className="w-full" startIcon={<Save />}>
           Save Quiz
         </Button>
       </div>

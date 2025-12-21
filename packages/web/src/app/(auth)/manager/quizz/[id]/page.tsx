@@ -1,5 +1,6 @@
 "use client"
 
+import { Add, Clear, Close, Delete, Save } from "@mui/icons-material"
 import { Quizz } from "@rahoot/common/types/game"
 import Button from "@rahoot/web/components/Button"
 import { useParams, useRouter } from "next/navigation"
@@ -163,13 +164,10 @@ const EditQuizz = () => {
               }
             }}
             className="bg-red-500"
+            startIcon={<Delete />}
           >
             Delete
           </Button>
-          <Button onClick={() => router.back()} className="bg-gray-500">
-            Cancel
-          </Button>
-          <Button onClick={handleSave}>Save</Button>
         </div>
       </div>
 
@@ -194,12 +192,11 @@ const EditQuizz = () => {
           >
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">Question {qIndex + 1}</h3>
-              <button
+              <Button
                 onClick={() => handleRemoveQuestion(qIndex)}
-                className="text-sm text-red-500 hover:underline"
-              >
-                Remove Question
-              </button>
+                className="bg-red-500"
+                startIcon={<Delete fontSize="small" />}
+              />
             </div>
 
             <div>
@@ -258,12 +255,11 @@ const EditQuizz = () => {
                       placeholder={`Answer ${aIndex + 1}`}
                     />
                     {q.answers.length > 2 && (
-                      <button
+                      <Button
                         onClick={() => handleRemoveAnswer(qIndex, aIndex)}
-                        className="px-2 text-red-500"
-                      >
-                        ✕
-                      </button>
+                        className="bg-red-500 text-sm"
+                        startIcon={<Clear fontSize="small" />}
+                      />
                     )}
                   </div>
                 ))}
@@ -318,15 +314,23 @@ const EditQuizz = () => {
         ))}
       </div>
 
-      <Button onClick={handleAddQuestion} className="w-full bg-blue-500">
-        + Add Question
+      <Button
+        onClick={handleAddQuestion}
+        className="w-full bg-blue-500"
+        startIcon={<Add />}
+      >
+        Add Question
       </Button>
 
       <div className="mt-4 flex gap-2">
-        <Button onClick={() => router.back()} className="w-full bg-gray-500">
+        <Button
+          onClick={() => router.back()}
+          className="w-full bg-gray-500"
+          startIcon={<Close />}
+        >
           Cancel
         </Button>
-        <Button onClick={handleSave} className="w-full">
+        <Button onClick={handleSave} className="w-full" startIcon={<Save />}>
           Save Quiz
         </Button>
       </div>

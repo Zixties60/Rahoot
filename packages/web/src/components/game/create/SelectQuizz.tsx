@@ -1,3 +1,4 @@
+import { Edit, PlayArrow } from "@mui/icons-material"
 import { QuizzWithId } from "@rahoot/common/types/game"
 import Button from "@rahoot/web/components/Button"
 import clsx from "clsx"
@@ -25,14 +26,14 @@ const SelectQuizz = ({ quizzList, onSelect, onEdit }: Props) => {
 
               <div className="flex gap-2">
                 <Button
-                  className="bg-blue-500 py-1 text-sm"
+                  className="text-md py-1"
                   onClick={() => onEdit(quizz.id)}
-                >
-                  Edit
-                </Button>
+                  startIcon={<Edit />}
+                ></Button>
                 <Button
-                  className="py-1 text-sm"
+                  className="text-md py-1"
                   onClick={() => onSelect(quizz.id)}
+                  startIcon={<PlayArrow />}
                 >
                   Start
                 </Button>

@@ -1,5 +1,7 @@
 "use client"
 
+import { Add, Settings } from "@mui/icons-material"
+
 import { QuizzWithId } from "@rahoot/common/types/game"
 import { STATUS } from "@rahoot/common/types/game/status"
 import Button from "@rahoot/web/components/Button"
@@ -46,18 +48,20 @@ const Manager = () => {
 
   return (
     <div className="flex w-full max-w-md flex-col gap-4">
-      <div className="flex justify-end gap-2">
-        <Button
-          className="bg-primary w-fit"
-          onClick={() => router.push("/manager/quizz/create")}
-        >
-          Create Quiz
-        </Button>
+      <div className="flex justify-between gap-2">
         <Button
           className="w-fit bg-gray-500"
           onClick={() => router.push("/manager/settings")}
+          startIcon={<Settings />}
         >
           Settings
+        </Button>
+        <Button
+          className="bg-primary w-fit"
+          onClick={() => router.push("/manager/quizz/create")}
+          startIcon={<Add />}
+        >
+          Create Quiz
         </Button>
       </div>
       <SelectQuizz
