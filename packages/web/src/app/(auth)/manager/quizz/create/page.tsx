@@ -10,6 +10,7 @@ import toast from "react-hot-toast"
 const CreateQuizz = () => {
   const router = useRouter()
   const [subject, setSubject] = useState("")
+  const [background, setBackground] = useState("")
   const [questions, setQuestions] = useState<Quizz["questions"]>([])
 
   const handleAddQuestion = () => {
@@ -19,6 +20,7 @@ const CreateQuizz = () => {
         question: "",
         answers: ["", ""],
         solution: 0,
+        background: "",
         cooldown: 5,
         time: 20,
       },
@@ -103,7 +105,7 @@ const CreateQuizz = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subject, questions }),
+        body: JSON.stringify({ subject, background, questions }),
       })
 
       if (res.ok) {
@@ -133,6 +135,19 @@ const CreateQuizz = () => {
           onChange={(e) => setSubject(e.target.value)}
           className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
           placeholder="Enter quiz subject"
+        />
+      </div>
+
+      <div className="rounded-md bg-white p-4 shadow-sm">
+        <label className="mb-1 block text-sm font-medium text-gray-700">
+          Quiz Background URL (Optional)
+        </label>
+        <input
+          type="text"
+          value={background}
+          onChange={(e) => setBackground(e.target.value)}
+          className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
+          placeholder="https://..."
         />
       </div>
 
@@ -176,6 +191,21 @@ const CreateQuizz = () => {
                 value={q.image || ""}
                 onChange={(e) =>
                   handleQuestionChange(qIndex, "image", e.target.value)
+                }
+                className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
+                placeholder="https://..."
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Background URL (Optional)
+              </label>
+              <input
+                type="text"
+                value={q.background || ""}
+                onChange={(e) =>
+                  handleQuestionChange(qIndex, "background", e.target.value)
                 }
                 className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 placeholder="https://..."

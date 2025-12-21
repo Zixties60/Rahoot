@@ -5,10 +5,12 @@ import { create } from "zustand"
 
 type ManagerStore<T> = {
   gameId: string | null
+  background: string | null
   status: Status<T> | null
   players: Player[]
 
   setGameId: (_gameId: string | null) => void
+  setBackground: (_background: string | null) => void
   setStatus: <K extends keyof T>(_name: K, _data: T[K]) => void
   resetStatus: () => void
   setPlayers: (_players: Player[]) => void
@@ -18,6 +20,7 @@ type ManagerStore<T> = {
 
 const initialState = {
   gameId: null,
+  background: null,
   status: null,
   players: [],
 }
@@ -26,6 +29,7 @@ export const useManagerStore = create<ManagerStore<StatusDataMap>>((set) => ({
   ...initialState,
 
   setGameId: (gameId) => set({ gameId }),
+  setBackground: (background) => set({ background }),
 
   setStatus: (name, data) => set({ status: createStatus(name, data) }),
   resetStatus: () => set({ status: null }),

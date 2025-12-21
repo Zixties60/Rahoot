@@ -11,6 +11,7 @@ const EditQuizz = () => {
   const router = useRouter()
   const params = useParams()
   const [subject, setSubject] = useState("")
+  const [background, setBackground] = useState("")
   const [questions, setQuestions] = useState<Quizz["questions"]>([])
   const [loading, setLoading] = useState(true)
 
@@ -21,6 +22,7 @@ const EditQuizz = () => {
         if (!res.ok) throw new Error("Failed to fetch quiz")
         const data = await res.json()
         setSubject(data.subject)
+        setBackground(data.background || "")
         setQuestions(data.questions)
       } catch (error) {
         toast.error("Failed to load quiz")
@@ -42,6 +44,7 @@ const EditQuizz = () => {
         question: "",
         answers: ["", ""],
         solution: 0,
+        background: "",
         cooldown: 5,
         time: 20,
       },
@@ -125,7 +128,7 @@ const EditQuizz = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subject, questions }),
+        body: JSON.stringify({ subject, questions, background }),
       })
 
       if (res.ok) {
@@ -184,6 +187,19 @@ const EditQuizz = () => {
         />
       </div>
 
+      <div className="rounded-md bg-white p-4 shadow-sm">
+        <label className="mb-1 block text-sm font-medium text-gray-700">
+          Quiz Background URL (Optional)
+        </label>
+        <input
+          type="text"
+          value={background}
+          onChange={(e) => setBackground(e.target.value)}
+          className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
+          placeholder="https://..."
+        />
+      </div>
+
       <div className="flex flex-col gap-4">
         {questions.map((q, qIndex) => (
           <div
@@ -223,6 +239,21 @@ const EditQuizz = () => {
                 value={q.image || ""}
                 onChange={(e) =>
                   handleQuestionChange(qIndex, "image", e.target.value)
+                }
+                className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
+                placeholder="https://..."
+              />
+            </div>
+
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700">
+                Background URL (Optional)
+              </label>
+              <input
+                type="text"
+                value={q.background || ""}
+                onChange={(e) =>
+                  handleQuestionChange(qIndex, "background", e.target.value)
                 }
                 className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 placeholder="https://..."

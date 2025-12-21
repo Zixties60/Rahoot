@@ -19,7 +19,8 @@ const Game = () => {
   const router = useRouter()
   const { socket } = useSocket()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
-  const { status, setPlayer, setGameId, setStatus, reset } = usePlayerStore()
+  const { status, setPlayer, setGameId, setStatus, setBackground, reset } =
+    usePlayerStore()
   const { setQuestionStates } = useQuestionStore()
 
   useEvent("connect", () => {
@@ -35,8 +36,13 @@ const Game = () => {
       setStatus(status.name, status.data)
       setPlayer(player)
       setQuestionStates(currentQuestion)
+      setBackground(currentQuestion.background || null)
     },
   )
+
+  useEvent("game:updateQuestion", (data) => {
+    setBackground(data.background || null)
+  })
 
   useEvent("game:status", ({ name, data }) => {
     if (name in GAME_STATE_COMPONENTS) {

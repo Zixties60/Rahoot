@@ -21,8 +21,16 @@ const ManagerGame = () => {
   const router = useRouter()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
   const { socket } = useSocket()
-  const { gameId, status, players, setGameId, setStatus, setPlayers, reset } =
-    useManagerStore()
+  const {
+    gameId,
+    status,
+    players,
+    setGameId,
+    setStatus,
+    setPlayers,
+    setBackground,
+    reset,
+  } = useManagerStore()
   const { setQuestionStates } = useQuestionStore()
 
   useEvent("game:status", ({ name, data }) => {
@@ -44,8 +52,13 @@ const ManagerGame = () => {
       setStatus(status.name, status.data)
       setPlayers(players)
       setQuestionStates(currentQuestion)
+      setBackground(currentQuestion.background || null)
     },
   )
+
+  useEvent("game:updateQuestion", (data) => {
+    setBackground(data.background || null)
+  })
 
   useEvent("game:reset", (message) => {
     router.replace("/manager")

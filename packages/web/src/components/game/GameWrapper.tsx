@@ -11,6 +11,7 @@ import background from "@rahoot/web/assets/background.webp"
 import Button from "@rahoot/web/components/Button"
 import Loader from "@rahoot/web/components/Loader"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
+import { useManagerStore } from "@rahoot/web/stores/manager"
 import { usePlayerStore } from "@rahoot/web/stores/player"
 import { useQuestionStore } from "@rahoot/web/stores/question"
 import { MANAGER_SKIP_BTN } from "@rahoot/web/utils/constants"
@@ -54,13 +55,18 @@ const GameWrapper = ({
     onNext?.()
   }
 
+  const { background: playerBackground } = usePlayerStore()
+  const { background: managerBackground } = useManagerStore()
+  const backgroundUrl = manager ? managerBackground : playerBackground
+
   return (
     <section className="relative flex min-h-screen w-full flex-col justify-between">
       <div className="fixed top-0 left-0 -z-10 h-full w-full bg-orange-600 opacity-70">
         <Image
           className="pointer-events-none h-full w-full object-cover opacity-60"
-          src={background}
+          src={backgroundUrl || background}
           alt="background"
+          fill
         />
       </div>
 

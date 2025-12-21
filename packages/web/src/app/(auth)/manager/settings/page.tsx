@@ -11,6 +11,7 @@ const Settings = () => {
   const router = useRouter()
   const [password, setPassword] = useState("")
   const [music, setMusic] = useState(false)
+  const [background, setBackground] = useState("")
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -22,6 +23,9 @@ const Settings = () => {
         }
         if (data.music !== undefined) {
           setMusic(data.music)
+        }
+        if (data.background) {
+          setBackground(data.background)
         }
       })
       .catch(() => {
@@ -39,7 +43,7 @@ const Settings = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ managerPassword: password, music }),
+        body: JSON.stringify({ managerPassword: password, music, background }),
       })
 
       if (res.ok) {
@@ -76,6 +80,19 @@ const Settings = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
             placeholder="Enter password"
+          />
+        </div>
+
+        <div className="w-full">
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Background URL (Optional)
+          </label>
+          <input
+            type="text"
+            value={background}
+            onChange={(e) => setBackground(e.target.value)}
+            className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
+            placeholder="https://example.com/image.png"
           />
         </div>
 

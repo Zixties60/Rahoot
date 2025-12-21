@@ -36,7 +36,7 @@ export async function PUT(
   try {
     const { id } = await params
     const body = await req.json()
-    const { subject, questions } = body as Quizz
+    const { subject, questions, background } = body as Quizz
 
     if (!subject || !questions) {
       return NextResponse.json({ error: "Invalid quiz data" }, { status: 400 })
@@ -48,7 +48,11 @@ export async function PUT(
       return NextResponse.json({ error: "Quiz not found" }, { status: 404 })
     }
 
-    const quizzContent = JSON.stringify({ subject, questions }, null, 2)
+    const quizzContent = JSON.stringify(
+      { subject, questions, background },
+      null,
+      2,
+    )
     fs.writeFileSync(filePath, quizzContent)
 
     return NextResponse.json({ success: true })
