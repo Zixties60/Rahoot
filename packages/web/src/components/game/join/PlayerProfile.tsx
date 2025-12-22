@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation"
 import { KeyboardEvent, useState } from "react"
 import toast from "react-hot-toast"
 
-const Username = () => {
+const PlayerProfile = () => {
   const { socket } = useSocket()
   const { gameId, login, setStatus, setBackground, setTypeface, setTheme } =
     usePlayerStore()
@@ -64,4 +64,4 @@ const Username = () => {
   )
 }
 
-export default Username
+export default PlayerProfile

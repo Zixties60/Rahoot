@@ -1,7 +1,7 @@
 "use client"
 
 import Room from "@rahoot/web/components/game/join/Room"
-import Username from "@rahoot/web/components/game/join/PlayerProfile"
+import PlayerProfile from "@rahoot/web/components/game/join/PlayerProfile"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
 import { THEME_CONFIG } from "@rahoot/web/utils/constants"
@@ -50,7 +50,7 @@ const Home = () => {
   })
 
   if (player) {
-    return <Username />
+    return <PlayerProfile />
   }
 
   return <Room pin={searchParams.get("pin") ?? undefined} />
