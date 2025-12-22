@@ -14,8 +14,15 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 const Manager = () => {
-  const { setGameId, setStatus, setBackground, setTypeface, setTheme } =
-    useManagerStore()
+  const {
+    setGameId,
+    setStatus,
+    setBackground,
+    setTypeface,
+    setTheme,
+    setManagerEffect,
+    setManagerMusic,
+  } = useManagerStore()
   const router = useRouter()
   const { socket } = useSocket()
 
@@ -59,7 +66,10 @@ const Manager = () => {
     })
     setBackground(data.background)
     setTypeface(data.typeface)
+    setTypeface(data.typeface)
     setTheme(data.theme)
+    setManagerEffect(data.managerEffect)
+    setManagerMusic(data.managerMusic)
     router.push(`/game/manager/${data.gameId}`)
   })
 

@@ -16,7 +16,10 @@ const Settings = () => {
   const { socket } = useSocket()
   const { gameId } = useManagerStore()
   const [password, setPassword] = useState("")
-  const [music, setMusic] = useState(false)
+  const [playerEffect, setPlayerEffect] = useState(true)
+  const [playerMusic, setPlayerMusic] = useState(true)
+  const [managerEffect, setManagerEffect] = useState(true)
+  const [managerMusic, setManagerMusic] = useState(true)
   const [background, setBackground] = useState("")
   const [typeface, setTypeface] = useState("")
   const [theme, setTheme] = useState("yellow-orange")
@@ -29,8 +32,17 @@ const Settings = () => {
         if (data.managerPassword) {
           setPassword(data.managerPassword)
         }
-        if (data.music !== undefined) {
-          setMusic(data.music)
+        if (data.playerEffect !== undefined) {
+          setPlayerEffect(data.playerEffect)
+        }
+        if (data.playerMusic !== undefined) {
+          setPlayerMusic(data.playerMusic)
+        }
+        if (data.managerEffect !== undefined) {
+          setManagerEffect(data.managerEffect)
+        }
+        if (data.managerMusic !== undefined) {
+          setManagerMusic(data.managerMusic)
         }
         if (data.background) {
           setBackground(data.background)
@@ -71,7 +83,10 @@ const Settings = () => {
         },
         body: JSON.stringify({
           managerPassword: password,
-          music,
+          playerEffect,
+          playerMusic,
+          managerEffect,
+          managerMusic,
           background,
           typeface,
           theme,
@@ -158,22 +173,74 @@ const Settings = () => {
           </div>
         </div>
 
-        <div className="flex w-full items-center justify-between">
-          <span className="text-sm font-medium text-gray-700">
-            Enable Music
-          </span>
-          <button
-            onClick={() => setMusic(!music)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
-              music ? "bg-primary" : "bg-gray-200"
-            }`}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                music ? "translate-x-6" : "translate-x-1"
+        <div className="flex w-full flex-col gap-4">
+          <h2 className="text-lg font-bold text-gray-800">Player Audio</h2>
+          <div className="flex w-full items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">
+              Sound Effects
+            </span>
+            <button
+              onClick={() => setPlayerEffect(!playerEffect)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
+                playerEffect ? "bg-primary" : "bg-gray-200"
               }`}
-            />
-          </button>
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  playerEffect ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+          <div className="flex w-full items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">Music</span>
+            <button
+              onClick={() => setPlayerMusic(!playerMusic)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
+                playerMusic ? "bg-primary" : "bg-gray-200"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  playerMusic ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+
+          <h2 className="text-lg font-bold text-gray-800">Manager Audio</h2>
+          <div className="flex w-full items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">
+              Sound Effects
+            </span>
+            <button
+              onClick={() => setManagerEffect(!managerEffect)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
+                managerEffect ? "bg-primary" : "bg-gray-200"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  managerEffect ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+          <div className="flex w-full items-center justify-between">
+            <span className="text-sm font-medium text-gray-700">Music</span>
+            <button
+              onClick={() => setManagerMusic(!managerMusic)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
+                managerMusic ? "bg-primary" : "bg-gray-200"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  managerMusic ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
         </div>
       </div>
 

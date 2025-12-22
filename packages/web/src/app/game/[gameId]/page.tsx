@@ -29,7 +29,11 @@ const Game = () => {
     setBackground,
     setTypeface,
     setTheme,
+    setPlayerEffect,
+    setPlayerMusic,
     reset,
+    playerEffect,
+    playerMusic,
   } = usePlayerStore()
   const { setQuestionStates } = useQuestionStore()
 
@@ -39,23 +43,25 @@ const Game = () => {
     }
   })
 
-  useEvent(
-    "player:successReconnect",
-    ({ gameId, status, player, currentQuestion, theme }) => {
-      setGameId(gameId)
-      setStatus(status.name, status.data)
-      setPlayer(player)
-      setQuestionStates(currentQuestion)
-      setBackground(currentQuestion.background || null)
-      setTypeface(currentQuestion.typeface || null)
-      setTheme(theme || null)
-    },
-  )
+  useEvent("player:successReconnect", (data) => {
+    const { gameId, status, player, currentQuestion, theme } = data
+    setGameId(gameId)
+    setStatus(status.name, status.data)
+    setPlayer(player)
+    setQuestionStates(currentQuestion)
+    setBackground(currentQuestion.background || null)
+    setTypeface(currentQuestion.typeface || null)
+    setTheme(theme || null)
+    setPlayerEffect(data.playerEffect)
+    setPlayerMusic(data.playerMusic)
+  })
 
   useEvent("game:updateConfig", (data) => {
     setBackground(data.background || null)
     setTypeface(data.typeface || null)
     setTheme(data.theme || null)
+    setPlayerEffect(data.playerEffect)
+    setPlayerMusic(data.playerMusic)
   })
 
   useEvent("game:updateQuestion", (data) => {
@@ -88,7 +94,7 @@ const Game = () => {
       break
 
     case STATUS.SHOW_START:
-      component = <Start data={status.data} />
+      component = <Start data={status.data} effectEnabled={playerEffect} />
 
       break
 
@@ -98,17 +104,23 @@ const Game = () => {
       break
 
     case STATUS.SHOW_QUESTION:
-      component = <Question data={status.data} />
+      component = <Question data={status.data} effectEnabled={playerEffect} />
 
       break
 
     case STATUS.SHOW_RESULT:
-      component = <Result data={status.data} />
+      component = <Result data={status.data} effectEnabled={playerEffect} />
 
       break
 
     case STATUS.SELECT_ANSWER:
-      component = <Answers data={status.data} />
+      component = (
+        <Answers
+          data={status.data}
+          effectEnabled={playerEffect}
+          musicEnabled={playerMusic}
+        />
+      )
 
       break
 
@@ -118,7 +130,13 @@ const Game = () => {
       break
 
     case STATUS.GAME_FINISHED:
-      component = <PlayerResult data={status.data} message="Game Finished" />
+      component = (
+        <PlayerResult
+          data={status.data}
+          message="Game Finished"
+          effectEnabled={playerEffect}
+        />
+      )
 
       break
 

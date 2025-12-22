@@ -30,7 +30,16 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { managerPassword, music, background, typeface, theme } = body
+    const {
+      managerPassword,
+      background,
+      typeface,
+      theme,
+      playerEffect,
+      playerMusic,
+      managerEffect,
+      managerMusic,
+    } = body
 
     if (managerPassword && typeof managerPassword !== "string") {
       return NextResponse.json(
@@ -39,9 +48,14 @@ export async function POST(request: Request) {
       )
     }
 
-    if (music !== undefined && typeof music !== "boolean") {
+    if (
+      (playerEffect !== undefined && typeof playerEffect !== "boolean") ||
+      (playerMusic !== undefined && typeof playerMusic !== "boolean") ||
+      (managerEffect !== undefined && typeof managerEffect !== "boolean") ||
+      (managerMusic !== undefined && typeof managerMusic !== "boolean")
+    ) {
       return NextResponse.json(
-        { error: "Invalid music format" },
+        { error: "Invalid sound setting format" },
         { status: 400 },
       )
     }
@@ -80,8 +94,20 @@ export async function POST(request: Request) {
       newConfig.managerPassword = managerPassword
     }
 
-    if (music !== undefined) {
-      newConfig.music = music
+    if (playerEffect !== undefined) {
+      newConfig.playerEffect = playerEffect
+    }
+
+    if (playerMusic !== undefined) {
+      newConfig.playerMusic = playerMusic
+    }
+
+    if (managerEffect !== undefined) {
+      newConfig.managerEffect = managerEffect
+    }
+
+    if (managerMusic !== undefined) {
+      newConfig.managerMusic = managerMusic
     }
 
     if (background !== undefined) {

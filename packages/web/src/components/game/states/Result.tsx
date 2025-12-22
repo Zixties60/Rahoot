@@ -11,10 +11,12 @@ import useSound from "use-sound"
 
 type Props = {
   data: CommonStatusDataMap["SHOW_RESULT"]
+  effectEnabled: boolean
 }
 
 const Result = ({
   data: { correct, message, points, myPoints, rank, aheadOfMe },
+  effectEnabled,
 }: Props) => {
   const player = usePlayerStore()
 
@@ -25,8 +27,10 @@ const Result = ({
   useEffect(() => {
     player.updatePoints(myPoints)
 
-    sfxResults()
-  }, [sfxResults])
+    if (effectEnabled) {
+      sfxResults()
+    }
+  }, [sfxResults, effectEnabled])
 
   const isGold = rank === 1
   const isSilver = rank === 2

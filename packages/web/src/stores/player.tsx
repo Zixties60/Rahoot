@@ -13,6 +13,8 @@ type PlayerStore<T> = {
   background: string | null
   typeface: string | null
   theme: string | null
+  playerEffect: boolean
+  playerMusic: boolean
   player: PlayerState | null
   status: Status<T> | null
 
@@ -25,6 +27,8 @@ type PlayerStore<T> = {
   setBackground: (_background: string | null) => void
   setTypeface: (_typeface: string | null) => void
   setTheme: (_theme: string | null) => void
+  setPlayerEffect: (_playerEffect: boolean) => void
+  setPlayerMusic: (_playerMusic: boolean) => void
 
   setStatus: <K extends keyof T>(_name: K, _data: T[K]) => void
 
@@ -36,6 +40,8 @@ const initialState = {
   background: null,
   typeface: "playpen-sans",
   theme: "yellow-orange",
+  playerEffect: true,
+  playerMusic: true,
   player: null,
   status: null,
 }
@@ -66,6 +72,8 @@ export const usePlayerStore = create<PlayerStore<StatusDataMap>>((set) => ({
   setBackground: (background) => set({ background }),
   setTypeface: (typeface) => set({ typeface }),
   setTheme: (theme) => set({ theme }),
+  setPlayerEffect: (playerEffect) => set({ playerEffect }),
+  setPlayerMusic: (playerMusic) => set({ playerMusic }),
 
   setStatus: (name, data) => set({ status: createStatus(name, data) }),
 

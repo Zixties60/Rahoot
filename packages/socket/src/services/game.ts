@@ -20,6 +20,10 @@ class Game {
   background: string;
   typeface: string;
   theme: string;
+  playerEffect: boolean;
+  playerMusic: boolean;
+  managerEffect: boolean;
+  managerMusic: boolean;
   manager: {
     id: string;
     clientId: string;
@@ -68,6 +72,10 @@ class Game {
     this.background = Config.game().background || "";
     this.typeface = Config.game().typeface || "playpen-sans";
     this.theme = Config.game().theme || "yellow-orange";
+    this.playerEffect = Config.game().playerEffect !== false;
+    this.playerMusic = Config.game().playerMusic !== false;
+    this.managerEffect = Config.game().managerEffect !== false;
+    this.managerMusic = Config.game().managerMusic !== false;
 
     this.lastBroadcastStatus = null;
     this.managerStatus = null;
@@ -105,6 +113,8 @@ class Game {
       background: this.getBackground(-1),
       typeface: this.getTypeface(-1),
       theme: this.theme,
+      managerEffect: this.managerEffect,
+      managerMusic: this.managerMusic,
     });
 
     console.log(
@@ -166,6 +176,8 @@ class Game {
       background: this.getBackground(-1),
       typeface: this.getTypeface(-1),
       theme: this.theme,
+      playerEffect: this.playerEffect,
+      playerMusic: this.playerMusic,
     });
   }
 
@@ -230,6 +242,8 @@ class Game {
       status,
       players: this.players,
       theme: this.theme,
+      managerEffect: this.managerEffect,
+      managerMusic: this.managerMusic,
     });
     socket.emit("game:totalPlayers", this.players.length);
 
@@ -282,6 +296,8 @@ class Game {
         points: player.points,
       },
       theme: this.theme,
+      playerEffect: this.playerEffect,
+      playerMusic: this.playerMusic,
     });
     socket.emit("game:totalPlayers", this.players.length);
     console.log(
@@ -354,6 +370,10 @@ class Game {
       background: this.getBackground(this.round.currentQuestion),
       typeface: this.getTypeface(this.round.currentQuestion),
       theme: this.theme,
+      playerEffect: this.playerEffect,
+      playerMusic: this.playerMusic,
+      managerEffect: this.managerEffect,
+      managerMusic: this.managerMusic,
     });
 
     this.io.to(this.gameId).emit("game:updateQuestion", {
@@ -587,6 +607,10 @@ class Game {
       background: this.getBackground(-1),
       typeface: this.getTypeface(-1),
       theme: this.theme,
+      playerEffect: this.playerEffect,
+      playerMusic: this.playerMusic,
+      managerEffect: this.managerEffect,
+      managerMusic: this.managerMusic,
     });
   }
 
@@ -627,11 +651,19 @@ class Game {
     this.background = config.background || "";
     this.typeface = config.typeface || "playpen-sans";
     this.theme = config.theme || "yellow-orange";
+    this.playerEffect = config.playerEffect !== false;
+    this.playerMusic = config.playerMusic !== false;
+    this.managerEffect = config.managerEffect !== false;
+    this.managerMusic = config.managerMusic !== false;
 
     this.io.to(this.gameId).emit("game:updateConfig", {
       background: this.getBackground(this.round.currentQuestion),
       typeface: this.getTypeface(this.round.currentQuestion),
       theme: this.theme,
+      playerEffect: this.playerEffect,
+      playerMusic: this.playerMusic,
+      managerEffect: this.managerEffect,
+      managerMusic: this.managerMusic,
     });
   }
 }

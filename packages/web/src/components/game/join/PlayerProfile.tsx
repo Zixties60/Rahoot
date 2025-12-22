@@ -17,8 +17,16 @@ import toast from "react-hot-toast"
 
 const PlayerProfile = () => {
   const { socket } = useSocket()
-  const { gameId, login, setStatus, setBackground, setTypeface, setTheme } =
-    usePlayerStore()
+  const {
+    gameId,
+    login,
+    setStatus,
+    setBackground,
+    setTypeface,
+    setTheme,
+    setPlayerEffect,
+    setPlayerMusic,
+  } = usePlayerStore()
   const router = useRouter()
   const [username, setUsername] = useState("")
   const [selectedAvatarId, setSelectedAvatarId] = useState(
@@ -48,15 +56,20 @@ const PlayerProfile = () => {
     }
   }
 
-  useEvent("game:successJoin", ({ gameId, background, typeface, theme }) => {
-    setStatus(STATUS.WAIT, { text: "Waiting for the players" })
-    login(username, selectedAvatarId)
-    setBackground(background || null)
-    setTypeface(typeface || null)
-    setTheme(theme || null)
+  useEvent(
+    "game:successJoin",
+    ({ gameId, background, typeface, theme, playerEffect, playerMusic }) => {
+      setStatus(STATUS.WAIT, { text: "Waiting for the players" })
+      login(username, selectedAvatarId)
+      setBackground(background || null)
+      setTypeface(typeface || null)
+      setTheme(theme || null)
+      setPlayerEffect(playerEffect)
+      setPlayerMusic(playerMusic)
 
-    router.replace(`/game/${gameId}`)
-  })
+      router.replace(`/game/${gameId}`)
+    },
+  )
 
   return (
     <Form className="gap-6!">

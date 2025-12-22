@@ -25,7 +25,10 @@ class Config {
         JSON.stringify(
           {
             managerPassword: "PASSWORD",
-            music: true,
+            playerEffect: true,
+            playerMusic: true,
+            managerEffect: true,
+            managerMusic: true,
             background: "",
             typeface: "playpen-sans",
             theme: "yellow-orange",

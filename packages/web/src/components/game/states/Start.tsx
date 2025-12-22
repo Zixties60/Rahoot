@@ -9,9 +9,10 @@ import useSound from "use-sound"
 
 type Props = {
   data: CommonStatusDataMap["SHOW_START"]
+  effectEnabled: boolean
 }
 
-const Start = ({ data: { time, subject } }: Props) => {
+const Start = ({ data: { time, subject }, effectEnabled }: Props) => {
   const [showTitle, setShowTitle] = useState(true)
   const [cooldown, setCooldown] = useState(time)
 
@@ -20,12 +21,16 @@ const Start = ({ data: { time, subject } }: Props) => {
   })
 
   useEvent("game:startCooldown", () => {
-    sfxBoump()
+    if (effectEnabled) {
+      sfxBoump()
+    }
     setShowTitle(false)
   })
 
   useEvent("game:cooldown", (sec) => {
-    sfxBoump()
+    if (effectEnabled) {
+      sfxBoump()
+    }
     setCooldown(sec)
   })
 

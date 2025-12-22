@@ -8,14 +8,20 @@ import useSound from "use-sound"
 
 type Props = {
   data: CommonStatusDataMap["SHOW_QUESTION"]
+  effectEnabled: boolean
 }
 
-const Question = ({ data: { question, image, cooldown } }: Props) => {
+const Question = ({
+  data: { question, image, cooldown },
+  effectEnabled,
+}: Props) => {
   const [sfxShow] = useSound(SFX_SHOW_SOUND, { volume: 0.5 })
 
   useEffect(() => {
-    sfxShow()
-  }, [sfxShow])
+    if (effectEnabled) {
+      sfxShow()
+    }
+  }, [sfxShow, effectEnabled])
 
   return (
     <section className="relative mx-auto flex h-full w-full max-w-7xl flex-1 flex-col items-center px-4">

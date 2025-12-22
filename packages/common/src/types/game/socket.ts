@@ -31,6 +31,8 @@ export interface ServerToClientEvents {
     background: string;
     typeface: string;
     theme: string;
+    playerEffect: boolean;
+    playerMusic: boolean;
   }) => void;
   "game:totalPlayers": (_count: number) => void;
   "game:errorMessage": (_message: string) => void;
@@ -47,6 +49,8 @@ export interface ServerToClientEvents {
     player: { username: string; points: number };
     currentQuestion: GameUpdateQuestion;
     theme: string;
+    playerEffect: boolean;
+    playerMusic: boolean;
   }) => void;
   "player:updateLeaderboard": (_data: { leaderboard: Player[] }) => void;
 
@@ -57,6 +61,8 @@ export interface ServerToClientEvents {
     players: Player[];
     currentQuestion: GameUpdateQuestion;
     theme: string;
+    managerEffect: boolean;
+    managerMusic: boolean;
   }) => void;
   "manager:quizzList": (_quizzList: QuizzWithId[]) => void;
   "manager:gameCreated": (_data: {
@@ -65,6 +71,8 @@ export interface ServerToClientEvents {
     background: string;
     typeface: string;
     theme: string;
+    managerEffect: boolean;
+    managerMusic: boolean;
   }) => void;
   "manager:statusUpdate": (_data: {
     status: Status;
@@ -79,6 +87,10 @@ export interface ServerToClientEvents {
     background: string;
     typeface: string;
     theme: string;
+    playerEffect: boolean;
+    playerMusic: boolean;
+    managerEffect: boolean;
+    managerMusic: boolean;
   }) => void;
 }
 

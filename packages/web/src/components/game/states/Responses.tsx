@@ -15,10 +15,14 @@ import useSound from "use-sound"
 
 type Props = {
   data: ManagerStatusDataMap["SHOW_RESPONSES"]
+  effectEnabled: boolean
+  musicEnabled: boolean
 }
 
 const Responses = ({
   data: { question, answers, responses, correct },
+  effectEnabled,
+  musicEnabled,
 }: Props) => {
   const [percentages, setPercentages] = useState<Record<string, string>>({})
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
@@ -39,16 +43,20 @@ const Responses = ({
 
   useEffect(() => {
     stopMusic()
-    sfxResults()
+    if (effectEnabled) {
+      sfxResults()
+    }
 
     setPercentages(calculatePercentages(responses))
-  }, [responses, playMusic, stopMusic, sfxResults])
+  }, [responses, playMusic, stopMusic, sfxResults, effectEnabled])
 
   useEffect(() => {
-    if (!isMusicPlaying) {
+    if (!isMusicPlaying && musicEnabled) {
       playMusic()
+    } else if (!musicEnabled) {
+      stopMusic()
     }
-  }, [isMusicPlaying, playMusic])
+  }, [isMusicPlaying, playMusic, musicEnabled, stopMusic])
 
   useEffect(() => {
     stopMusic()

@@ -22,9 +22,10 @@ import useSound from "use-sound"
 
 type Props = {
   data: ManagerStatusDataMap["FINISHED"] | ManagerStatusDataMap["GAME_FINISHED"]
+  effectEnabled: boolean
 }
 
-const Podium = ({ data }: Props) => {
+const Podium = ({ data, effectEnabled }: Props) => {
   const { subject, top } = data
   const allPlayers = "allPlayers" in data ? data.allPlayers : undefined
   const [apparition, setApparition] = useState(0)
@@ -55,7 +56,9 @@ const Podium = ({ data }: Props) => {
     switch (apparition) {
       case 5:
         sfxRoolStop()
-        sfxFirst()
+        if (effectEnabled) {
+          sfxFirst()
+        }
 
         if (gameId) {
           socket?.emit("manager:gameFinished", { gameId })
@@ -64,21 +67,35 @@ const Podium = ({ data }: Props) => {
         break
 
       case 3:
-        sfxRool()
+        if (effectEnabled) {
+          sfxRool()
+        }
 
         break
 
       case 2:
-        sfxSecond()
+        if (effectEnabled) {
+          sfxSecond()
+        }
 
         break
 
       case 1:
-        sfxtThree()
+        if (effectEnabled) {
+          sfxtThree()
+        }
 
         break
     }
-  }, [apparition, sfxFirst, sfxSecond, sfxtThree, sfxRool, sfxRoolStop])
+  }, [
+    apparition,
+    sfxFirst,
+    sfxSecond,
+    sfxtThree,
+    sfxRool,
+    sfxRoolStop,
+    effectEnabled,
+  ])
 
   useEffect(() => {
     if (top.length < 3) {

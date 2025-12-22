@@ -17,10 +17,14 @@ import useSound from "use-sound"
 
 type Props = {
   data: CommonStatusDataMap["SELECT_ANSWER"]
+  effectEnabled: boolean
+  musicEnabled: boolean
 }
 
 const Answers = ({
   data: { question, answers, image, time, totalPlayer },
+  effectEnabled,
+  musicEnabled,
 }: Props) => {
   const { gameId }: { gameId?: string } = useParams()
   const { socket } = useSocket()
@@ -50,16 +54,22 @@ const Answers = ({
         answerKey,
       },
     })
-    sfxPop()
+    if (effectEnabled) {
+      sfxPop()
+    }
   }
 
   useEffect(() => {
-    playMusic()
+    if (musicEnabled) {
+      playMusic()
+    } else {
+      stopMusic()
+    }
 
     return () => {
       stopMusic()
     }
-  }, [playMusic])
+  }, [playMusic, musicEnabled, stopMusic])
 
   useEvent("game:cooldown", (sec) => {
     setCooldown(sec)
@@ -67,7 +77,9 @@ const Answers = ({
 
   useEvent("game:playerAnswer", (count) => {
     setTotalAnswer(count)
-    sfxPop()
+    if (effectEnabled) {
+      sfxPop()
+    }
   })
 
   return (

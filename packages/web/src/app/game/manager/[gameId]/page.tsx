@@ -31,6 +31,11 @@ const ManagerGame = () => {
     setBackground,
     setTypeface,
     setTheme,
+
+    setManagerEffect,
+    setManagerMusic,
+    managerEffect,
+    managerMusic,
     reset,
   } = useManagerStore()
   const { setQuestionStates } = useQuestionStore()
@@ -47,23 +52,25 @@ const ManagerGame = () => {
     }
   })
 
-  useEvent(
-    "manager:successReconnect",
-    ({ gameId, status, players, currentQuestion, theme }) => {
-      setGameId(gameId)
-      setStatus(status.name, status.data)
-      setPlayers(players)
-      setQuestionStates(currentQuestion)
-      setBackground(currentQuestion.background || null)
-      setTypeface(currentQuestion.typeface || null)
-      setTheme(theme || null)
-    },
-  )
+  useEvent("manager:successReconnect", (data) => {
+    const { gameId, status, players, currentQuestion, theme } = data
+    setGameId(gameId)
+    setStatus(status.name, status.data)
+    setPlayers(players)
+    setQuestionStates(currentQuestion)
+    setBackground(currentQuestion.background || null)
+    setTypeface(currentQuestion.typeface || null)
+    setTheme(theme || null)
+    setManagerEffect(data.managerEffect)
+    setManagerMusic(data.managerMusic)
+  })
 
   useEvent("game:updateConfig", (data) => {
     setBackground(data.background || null)
     setTypeface(data.typeface || null)
     setTheme(data.theme || null)
+    setManagerEffect(data.managerEffect)
+    setManagerMusic(data.managerMusic)
   })
 
   useEvent("game:updateQuestion", (data) => {
@@ -130,7 +137,7 @@ const ManagerGame = () => {
       break
 
     case STATUS.SHOW_START:
-      component = <Start data={status.data} />
+      component = <Start data={status.data} effectEnabled={managerEffect} />
 
       break
 
@@ -140,17 +147,29 @@ const ManagerGame = () => {
       break
 
     case STATUS.SHOW_QUESTION:
-      component = <Question data={status.data} />
+      component = <Question data={status.data} effectEnabled={managerEffect} />
 
       break
 
     case STATUS.SELECT_ANSWER:
-      component = <Answers data={status.data} />
+      component = (
+        <Answers
+          data={status.data}
+          effectEnabled={managerEffect}
+          musicEnabled={managerMusic}
+        />
+      )
 
       break
 
     case STATUS.SHOW_RESPONSES:
-      component = <Responses data={status.data} />
+      component = (
+        <Responses
+          data={status.data}
+          effectEnabled={managerEffect}
+          musicEnabled={managerMusic}
+        />
+      )
 
       break
 
@@ -161,7 +180,7 @@ const ManagerGame = () => {
 
     case STATUS.FINISHED:
     case STATUS.GAME_FINISHED:
-      component = <Podium data={status.data} />
+      component = <Podium data={status.data} effectEnabled={managerEffect} />
 
       break
   }

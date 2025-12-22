@@ -18,9 +18,14 @@ type Props = {
     | PlayerStatusDataMap["GAME_FINISHED"]
     | PlayerStatusDataMap["SHOW_LEADERBOARD"]
   message?: string
+  effectEnabled: boolean
 }
 
-const PlayerResult = ({ data, message = "Game Over" }: Props) => {
+const PlayerResult = ({
+  data,
+  message = "Game Over",
+  effectEnabled,
+}: Props) => {
   const player = usePlayerStore()
   const { width, height } = useScreenSize()
   const { myPoints, myRank } = data
@@ -36,6 +41,7 @@ const PlayerResult = ({ data, message = "Game Over" }: Props) => {
 
   const [sfxResults] = useSound(soundUrl, {
     volume: 0.2,
+    soundEnabled: effectEnabled,
   })
 
   useEffect(() => {
@@ -43,8 +49,10 @@ const PlayerResult = ({ data, message = "Game Over" }: Props) => {
       player.updatePoints(myPoints)
     }
 
-    sfxResults()
-  }, [sfxResults, myPoints])
+    if (effectEnabled) {
+      sfxResults()
+    }
+  }, [sfxResults, myPoints, effectEnabled])
 
   const isGold = myRank === 1
   const isSilver = myRank === 2

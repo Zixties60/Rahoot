@@ -8,6 +8,8 @@ type ManagerStore<T> = {
   background: string | null
   typeface: string | null
   theme: string | null
+  managerEffect: boolean
+  managerMusic: boolean
   status: Status<T> | null
   players: Player[]
 
@@ -15,6 +17,8 @@ type ManagerStore<T> = {
   setBackground: (_background: string | null) => void
   setTypeface: (_typeface: string | null) => void
   setTheme: (_theme: string | null) => void
+  setManagerEffect: (_managerEffect: boolean) => void
+  setManagerMusic: (_managerMusic: boolean) => void
   setStatus: <K extends keyof T>(_name: K, _data: T[K]) => void
   resetStatus: () => void
   setPlayers: (_players: Player[]) => void
@@ -27,6 +31,8 @@ const initialState = {
   background: null,
   typeface: "playpen-sans",
   theme: "yellow-orange",
+  managerEffect: true,
+  managerMusic: true,
   status: null,
   players: [],
 }
@@ -38,6 +44,8 @@ export const useManagerStore = create<ManagerStore<StatusDataMap>>((set) => ({
   setBackground: (background) => set({ background }),
   setTypeface: (typeface) => set({ typeface }),
   setTheme: (theme) => set({ theme }),
+  setManagerEffect: (managerEffect) => set({ managerEffect }),
+  setManagerMusic: (managerMusic) => set({ managerMusic }),
 
   setStatus: (name, data) => set({ status: createStatus(name, data) }),
   resetStatus: () => set({ status: null }),
