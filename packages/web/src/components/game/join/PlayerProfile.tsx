@@ -50,7 +50,7 @@ const PlayerProfile = () => {
 
   useEvent("game:successJoin", ({ gameId, background, typeface, theme }) => {
     setStatus(STATUS.WAIT, { text: "Waiting for the players" })
-    login(username)
+    login(username, selectedAvatarId)
     setBackground(background || null)
     setTypeface(typeface || null)
     setTheme(theme || null)
