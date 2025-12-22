@@ -17,6 +17,7 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
   const { players } = useManagerStore()
   const [playerList, setPlayerList] = useState<Player[]>(players)
   const [totalPlayers, setTotalPlayers] = useState(0)
+  const [hideRoomId, setHideRoomId] = useState<Boolean>(true)
 
   const origin = typeof window !== "undefined" ? window.location.origin : ""
   const joinUrl = `${origin}?pin=${inviteCode}`
@@ -42,20 +43,35 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
       return
     }
 
+    if (!confirm("Are you sure you want to kick this player?")) {
+      return
+    }
+
     socket?.emit("manager:kickPlayer", {
       gameId,
       playerId,
     })
   }
 
+  const handleHide = () => {
+    setHideRoomId((prev) => !prev)
+  }
+
   return (
     <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center px-2">
-      <div className="mb-10 rounded-md bg-white p-4 shadow-lg">
-        <QRCode value={joinUrl} level="H" />
-      </div>
+      <div
+        className="flex w-fit cursor-pointer flex-row items-center justify-center gap-10"
+        onClick={handleHide}
+      >
+        <div className="mb-10 rounded-md bg-white p-4 shadow-lg">
+          <QRCode value={joinUrl} level="H" size={384} />
+        </div>
 
-      <div className="mb-10 rotate-3 rounded-md bg-white px-6 py-4 text-6xl font-extrabold">
-        {inviteCode}
+        {!hideRoomId ? (
+          <div className="mb-10 rotate-3 rounded-md bg-white px-6 py-4 text-6xl font-extrabold">
+            {inviteCode}
+          </div>
+        ) : null}
       </div>
 
       <h2 className="mb-4 text-4xl font-bold text-white drop-shadow-lg">

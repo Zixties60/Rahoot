@@ -3,6 +3,7 @@
 import { STATUS } from "@rahoot/common/types/game/status"
 import GameWrapper from "@rahoot/web/components/game/GameWrapper"
 import Answers from "@rahoot/web/components/game/states/Answers"
+import Attention from "@rahoot/web/components/game/states/Attention"
 import PlayerResult from "@rahoot/web/components/game/states/PlayerResult"
 import Prepared from "@rahoot/web/components/game/states/Prepared"
 import Question from "@rahoot/web/components/game/states/Question"
@@ -27,6 +28,7 @@ const Game = () => {
     setStatus,
     setBackground,
     setTypeface,
+    setTheme,
     reset,
   } = usePlayerStore()
   const { setQuestionStates } = useQuestionStore()
@@ -39,19 +41,25 @@ const Game = () => {
 
   useEvent(
     "player:successReconnect",
-    ({ gameId, status, player, currentQuestion }) => {
+    ({ gameId, status, player, currentQuestion, theme }) => {
       setGameId(gameId)
       setStatus(status.name, status.data)
       setPlayer(player)
       setQuestionStates(currentQuestion)
       setBackground(currentQuestion.background || null)
       setTypeface(currentQuestion.typeface || null)
+      setTheme(theme || null)
     },
   )
 
-  useEvent("game:updateQuestion", (data) => {
+  useEvent("game:updateConfig", (data) => {
     setBackground(data.background || null)
     setTypeface(data.typeface || null)
+    setTheme(data.theme || null)
+  })
+
+  useEvent("game:updateQuestion", (data) => {
+    // Background and typeface are handled by game:updateConfig
   })
 
   useEvent("game:status", ({ name, data }) => {
@@ -105,7 +113,7 @@ const Game = () => {
       break
 
     case STATUS.FINISHED:
-      component = <Wait data={{ text: "Look at the screen" }} />
+      component = <Attention data={{ text: "Look at the screen" }} />
 
       break
 
@@ -115,7 +123,7 @@ const Game = () => {
       break
 
     case STATUS.SHOW_LEADERBOARD:
-      component = <Wait data={{ text: "Look at the screen" }} />
+      component = <Attention data={{ text: "Look at the screen" }} />
 
       break
   }

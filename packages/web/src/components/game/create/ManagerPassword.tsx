@@ -31,6 +31,7 @@ const ManagerPassword = ({ onSubmit }: Props) => {
     <Form>
       <Input
         type="password"
+        autoComplete="off"
         onChange={(e) => setPassword(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Manager password"

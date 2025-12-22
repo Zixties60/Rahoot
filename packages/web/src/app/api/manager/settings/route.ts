@@ -30,7 +30,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { managerPassword, music, background, typeface } = body
+    const { managerPassword, music, background, typeface, theme } = body
 
     if (managerPassword && typeof managerPassword !== "string") {
       return NextResponse.json(
@@ -60,6 +60,13 @@ export async function POST(request: Request) {
       )
     }
 
+    if (theme !== undefined && typeof theme !== "string") {
+      return NextResponse.json(
+        { error: "Invalid theme format" },
+        { status: 400 },
+      )
+    }
+
     const configPath = getConfigPath()
     const currentConfig = fs.existsSync(configPath)
       ? JSON.parse(fs.readFileSync(configPath, "utf8"))
@@ -83,6 +90,10 @@ export async function POST(request: Request) {
 
     if (typeface !== undefined) {
       newConfig.typeface = typeface
+    }
+
+    if (theme !== undefined) {
+      newConfig.theme = theme
     }
 
     fs.writeFileSync(configPath, JSON.stringify(newConfig, null, 2))

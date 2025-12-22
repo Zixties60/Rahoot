@@ -4,16 +4,22 @@ import { Cancel, Save } from "@mui/icons-material"
 
 import Button from "@rahoot/web/components/Button"
 import FontSelect from "@rahoot/web/components/manager/settings/FontSelect"
+import { useSocket } from "@rahoot/web/contexts/socketProvider"
+import { useManagerStore } from "@rahoot/web/stores/manager"
+import { THEME_CONFIG } from "@rahoot/web/utils/constants"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
 const Settings = () => {
   const router = useRouter()
+  const { socket } = useSocket()
+  const { gameId } = useManagerStore()
   const [password, setPassword] = useState("")
   const [music, setMusic] = useState(false)
   const [background, setBackground] = useState("")
   const [typeface, setTypeface] = useState("")
+  const [theme, setTheme] = useState("yellow-orange")
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -32,6 +38,9 @@ const Settings = () => {
         if (data.typeface) {
           setTypeface(data.typeface)
         }
+        if (data.theme) {
+          setTheme(data.theme)
+        }
       })
       .catch(() => {
         toast.error("Failed to load settings")
@@ -40,6 +49,18 @@ const Settings = () => {
         setLoading(false)
       })
   }, [])
+
+  useEffect(() => {
+    if (theme) {
+      const themeConfig = THEME_CONFIG[theme]
+      if (themeConfig) {
+        document.documentElement.style.setProperty(
+          "--color-primary",
+          themeConfig.primary,
+        )
+      }
+    }
+  }, [theme])
 
   const handleSave = async () => {
     try {
@@ -53,10 +74,14 @@ const Settings = () => {
           music,
           background,
           typeface,
+          theme,
         }),
       })
 
       if (res.ok) {
+        if (gameId) {
+          socket?.emit("manager:reloadConfig", { gameId })
+        }
         toast.success("Settings saved")
         router.back()
       } else {
@@ -112,6 +137,25 @@ const Settings = () => {
             value={typeface}
             onChange={setTypeface}
           />
+        </div>
+
+        <div className="w-full">
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            Color Theme
+          </label>
+          <div className="flex gap-2">
+            {Object.keys(THEME_CONFIG).map((key) => (
+              <button
+                key={key}
+                onClick={() => setTheme(key)}
+                className={`h-8 w-8 rounded-full border-2 ${
+                  theme === key ? "border-black" : "border-transparent"
+                }`}
+                style={{ backgroundColor: THEME_CONFIG[key].primary }}
+                title={key}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="flex w-full items-center justify-between">

@@ -9,16 +9,42 @@ import ManagerPassword from "@rahoot/web/components/game/create/ManagerPassword"
 import SelectQuizz from "@rahoot/web/components/game/create/SelectQuizz"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/stores/manager"
+import { THEME_CONFIG } from "@rahoot/web/utils/constants"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const Manager = () => {
-  const { setGameId, setStatus, setBackground, setTypeface } = useManagerStore()
+  const { setGameId, setStatus, setBackground, setTypeface, setTheme } =
+    useManagerStore()
   const router = useRouter()
   const { socket } = useSocket()
 
   const [isAuth, setIsAuth] = useState(false)
   const [quizzList, setQuizzList] = useState<QuizzWithId[]>([])
+  const [theme, setThemeState] = useState("yellow-orange")
+
+  useEffect(() => {
+    fetch("/api/manager/settings", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.theme) {
+          setThemeState(data.theme)
+        }
+      })
+  }, [])
+
+  useEffect(() => {
+    if (theme) {
+      const themeConfig = THEME_CONFIG[theme] || THEME_CONFIG["yellow-orange"]
+
+      if (themeConfig) {
+        document.documentElement.style.setProperty(
+          "--color-primary",
+          themeConfig.primary,
+        )
+      }
+    }
+  }, [theme])
 
   useEvent("manager:quizzList", (quizzList) => {
     setIsAuth(true)
@@ -33,6 +59,7 @@ const Manager = () => {
     })
     setBackground(data.background)
     setTypeface(data.typeface)
+    setTheme(data.theme)
     router.push(`/game/manager/${data.gameId}`)
   })
 

@@ -1,5 +1,9 @@
 import { Player } from ".";
 
+// Status flow
+// SHOW_ROOM -> SHOW_START -> SHOW_PREPARED -> SHOW_QUESTION -> SELECT_ANSWER ->
+// SHOW_RESULT -> SHOW_RESPONSES -> SHOW_LEADERBOARD -> FINISHED -> GAME_FINISHED
+
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",
   SHOW_START: "SHOW_START",
@@ -52,6 +56,14 @@ export type CommonStatusDataMap = {
 
 type PlayerExtraStatus = {
   GAME_FINISHED: {
+    myRank?: number;
+    myPoints?: number;
+  };
+  FINISHED: {
+    myRank?: number;
+    myPoints?: number;
+  };
+  SHOW_LEADERBOARD: {
     myRank?: number;
     myPoints?: number;
   };

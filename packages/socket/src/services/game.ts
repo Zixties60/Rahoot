@@ -19,6 +19,7 @@ class Game {
   gameId: string;
   background: string;
   typeface: string;
+  theme: string;
   manager: {
     id: string;
     clientId: string;
@@ -66,6 +67,7 @@ class Game {
     this.started = false;
     this.background = Config.game().background || "";
     this.typeface = Config.game().typeface || "playpen-sans";
+    this.theme = Config.game().theme || "yellow-orange";
 
     this.lastBroadcastStatus = null;
     this.managerStatus = null;
@@ -102,6 +104,7 @@ class Game {
       inviteCode: roomInvite,
       background: this.getBackground(-1),
       typeface: this.getTypeface(-1),
+      theme: this.theme,
     });
 
     console.log(
@@ -161,6 +164,7 @@ class Game {
       gameId: this.gameId,
       background: this.getBackground(-1),
       typeface: this.getTypeface(-1),
+      theme: this.theme,
     });
   }
 
@@ -212,7 +216,7 @@ class Game {
     const status = this.managerStatus ||
       this.lastBroadcastStatus || {
         name: STATUS.WAIT,
-        data: { text: "Waiting for players" },
+        data: { text: "Waiting for players..." },
       };
 
     socket.emit("manager:successReconnect", {
@@ -224,6 +228,7 @@ class Game {
       },
       status,
       players: this.players,
+      theme: this.theme,
     });
     socket.emit("game:totalPlayers", this.players.length);
 
@@ -275,6 +280,7 @@ class Game {
         username: player.username,
         points: player.points,
       },
+      theme: this.theme,
     });
     socket.emit("game:totalPlayers", this.players.length);
     console.log(
@@ -343,11 +349,15 @@ class Game {
 
     this.playerStatus.clear();
 
+    this.io.to(this.gameId).emit("game:updateConfig", {
+      background: this.getBackground(this.round.currentQuestion),
+      typeface: this.getTypeface(this.round.currentQuestion),
+      theme: this.theme,
+    });
+
     this.io.to(this.gameId).emit("game:updateQuestion", {
       current: this.round.currentQuestion + 1,
       total: this.quizz.questions.length,
-      background: this.getBackground(this.round.currentQuestion),
-      typeface: this.getTypeface(this.round.currentQuestion),
     });
 
     this.managerStatus = null;
@@ -534,10 +544,12 @@ class Game {
         typeface: this.getTypeface(-1),
       });
 
-      this.leaderboard.forEach((player) => {
+      this.leaderboard.forEach((player, index) => {
         this.sendStatus(player.id, STATUS.FINISHED, {
           subject: this.quizz.subject,
           top: this.leaderboard.slice(0, 3),
+          myRank: index + 1,
+          myPoints: player.points,
         });
       });
 
@@ -554,10 +566,12 @@ class Game {
       ? this.tempOldLeaderboard
       : this.leaderboard;
 
-    this.leaderboard.forEach((player) => {
+    this.leaderboard.forEach((player, index) => {
       this.sendStatus(player.id, STATUS.SHOW_LEADERBOARD, {
         oldLeaderboard: oldLeaderboard.slice(0, 3),
         leaderboard: this.leaderboard.slice(0, 3),
+        myRank: index + 1,
+        myPoints: player.points,
       });
     });
 
@@ -567,6 +581,12 @@ class Game {
     });
 
     this.tempOldLeaderboard = null;
+
+    this.io.to(this.gameId).emit("game:updateConfig", {
+      background: this.getBackground(-1),
+      typeface: this.getTypeface(-1),
+      theme: this.theme,
+    });
   }
 
   gameFinished() {
@@ -600,6 +620,18 @@ class Game {
     const quizTypeface = this.quizz.typeface;
 
     return questionTypeface || quizTypeface || this.typeface;
+  }
+  reloadConfig() {
+    const config = Config.game();
+    this.background = config.background || "";
+    this.typeface = config.typeface || "playpen-sans";
+    this.theme = config.theme || "yellow-orange";
+
+    this.io.to(this.gameId).emit("game:updateConfig", {
+      background: this.getBackground(this.round.currentQuestion),
+      typeface: this.getTypeface(this.round.currentQuestion),
+      theme: this.theme,
+    });
   }
 }
 

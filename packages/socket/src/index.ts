@@ -137,6 +137,10 @@ io.on("connection", (socket) => {
     withGame(gameId, socket, (game) => game.gameFinished())
   );
 
+  socket.on("manager:reloadConfig", ({ gameId }) =>
+    withGame(gameId, socket, (game) => game.reloadConfig())
+  );
+
   socket.on("disconnect", () => {
     console.log(`A user disconnected : ${socket.id}`);
 

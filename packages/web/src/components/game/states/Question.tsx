@@ -2,6 +2,7 @@
 
 import { CommonStatusDataMap } from "@rahoot/common/types/game/status"
 import { SFX_SHOW_SOUND } from "@rahoot/web/utils/constants"
+import Image from "next/image"
 import { useEffect } from "react"
 import useSound from "use-sound"
 
@@ -19,15 +20,19 @@ const Question = ({ data: { question, image, cooldown } }: Props) => {
   return (
     <section className="relative mx-auto flex h-full w-full max-w-7xl flex-1 flex-col items-center px-4">
       <div className="flex flex-1 flex-col items-center justify-center gap-5">
-        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
-          {question}
-        </h2>
+        <div className="anim-show px-4">
+          <h2 className="text-center text-3xl/16 font-bold text-white drop-shadow-lg md:text-4xl/24 lg:text-6xl/24">
+            {question}
+          </h2>
+        </div>
 
-        {Boolean(image) && (
-          <img
+        {image && (
+          <Image
             alt={question}
             src={image}
-            className="m-4 h-full max-h-[400px] min-h-[200px] w-auto rounded-md"
+            width={400}
+            height={400}
+            className="m-4 h-full max-h-[400px] min-h-[200px] w-auto rounded-md object-cover"
           />
         )}
       </div>

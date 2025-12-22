@@ -28,6 +28,7 @@ class Config {
             music: true,
             background: "",
             typeface: "playpen-sans",
+            theme: "yellow-orange",
           },
           null,
           2

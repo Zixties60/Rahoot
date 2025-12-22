@@ -30,6 +30,7 @@ const ManagerGame = () => {
     setPlayers,
     setBackground,
     setTypeface,
+    setTheme,
     reset,
   } = useManagerStore()
   const { setQuestionStates } = useQuestionStore()
@@ -48,19 +49,25 @@ const ManagerGame = () => {
 
   useEvent(
     "manager:successReconnect",
-    ({ gameId, status, players, currentQuestion }) => {
+    ({ gameId, status, players, currentQuestion, theme }) => {
       setGameId(gameId)
       setStatus(status.name, status.data)
       setPlayers(players)
       setQuestionStates(currentQuestion)
       setBackground(currentQuestion.background || null)
       setTypeface(currentQuestion.typeface || null)
+      setTheme(theme || null)
     },
   )
 
-  useEvent("game:updateQuestion", (data) => {
+  useEvent("game:updateConfig", (data) => {
     setBackground(data.background || null)
     setTypeface(data.typeface || null)
+    setTheme(data.theme || null)
+  })
+
+  useEvent("game:updateQuestion", (data) => {
+    // Background and typeface are handled by game:updateConfig
   })
 
   useEvent("manager:newPlayer", (player) => {

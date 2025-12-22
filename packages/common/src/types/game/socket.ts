@@ -30,6 +30,7 @@ export interface ServerToClientEvents {
     gameId: string;
     background: string;
     typeface: string;
+    theme: string;
   }) => void;
   "game:totalPlayers": (_count: number) => void;
   "game:errorMessage": (_message: string) => void;
@@ -45,6 +46,7 @@ export interface ServerToClientEvents {
     status: { name: Status; data: StatusDataMap[Status] };
     player: { username: string; points: number };
     currentQuestion: GameUpdateQuestion;
+    theme: string;
   }) => void;
   "player:updateLeaderboard": (_data: { leaderboard: Player[] }) => void;
 
@@ -54,6 +56,7 @@ export interface ServerToClientEvents {
     status: { name: Status; data: StatusDataMap[Status] };
     players: Player[];
     currentQuestion: GameUpdateQuestion;
+    theme: string;
   }) => void;
   "manager:quizzList": (_quizzList: QuizzWithId[]) => void;
   "manager:gameCreated": (_data: {
@@ -61,6 +64,7 @@ export interface ServerToClientEvents {
     inviteCode: string;
     background: string;
     typeface: string;
+    theme: string;
   }) => void;
   "manager:statusUpdate": (_data: {
     status: Status;
@@ -71,6 +75,11 @@ export interface ServerToClientEvents {
   "manager:errorMessage": (_message: string) => void;
   "manager:playerKicked": (_playerId: string) => void;
   "manager:updatePlayers": (_players: Player[]) => void;
+  "game:updateConfig": (_data: {
+    background: string;
+    typeface: string;
+    theme: string;
+  }) => void;
 }
 
 export interface ClientToServerEvents {
@@ -87,6 +96,7 @@ export interface ClientToServerEvents {
   "manager:nextQuestion": (_message: MessageGameId) => void;
   "manager:showLeaderboard": (_message: MessageGameId) => void;
   "manager:gameFinished": (_message: MessageGameId) => void;
+  "manager:reloadConfig": (_message: MessageGameId) => void;
 
   // Player actions
   "player:join": (_inviteCode: string) => void;

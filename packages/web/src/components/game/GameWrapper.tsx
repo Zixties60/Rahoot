@@ -14,7 +14,7 @@ import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/stores/manager"
 import { usePlayerStore } from "@rahoot/web/stores/player"
 import { useQuestionStore } from "@rahoot/web/stores/question"
-import { MANAGER_SKIP_BTN } from "@rahoot/web/utils/constants"
+import { MANAGER_SKIP_BTN, THEME_CONFIG } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 import Image from "next/image"
 import { PropsWithChildren, useEffect, useState } from "react"
@@ -55,19 +55,39 @@ const GameWrapper = ({
     onNext?.()
   }
 
-  const { background: playerBackground, typeface: playerTypeface } =
-    usePlayerStore()
-  const { background: managerBackground, typeface: managerTypeface } =
-    useManagerStore()
+  const {
+    background: playerBackground,
+    typeface: playerTypeface,
+    theme: playerTheme,
+  } = usePlayerStore()
+  const {
+    background: managerBackground,
+    typeface: managerTypeface,
+    theme: managerTheme,
+  } = useManagerStore()
   const backgroundUrl = manager ? managerBackground : playerBackground
   const typeface = manager ? managerTypeface : playerTypeface
+  const theme = manager ? managerTheme : playerTheme
+
+  const themeConfig =
+    THEME_CONFIG[theme || "yellow-orange"] || THEME_CONFIG["yellow-orange"]
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--color-primary",
+      themeConfig.primary,
+    )
+  }, [themeConfig])
 
   return (
     <section
       className="relative flex min-h-screen w-full flex-col justify-between"
       style={{ fontFamily: typeface ? `var(--font-${typeface})` : undefined }}
     >
-      <div className="fixed top-0 left-0 -z-10 h-full w-full bg-orange-600 opacity-70">
+      <div
+        className="fixed top-0 left-0 -z-10 h-full w-full opacity-70"
+        style={{ backgroundColor: themeConfig.background }}
+      >
         <Image
           className="pointer-events-none h-full w-full object-cover opacity-60"
           src={backgroundUrl || background}
@@ -102,7 +122,7 @@ const GameWrapper = ({
 
             {manager && next && (
               <Button
-                className={clsx("self-end bg-white px-4 text-black!", {
+                className={clsx("", {
                   "pointer-events-none": isDisabled,
                 })}
                 onClick={handleNext}
@@ -124,7 +144,7 @@ const GameWrapper = ({
           {children}
 
           {!manager && (
-            <div className="z-50 mt-6 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
+            <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
               <p className="text-gray-800">{player?.username}</p>
               <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
                 {player?.points}

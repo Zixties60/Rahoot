@@ -77,5 +77,17 @@ export const MANAGER_SKIP_BTN = {
   [STATUS.SHOW_RESPONSES]: "Next",
   [STATUS.SHOW_LEADERBOARD]: "Next",
   [STATUS.FINISHED]: null,
+  [STATUS.GAME_FINISHED]: null,
   [STATUS.WAIT]: null,
+}
+
+export const THEME_CONFIG: Record<
+  string,
+  { primary: string; background: string }
+> = {
+  "yellow-orange": { primary: "#ff9900", background: "#ea580c" },
+  blue: { primary: "#3b82f6", background: "#2563eb" },
+  pink: { primary: "#ec4899", background: "#db2777" },
+  green: { primary: "#22c55e", background: "#16a34a" },
+  purple: { primary: "#a855f7", background: "#9333ea" },
 }
