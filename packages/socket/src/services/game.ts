@@ -134,7 +134,7 @@ class Game {
     this.io.to(target).emit("game:status", statusData);
   }
 
-  join(socket: Socket, username: string) {
+  join(socket: Socket, username: string, avatarId: number) {
     const isAlreadyConnected = this.players.find(
       (p) => p.clientId === socket.handshake.auth.clientId
     );
@@ -153,6 +153,7 @@ class Game {
       connected: true,
       username,
       points: 0,
+      avatarId: avatarId ?? Math.floor(Math.random() * 8),
     };
 
     this.players.push(playerData);
@@ -547,7 +548,7 @@ class Game {
       this.leaderboard.forEach((player, index) => {
         this.sendStatus(player.id, STATUS.FINISHED, {
           subject: this.quizz.subject,
-          top: this.leaderboard.slice(0, 3),
+          top: this.leaderboard.slice(0, 5),
           myRank: index + 1,
           myPoints: player.points,
         });
@@ -555,7 +556,7 @@ class Game {
 
       this.sendStatus(this.manager.id, STATUS.FINISHED, {
         subject: this.quizz.subject,
-        top: this.leaderboard.slice(0, 3),
+        top: this.leaderboard.slice(0, 5),
         allPlayers: this.players,
       });
 
@@ -568,16 +569,16 @@ class Game {
 
     this.leaderboard.forEach((player, index) => {
       this.sendStatus(player.id, STATUS.SHOW_LEADERBOARD, {
-        oldLeaderboard: oldLeaderboard.slice(0, 3),
-        leaderboard: this.leaderboard.slice(0, 3),
+        oldLeaderboard: oldLeaderboard.slice(0, 5),
+        leaderboard: this.leaderboard.slice(0, 5),
         myRank: index + 1,
         myPoints: player.points,
       });
     });
 
     this.sendStatus(this.manager.id, STATUS.SHOW_LEADERBOARD, {
-      oldLeaderboard: oldLeaderboard.slice(0, 3),
-      leaderboard: this.leaderboard.slice(0, 3),
+      oldLeaderboard: oldLeaderboard.slice(0, 5),
+      leaderboard: this.leaderboard.slice(0, 5),
     });
 
     this.tempOldLeaderboard = null;
@@ -593,7 +594,7 @@ class Game {
     this.leaderboard.forEach((player, index) => {
       this.sendStatus(player.id, STATUS.GAME_FINISHED, {
         subject: this.quizz.subject,
-        top: this.leaderboard.slice(0, 3),
+        top: this.leaderboard.slice(0, 5),
         myRank: index + 1,
         myPoints: player.points,
       });
@@ -601,7 +602,7 @@ class Game {
 
     this.sendStatus(this.manager.id, STATUS.GAME_FINISHED, {
       subject: this.quizz.subject,
-      top: this.leaderboard.slice(0, 3),
+      top: this.leaderboard.slice(0, 5),
       allPlayers: this.players,
     });
   }

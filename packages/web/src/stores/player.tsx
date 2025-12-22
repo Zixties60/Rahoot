@@ -5,6 +5,7 @@ import { create } from "zustand"
 type PlayerState = {
   username?: string
   points?: number
+  avatarId?: number
 }
 
 type PlayerStore<T> = {

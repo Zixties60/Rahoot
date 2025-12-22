@@ -1,5 +1,7 @@
 "use client"
 
+import Avatar from "@rahoot/web/components/Avatar"
+
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import Button from "@rahoot/web/components/Button"
 import AllPlayersModal from "@rahoot/web/components/game/modals/AllPlayersModal"
@@ -130,16 +132,20 @@ const Podium = ({ data }: Props) => {
                 { "translate-y-0! opacity-100": apparition >= 2 },
               )}
             >
-              <p
+              <div
                 className={clsx(
-                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
+                  "flex flex-col items-center justify-center gap-2 overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
                   {
                     "anim-balanced": apparition >= 5,
                   },
                 )}
               >
+                <Avatar
+                  id={top[1].avatarId}
+                  className="h-16 w-16 md:h-20 md:w-20"
+                />
                 {top[1].username}
-              </p>
+              </div>
               <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-zinc-400 bg-zinc-500 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">2</span>
@@ -162,14 +168,18 @@ const Podium = ({ data }: Props) => {
               },
             )}
           >
-            <p
+            <div
               className={clsx(
-                "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white opacity-0 drop-shadow-lg md:text-4xl",
+                "flex flex-col items-center justify-center gap-2 overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white opacity-0 drop-shadow-lg md:text-4xl",
                 { "anim-balanced opacity-100": apparition >= 5 },
               )}
             >
+              <Avatar
+                id={top[0].avatarId}
+                className="h-20 w-20 md:h-24 md:w-24"
+              />
               {top[0].username}
-            </p>
+            </div>
             <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
               <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-400 bg-amber-300 text-3xl font-bold text-white drop-shadow-lg">
                 <span className="drop-shadow-md">1</span>
@@ -189,16 +199,20 @@ const Podium = ({ data }: Props) => {
                 },
               )}
             >
-              <p
+              <div
                 className={clsx(
-                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
+                  "flex flex-col items-center justify-center gap-2 overflow-visible text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
                   {
                     "anim-balanced": apparition >= 5,
                   },
                 )}
               >
+                <Avatar
+                  id={top[2].avatarId}
+                  className="h-14 w-14 md:h-16 md:w-16"
+                />
                 {top[2].username}
-              </p>
+              </div>
               <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-800 bg-amber-700 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">3</span>

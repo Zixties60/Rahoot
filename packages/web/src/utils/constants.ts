@@ -16,6 +16,15 @@ import Rhombus from "@rahoot/web/components/icons/Rhombus"
 import Square from "@rahoot/web/components/icons/Square"
 import Triangle from "@rahoot/web/components/icons/Triangle"
 
+import bee from "@rahoot/web/assets/bee.png"
+import hippopotamus from "@rahoot/web/assets/hippopotamus.png"
+import monkey from "@rahoot/web/assets/monkey.png"
+import mouse from "@rahoot/web/assets/mouse.png"
+import penguin from "@rahoot/web/assets/penguin.png"
+import pig from "@rahoot/web/assets/pig.png"
+import rhinoceros from "@rahoot/web/assets/rhinoceros.png"
+import toucan from "@rahoot/web/assets/toucan.png"
+
 export const ANSWERS_COLORS = [
   "bg-red-500",
   "bg-blue-500",
@@ -91,3 +100,23 @@ export const THEME_CONFIG: Record<
   green: { primary: "#22c55e", background: "#16a34a" },
   purple: { primary: "#a855f7", background: "#9333ea" },
 }
+
+export const AVATAR_BEE = bee
+export const AVATAR_HIPPOPOTAMUS = hippopotamus
+export const AVATAR_MOUSE = mouse
+export const AVATAR_MONKEY = monkey
+export const AVATAR_PENGUIN = penguin
+export const AVATAR_PIG = pig
+export const AVATAR_RHINOCEROS = rhinoceros
+export const AVATAR_TOUCAN = toucan
+
+export const AVATARS = [
+  { image: AVATAR_BEE, background: "#facc15" },
+  { image: AVATAR_HIPPOPOTAMUS, background: "#6366f1" },
+  { image: AVATAR_MOUSE, background: "#38bdf8" },
+  { image: AVATAR_MONKEY, background: "#ec4899" },
+  { image: AVATAR_PENGUIN, background: "#10b981" },
+  { image: AVATAR_PIG, background: "#fb7185" },
+  { image: AVATAR_RHINOCEROS, background: "#a855f7" },
+  { image: AVATAR_TOUCAN, background: "#f97316" },
+]

@@ -1,5 +1,7 @@
 "use client"
 
+import Avatar from "@rahoot/web/components/Avatar"
+
 import { Player } from "@rahoot/common/types/game"
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
@@ -88,9 +90,10 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
         {playerList.map((player) => (
           <div
             key={player.id}
-            className="shadow-inset bg-primary rounded-md px-4 py-3 font-bold text-white"
+            className="shadow-inset bg-primary flex flex-row items-center gap-2 rounded-md px-4 py-3 font-bold text-white"
             onClick={handleKick(player.id)}
           >
+            <Avatar id={player.avatarId} className="h-8 w-8" />
             <span className="cursor-pointer text-xl drop-shadow-md hover:line-through">
               {player.username}
             </span>

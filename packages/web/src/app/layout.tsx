@@ -9,6 +9,7 @@ import {
   Playpen_Sans_Thai,
   Pridi,
   Sarabun,
+  Noto_Color_Emoji,
 } from "next/font/google"
 import { PropsWithChildren } from "react"
 import "./globals.css"
@@ -44,13 +45,21 @@ const mali = Mali({
 
 const playpenSans = Playpen_Sans_Thai({
   variable: "--font-playpen-sans",
+  weight: ["400"],
   subsets: ["latin", "thai"],
+  adjustFontFallback: false,
 })
 
 const sarabun = Sarabun({
   variable: "--font-sarabun",
   weight: ["400"],
   subsets: ["latin", "thai"],
+})
+
+const notoColorEmoji = Noto_Color_Emoji({
+  variable: "--font-noto-color-emoji",
+  weight: ["400"],
+  subsets: ["emoji"],
 })
 
 export const metadata: Metadata = {
@@ -61,7 +70,7 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: PropsWithChildren) => (
   <html lang="en" suppressHydrationWarning={true} data-lt-installed="true">
     <body
-      className={`${montserrat.variable} ${kanit.variable} ${pridi.variable} ${itim.variable} ${mali.variable} ${playpenSans.variable} ${sarabun.variable} bg-secondary antialiased`}
+      className={`${montserrat.variable} ${kanit.variable} ${pridi.variable} ${itim.variable} ${mali.variable} ${playpenSans.variable} ${sarabun.variable} ${notoColorEmoji.variable} bg-secondary antialiased`}
     >
       <SocketProvider>
         <main className="text-base-[8px] flex flex-col">{children}</main>

@@ -1,8 +1,9 @@
+import { Close } from "@mui/icons-material"
 import { Player } from "@rahoot/common/types/game"
+import Avatar from "@rahoot/web/components/Avatar"
+import Button from "@rahoot/web/components/Button"
 import clsx from "clsx"
 import { useRef } from "react"
-import Button from "@rahoot/web/components/Button"
-import { Close } from "@mui/icons-material"
 
 type Props = {
   players: Player[]
@@ -96,7 +97,10 @@ const AllPlayersModal = ({ players, onClose }: Props) => {
                   >
                     <td className="py-3 pl-2">{rankBadge}</td>
                     <td className="py-3 font-semibold text-gray-800">
-                      {player.username}
+                      <div className="flex flex-row items-center gap-2">
+                        <Avatar id={player.avatarId} className="h-8 w-8" />
+                        <span>{player.username}</span>
+                      </div>
                     </td>
                     <td className="py-3 pr-2 text-right font-bold text-gray-700">
                       {player.points}

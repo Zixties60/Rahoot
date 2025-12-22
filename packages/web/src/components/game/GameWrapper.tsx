@@ -18,6 +18,7 @@ import { MANAGER_SKIP_BTN, THEME_CONFIG } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 import Image from "next/image"
 import { PropsWithChildren, useEffect, useState } from "react"
+import Avatar from "../Avatar"
 
 type Props = PropsWithChildren & {
   statusName: Status | undefined
@@ -145,7 +146,10 @@ const GameWrapper = ({
 
           {!manager && (
             <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
-              <p className="text-gray-800">{player?.username}</p>
+              <div className="flex items-center gap-2">
+                <Avatar id={player?.avatarId || 0} className="h-8 w-8" />
+                <p className="text-gray-800">{player?.username}</p>
+              </div>
               <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
                 {player?.points}
               </div>
