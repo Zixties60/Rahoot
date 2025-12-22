@@ -1,7 +1,9 @@
 "use client"
 
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
+import Button from "@rahoot/web/components/Button"
 import AllPlayersModal from "@rahoot/web/components/game/modals/AllPlayersModal"
+import { useSocket } from "@rahoot/web/contexts/socketProvider"
 import useScreenSize from "@rahoot/web/hooks/useScreenSize"
 import { useManagerStore } from "@rahoot/web/stores/manager"
 import {
@@ -15,17 +17,19 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import ReactConfetti from "react-confetti"
 import useSound from "use-sound"
-import Button from "@rahoot/web/components/Button"
 
 type Props = {
-  data: ManagerStatusDataMap["FINISHED"]
+  data: ManagerStatusDataMap["FINISHED"] | ManagerStatusDataMap["GAME_FINISHED"]
 }
 
-const Podium = ({ data: { subject, top } }: Props) => {
+const Podium = ({ data }: Props) => {
+  const { subject, top } = data
+  const allPlayers = "allPlayers" in data ? data.allPlayers : undefined
   const [apparition, setApparition] = useState(0)
   const [showAllPlayers, setShowAllPlayers] = useState(false)
   const router = useRouter()
-  const { players } = useManagerStore()
+  const { players, gameId } = useManagerStore()
+  const { socket } = useSocket()
 
   const { width, height } = useScreenSize()
 
@@ -47,9 +51,13 @@ const Podium = ({ data: { subject, top } }: Props) => {
 
   useEffect(() => {
     switch (apparition) {
-      case 4:
+      case 5:
         sfxRoolStop()
         sfxFirst()
+
+        if (gameId) {
+          socket?.emit("manager:gameFinished", { gameId })
+        }
 
         break
 
@@ -72,20 +80,20 @@ const Podium = ({ data: { subject, top } }: Props) => {
 
   useEffect(() => {
     if (top.length < 3) {
-      setApparition(4)
+      setApparition(5)
 
       return
     }
 
     const interval = setInterval(() => {
-      if (apparition > 4) {
+      if (apparition > 5) {
         clearInterval(interval)
 
         return
       }
 
       setApparition((value) => value + 1)
-    }, 2000)
+    }, 3000)
 
     // eslint-disable-next-line consistent-return
     return () => clearInterval(interval)
@@ -93,7 +101,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
 
   return (
     <>
-      {apparition >= 4 && (
+      {apparition >= 5 && (
         <ReactConfetti
           width={width}
           height={height}
@@ -126,7 +134,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
                 className={clsx(
                   "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
                   {
-                    "anim-balanced": apparition >= 4,
+                    "anim-balanced": apparition >= 5,
                   },
                 )}
               >
@@ -157,7 +165,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
             <p
               className={clsx(
                 "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white opacity-0 drop-shadow-lg md:text-4xl",
-                { "anim-balanced opacity-100": apparition >= 4 },
+                { "anim-balanced opacity-100": apparition >= 5 },
               )}
             >
               {top[0].username}
@@ -185,7 +193,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
                 className={clsx(
                   "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
                   {
-                    "anim-balanced": apparition >= 4,
+                    "anim-balanced": apparition >= 5,
                   },
                 )}
               >
@@ -213,6 +221,12 @@ const Podium = ({ data: { subject, top } }: Props) => {
         >
           Back to Manager
         </Button>
+        {/* <Button
+          onClick={() => setApparition(0)}
+          className="bg-white px-4 py-2 text-black!"
+        >
+          Re-animate
+        </Button> */}
       </div>
 
       <div className="absolute right-4 bottom-4 z-40 flex gap-4">
@@ -226,7 +240,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
 
       {showAllPlayers && (
         <AllPlayersModal
-          players={players}
+          players={allPlayers || players}
           onClose={() => setShowAllPlayers(false)}
         />
       )}

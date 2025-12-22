@@ -124,7 +124,7 @@ const GameWrapper = ({
           {children}
 
           {!manager && (
-            <div className="z-50 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
+            <div className="z-50 mt-6 flex items-center justify-between bg-white px-4 py-2 text-lg font-bold text-white">
               <p className="text-gray-800">{player?.username}</p>
               <div className="rounded-sm bg-gray-800 px-3 py-1 text-lg">
                 {player?.points}

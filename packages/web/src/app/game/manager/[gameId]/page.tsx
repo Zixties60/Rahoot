@@ -153,6 +153,7 @@ const ManagerGame = () => {
       break
 
     case STATUS.FINISHED:
+    case STATUS.GAME_FINISHED:
       component = <Podium data={status.data} />
 
       break

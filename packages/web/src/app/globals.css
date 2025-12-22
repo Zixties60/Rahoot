@@ -54,7 +54,7 @@ button:not(:disabled),
   left: -50%;
   top: -50%;
   transition: all 0.5s;
-  animation: spotlightAnim 2.5s ease-in;
+  animation: spotlightAnim 6.5s ease-in;
 }
 
 @keyframes spotlightAnim {
@@ -197,4 +197,6 @@ button:not(:disabled),
     transform: scale(1);
   }
 }
-body { font-family: var(--font-playpen-sans); }
+body {
+  font-family: var(--font-playpen-sans);
+}

@@ -1,5 +1,6 @@
 import Answers from "@rahoot/web/components/game/states/Answers"
 import Leaderboard from "@rahoot/web/components/game/states/Leaderboard"
+import PlayerResult from "@rahoot/web/components/game/states/PlayerResult"
 import Podium from "@rahoot/web/components/game/states/Podium"
 import Prepared from "@rahoot/web/components/game/states/Prepared"
 import Question from "@rahoot/web/components/game/states/Question"
@@ -42,6 +43,9 @@ export const GAME_STATE_COMPONENTS = {
   [STATUS.SHOW_START]: Start,
   [STATUS.SHOW_RESULT]: Result,
   [STATUS.SHOW_PREPARED]: Prepared,
+  [STATUS.FINISHED]: PlayerResult,
+  [STATUS.GAME_FINISHED]: PlayerResult,
+  [STATUS.SHOW_LEADERBOARD]: PlayerResult,
 }
 
 export const GAME_STATE_COMPONENTS_MANAGER = {
@@ -50,6 +54,7 @@ export const GAME_STATE_COMPONENTS_MANAGER = {
   [STATUS.SHOW_RESPONSES]: Responses,
   [STATUS.SHOW_LEADERBOARD]: Leaderboard,
   [STATUS.FINISHED]: Podium,
+  [STATUS.GAME_FINISHED]: Podium,
 }
 
 export const SFX_ANSWERS_MUSIC = "/sounds/answersMusic.mp3"

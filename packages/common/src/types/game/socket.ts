@@ -86,6 +86,7 @@ export interface ClientToServerEvents {
   "manager:abortQuiz": (_message: MessageGameId) => void;
   "manager:nextQuestion": (_message: MessageGameId) => void;
   "manager:showLeaderboard": (_message: MessageGameId) => void;
+  "manager:gameFinished": (_message: MessageGameId) => void;
 
   // Player actions
   "player:join": (_inviteCode: string) => void;

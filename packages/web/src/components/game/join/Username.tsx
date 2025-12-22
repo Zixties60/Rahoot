@@ -9,6 +9,7 @@ import { usePlayerStore } from "@rahoot/web/stores/player"
 
 import { useRouter } from "next/navigation"
 import { KeyboardEvent, useState } from "react"
+import toast from "react-hot-toast"
 
 const Username = () => {
   const { socket } = useSocket()
@@ -19,6 +20,12 @@ const Username = () => {
 
   const handleLogin = () => {
     if (!gameId) {
+      return
+    }
+
+    if (!username.trim()) {
+      toast.error("Please enter a username")
+
       return
     }
 

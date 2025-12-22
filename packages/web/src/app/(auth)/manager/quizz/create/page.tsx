@@ -215,6 +215,10 @@ const CreateQuizz = () => {
               <input
                 type="text"
                 value={q.background || ""}
+                onChange={(e) =>
+                  handleQuestionChange(qIndex, "background", e.target.value)
+                }
+                className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 placeholder="https://..."
               />
             </div>

@@ -1,4 +1,4 @@
-import { Player } from "."
+import { Player } from ".";
 
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",
@@ -10,46 +10,70 @@ export const STATUS = {
   SHOW_RESPONSES: "SHOW_RESPONSES",
   SHOW_LEADERBOARD: "SHOW_LEADERBOARD",
   FINISHED: "FINISHED",
+  GAME_FINISHED: "GAME_FINISHED",
   WAIT: "WAIT",
-} as const
+} as const;
 
-export type Status = (typeof STATUS)[keyof typeof STATUS]
+export type Status = (typeof STATUS)[keyof typeof STATUS];
 
 export type CommonStatusDataMap = {
-  SHOW_START: { time: number; subject: string }
-  SHOW_PREPARED: { totalAnswers: number; questionNumber: number }
-  SHOW_QUESTION: { question: string; image?: string; cooldown: number }
+  SHOW_START: { time: number; subject: string };
+  SHOW_PREPARED: { totalAnswers: number; questionNumber: number };
+  SHOW_QUESTION: { question: string; image?: string; cooldown: number };
   SELECT_ANSWER: {
-    question: string
-    answers: string[]
-    image?: string
-    time: number
-    totalPlayer: number
-  }
+    question: string;
+    answers: string[];
+    image?: string;
+    time: number;
+    totalPlayer: number;
+  };
   SHOW_RESULT: {
-    correct: boolean
-    message: string
-    points: number
-    myPoints: number
-    rank: number
-    aheadOfMe: string | null
-  }
-  WAIT: { text: string }
-  FINISHED: { subject: string; top: Player[] }
-}
+    correct: boolean;
+    message: string;
+    points: number;
+    myPoints: number;
+    rank: number;
+    aheadOfMe: string | null;
+  };
+  WAIT: { text: string };
+  FINISHED: {
+    subject: string;
+    top: Player[];
+  };
+  GAME_FINISHED: {
+    subject: string;
+    top: Player[];
+  };
+  SHOW_LEADERBOARD: {
+    oldLeaderboard: Player[];
+    leaderboard: Player[];
+  };
+};
+
+type PlayerExtraStatus = {
+  GAME_FINISHED: {
+    myRank?: number;
+    myPoints?: number;
+  };
+};
 
 type ManagerExtraStatus = {
-  SHOW_ROOM: { text: string; inviteCode?: string }
+  GAME_FINISHED: {
+    allPlayers?: Player[];
+  };
+  FINISHED: {
+    allPlayers?: Player[];
+  };
+  SHOW_ROOM: { text: string; inviteCode?: string };
   SHOW_RESPONSES: {
-    question: string
-    responses: Record<number, number>
-    correct: number
-    answers: string[]
-    image?: string
-  }
-  SHOW_LEADERBOARD: { oldLeaderboard: Player[]; leaderboard: Player[] }
-}
+    question: string;
+    responses: Record<number, number>;
+    correct: number;
+    answers: string[];
+    image?: string;
+  };
+};
 
-export type PlayerStatusDataMap = CommonStatusDataMap
-export type ManagerStatusDataMap = CommonStatusDataMap & ManagerExtraStatus
-export type StatusDataMap = PlayerStatusDataMap & ManagerStatusDataMap
+export type PlayerStatusDataMap = CommonStatusDataMap & PlayerExtraStatus;
+export type ManagerStatusDataMap = CommonStatusDataMap & ManagerExtraStatus;
+export type StatusDataMap = PlayerStatusDataMap & ManagerStatusDataMap;

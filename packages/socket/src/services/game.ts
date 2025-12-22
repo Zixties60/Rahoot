@@ -534,9 +534,17 @@ class Game {
         typeface: this.getTypeface(-1),
       });
 
-      this.broadcastStatus(STATUS.FINISHED, {
+      this.leaderboard.forEach((player) => {
+        this.sendStatus(player.id, STATUS.FINISHED, {
+          subject: this.quizz.subject,
+          top: this.leaderboard.slice(0, 3),
+        });
+      });
+
+      this.sendStatus(this.manager.id, STATUS.FINISHED, {
         subject: this.quizz.subject,
         top: this.leaderboard.slice(0, 3),
+        allPlayers: this.players,
       });
 
       return;
@@ -546,12 +554,36 @@ class Game {
       ? this.tempOldLeaderboard
       : this.leaderboard;
 
+    this.leaderboard.forEach((player) => {
+      this.sendStatus(player.id, STATUS.SHOW_LEADERBOARD, {
+        oldLeaderboard: oldLeaderboard.slice(0, 3),
+        leaderboard: this.leaderboard.slice(0, 3),
+      });
+    });
+
     this.sendStatus(this.manager.id, STATUS.SHOW_LEADERBOARD, {
-      oldLeaderboard: oldLeaderboard.slice(0, 5),
-      leaderboard: this.leaderboard.slice(0, 5),
+      oldLeaderboard: oldLeaderboard.slice(0, 3),
+      leaderboard: this.leaderboard.slice(0, 3),
     });
 
     this.tempOldLeaderboard = null;
+  }
+
+  gameFinished() {
+    this.leaderboard.forEach((player, index) => {
+      this.sendStatus(player.id, STATUS.GAME_FINISHED, {
+        subject: this.quizz.subject,
+        top: this.leaderboard.slice(0, 3),
+        myRank: index + 1,
+        myPoints: player.points,
+      });
+    });
+
+    this.sendStatus(this.manager.id, STATUS.GAME_FINISHED, {
+      subject: this.quizz.subject,
+      top: this.leaderboard.slice(0, 3),
+      allPlayers: this.players,
+    });
   }
 
   getBackground(questionIndex: number) {
