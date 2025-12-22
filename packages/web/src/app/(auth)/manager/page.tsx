@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 const Manager = () => {
-  const { setGameId, setStatus, setBackground } = useManagerStore()
+  const { setGameId, setStatus, setBackground, setTypeface } = useManagerStore()
   const router = useRouter()
   const { socket } = useSocket()
 
@@ -25,11 +25,15 @@ const Manager = () => {
     setQuizzList(quizzList)
   })
 
-  useEvent("manager:gameCreated", ({ gameId, inviteCode, background }) => {
-    setGameId(gameId)
-    setStatus(STATUS.SHOW_ROOM, { text: "Waiting for the players", inviteCode })
-    setBackground(background)
-    router.push(`/game/manager/${gameId}`)
+  useEvent("manager:gameCreated", (data) => {
+    setGameId(data.gameId)
+    setStatus(STATUS.SHOW_ROOM, {
+      text: "Waiting for the players",
+      inviteCode: data.inviteCode,
+    })
+    setBackground(data.background)
+    setTypeface(data.typeface)
+    router.push(`/game/manager/${data.gameId}`)
   })
 
   const handleAuth = (password: string) => {

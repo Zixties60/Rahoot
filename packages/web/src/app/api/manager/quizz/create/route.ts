@@ -14,6 +14,7 @@ const getQuizzPath = () => {
 export async function POST(request: Request) {
   try {
     const body: Quizz = await request.json()
+    console.log("Create Quiz Body:", JSON.stringify(body, null, 2))
     const { subject, questions } = body
 
     if (!subject || !questions || !Array.isArray(questions)) {

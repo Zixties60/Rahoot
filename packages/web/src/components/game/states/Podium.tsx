@@ -1,7 +1,9 @@
 "use client"
 
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
+import AllPlayersModal from "@rahoot/web/components/game/modals/AllPlayersModal"
 import useScreenSize from "@rahoot/web/hooks/useScreenSize"
+import { useManagerStore } from "@rahoot/web/stores/manager"
 import {
   SFX_PODIUM_FIRST,
   SFX_PODIUM_SECOND,
@@ -9,9 +11,11 @@ import {
   SFX_SNEAR_ROOL,
 } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import ReactConfetti from "react-confetti"
 import useSound from "use-sound"
+import Button from "@rahoot/web/components/Button"
 
 type Props = {
   data: ManagerStatusDataMap["FINISHED"]
@@ -19,6 +23,9 @@ type Props = {
 
 const Podium = ({ data: { subject, top } }: Props) => {
   const [apparition, setApparition] = useState(0)
+  const [showAllPlayers, setShowAllPlayers] = useState(false)
+  const router = useRouter()
+  const { players } = useManagerStore()
 
   const { width, height } = useScreenSize()
 
@@ -197,6 +204,32 @@ const Podium = ({ data: { subject, top } }: Props) => {
           )}
         </div>
       </section>
+
+      {/* Buttons */}
+      <div className="absolute bottom-4 left-4 z-40 flex gap-4">
+        <Button
+          onClick={() => router.push("/manager")}
+          className="bg-white px-4 py-2 text-black!"
+        >
+          Back to Manager
+        </Button>
+      </div>
+
+      <div className="absolute right-4 bottom-4 z-40 flex gap-4">
+        <Button
+          onClick={() => setShowAllPlayers(true)}
+          className="bg-white px-4 py-2 text-black!"
+        >
+          Show All Players
+        </Button>
+      </div>
+
+      {showAllPlayers && (
+        <AllPlayersModal
+          players={players}
+          onClose={() => setShowAllPlayers(false)}
+        />
+      )}
     </>
   )
 }

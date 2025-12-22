@@ -19,8 +19,15 @@ const Game = () => {
   const router = useRouter()
   const { socket } = useSocket()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
-  const { status, setPlayer, setGameId, setStatus, setBackground, reset } =
-    usePlayerStore()
+  const {
+    status,
+    setPlayer,
+    setGameId,
+    setStatus,
+    setBackground,
+    setTypeface,
+    reset,
+  } = usePlayerStore()
   const { setQuestionStates } = useQuestionStore()
 
   useEvent("connect", () => {
@@ -37,11 +44,13 @@ const Game = () => {
       setPlayer(player)
       setQuestionStates(currentQuestion)
       setBackground(currentQuestion.background || null)
+      setTypeface(currentQuestion.typeface || null)
     },
   )
 
   useEvent("game:updateQuestion", (data) => {
     setBackground(data.background || null)
+    setTypeface(data.typeface || null)
   })
 
   useEvent("game:status", ({ name, data }) => {

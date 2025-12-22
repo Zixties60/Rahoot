@@ -10,6 +10,7 @@ type PlayerState = {
 type PlayerStore<T> = {
   gameId: string | null
   background: string | null
+  typeface: string | null
   player: PlayerState | null
   status: Status<T> | null
 
@@ -20,6 +21,7 @@ type PlayerStore<T> = {
   join: (_username: string) => void
   updatePoints: (_points: number) => void
   setBackground: (_background: string | null) => void
+  setTypeface: (_typeface: string | null) => void
 
   setStatus: <K extends keyof T>(_name: K, _data: T[K]) => void
 
@@ -29,6 +31,7 @@ type PlayerStore<T> = {
 const initialState = {
   gameId: null,
   background: null,
+  typeface: "playpen-sans",
   player: null,
   status: null,
 }
@@ -57,6 +60,7 @@ export const usePlayerStore = create<PlayerStore<StatusDataMap>>((set) => ({
     })),
 
   setBackground: (background) => set({ background }),
+  setTypeface: (typeface) => set({ typeface }),
 
   setStatus: (name, data) => set({ status: createStatus(name, data) }),
 

@@ -26,7 +26,11 @@ export interface ServerToClientEvents {
   // Game events
   "game:status": (_data: { name: Status; data: StatusDataMap[Status] }) => void;
   "game:successRoom": (_data: string) => void;
-  "game:successJoin": (_data: { gameId: string; background: string }) => void;
+  "game:successJoin": (_data: {
+    gameId: string;
+    background: string;
+    typeface: string;
+  }) => void;
   "game:totalPlayers": (_count: number) => void;
   "game:errorMessage": (_message: string) => void;
   "game:startCooldown": () => void;
@@ -56,6 +60,7 @@ export interface ServerToClientEvents {
     gameId: string;
     inviteCode: string;
     background: string;
+    typeface: string;
   }) => void;
   "manager:statusUpdate": (_data: {
     status: Status;
@@ -65,6 +70,7 @@ export interface ServerToClientEvents {
   "manager:removePlayer": (_playerId: string) => void;
   "manager:errorMessage": (_message: string) => void;
   "manager:playerKicked": (_playerId: string) => void;
+  "manager:updatePlayers": (_players: Player[]) => void;
 }
 
 export interface ClientToServerEvents {

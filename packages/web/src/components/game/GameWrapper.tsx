@@ -55,12 +55,18 @@ const GameWrapper = ({
     onNext?.()
   }
 
-  const { background: playerBackground } = usePlayerStore()
-  const { background: managerBackground } = useManagerStore()
+  const { background: playerBackground, typeface: playerTypeface } =
+    usePlayerStore()
+  const { background: managerBackground, typeface: managerTypeface } =
+    useManagerStore()
   const backgroundUrl = manager ? managerBackground : playerBackground
+  const typeface = manager ? managerTypeface : playerTypeface
 
   return (
-    <section className="relative flex min-h-screen w-full flex-col justify-between">
+    <section
+      className="relative flex min-h-screen w-full flex-col justify-between"
+      style={{ fontFamily: typeface ? `var(--font-${typeface})` : undefined }}
+    >
       <div className="fixed top-0 left-0 -z-10 h-full w-full bg-orange-600 opacity-70">
         <Image
           className="pointer-events-none h-full w-full object-cover opacity-60"

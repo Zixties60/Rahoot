@@ -27,6 +27,7 @@ class Config {
             managerPassword: "PASSWORD",
             music: true,
             background: "",
+            typeface: "playpen-sans",
           },
           null,
           2

@@ -3,6 +3,7 @@
 import { Add, Close, Save } from "@mui/icons-material"
 import { Quizz } from "@rahoot/common/types/game"
 import Button from "@rahoot/web/components/Button"
+import FontSelect from "@rahoot/web/components/manager/settings/FontSelect"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
@@ -11,6 +12,7 @@ const CreateQuizz = () => {
   const router = useRouter()
   const [subject, setSubject] = useState("")
   const [background, setBackground] = useState("")
+  const [typeface, setTypeface] = useState("")
   const [questions, setQuestions] = useState<Quizz["questions"]>([])
 
   const handleAddQuestion = () => {
@@ -21,6 +23,7 @@ const CreateQuizz = () => {
         answers: ["", ""],
         solution: 0,
         background: "",
+        typeface: "",
         cooldown: 5,
         time: 20,
       },
@@ -105,7 +108,7 @@ const CreateQuizz = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subject, background, questions }),
+        body: JSON.stringify({ subject, background, typeface, questions }),
       })
 
       if (res.ok) {
@@ -148,6 +151,14 @@ const CreateQuizz = () => {
           onChange={(e) => setBackground(e.target.value)}
           className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
           placeholder="https://..."
+        />
+      </div>
+
+      <div className="rounded-md bg-white p-4 shadow-sm">
+        <FontSelect
+          label="Quiz Typeface (Optional)"
+          value={typeface}
+          onChange={setTypeface}
         />
       </div>
 
@@ -204,11 +215,17 @@ const CreateQuizz = () => {
               <input
                 type="text"
                 value={q.background || ""}
-                onChange={(e) =>
-                  handleQuestionChange(qIndex, "background", e.target.value)
-                }
-                className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 placeholder="https://..."
+              />
+            </div>
+
+            <div>
+              <FontSelect
+                label="Typeface (Optional)"
+                value={q.typeface || ""}
+                onChange={(value) =>
+                  handleQuestionChange(qIndex, "typeface", value)
+                }
               />
             </div>
 

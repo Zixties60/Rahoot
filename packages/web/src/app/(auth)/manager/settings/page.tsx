@@ -3,6 +3,7 @@
 import { Cancel, Save } from "@mui/icons-material"
 
 import Button from "@rahoot/web/components/Button"
+import FontSelect from "@rahoot/web/components/manager/settings/FontSelect"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
@@ -12,10 +13,11 @@ const Settings = () => {
   const [password, setPassword] = useState("")
   const [music, setMusic] = useState(false)
   const [background, setBackground] = useState("")
+  const [typeface, setTypeface] = useState("")
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/manager/settings")
+    fetch("/api/manager/settings", { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         if (data.managerPassword) {
@@ -26,6 +28,9 @@ const Settings = () => {
         }
         if (data.background) {
           setBackground(data.background)
+        }
+        if (data.typeface) {
+          setTypeface(data.typeface)
         }
       })
       .catch(() => {
@@ -43,7 +48,12 @@ const Settings = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ managerPassword: password, music, background }),
+        body: JSON.stringify({
+          managerPassword: password,
+          music,
+          background,
+          typeface,
+        }),
       })
 
       if (res.ok) {
@@ -93,6 +103,14 @@ const Settings = () => {
             onChange={(e) => setBackground(e.target.value)}
             className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
             placeholder="https://example.com/image.png"
+          />
+        </div>
+
+        <div className="w-full">
+          <FontSelect
+            label="Game Typeface"
+            value={typeface}
+            onChange={setTypeface}
           />
         </div>
 

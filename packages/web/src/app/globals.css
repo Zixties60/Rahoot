@@ -197,3 +197,4 @@ button:not(:disabled),
     transform: scale(1);
   }
 }
+body { font-family: var(--font-playpen-sans); }

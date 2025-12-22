@@ -12,7 +12,8 @@ import { KeyboardEvent, useState } from "react"
 
 const Username = () => {
   const { socket } = useSocket()
-  const { gameId, login, setStatus, setBackground } = usePlayerStore()
+  const { gameId, login, setStatus, setBackground, setTypeface } =
+    usePlayerStore()
   const router = useRouter()
   const [username, setUsername] = useState("")
 
@@ -30,10 +31,11 @@ const Username = () => {
     }
   }
 
-  useEvent("game:successJoin", ({ gameId, background }) => {
+  useEvent("game:successJoin", ({ gameId, background, typeface }) => {
     setStatus(STATUS.WAIT, { text: "Waiting for the players" })
     login(username)
     setBackground(background || null)
+    setTypeface(typeface || null)
 
     router.replace(`/game/${gameId}`)
   })

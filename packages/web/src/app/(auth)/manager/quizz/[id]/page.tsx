@@ -3,6 +3,7 @@
 import { Add, Clear, Close, Delete, Save } from "@mui/icons-material"
 import { Quizz } from "@rahoot/common/types/game"
 import Button from "@rahoot/web/components/Button"
+import FontSelect from "@rahoot/web/components/manager/settings/FontSelect"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
@@ -12,17 +13,21 @@ const EditQuizz = () => {
   const params = useParams()
   const [subject, setSubject] = useState("")
   const [background, setBackground] = useState("")
+  const [typeface, setTypeface] = useState("")
   const [questions, setQuestions] = useState<Quizz["questions"]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchQuizz = async () => {
       try {
-        const res = await fetch(`/api/manager/quizz/${params.id}`)
+        const res = await fetch(`/api/manager/quizz/${params.id}`, {
+          cache: "no-store",
+        })
         if (!res.ok) throw new Error("Failed to fetch quiz")
         const data = await res.json()
         setSubject(data.subject)
         setBackground(data.background || "")
+        setTypeface(data.typeface || "")
         setQuestions(data.questions)
       } catch (error) {
         toast.error("Failed to load quiz")
@@ -45,6 +50,7 @@ const EditQuizz = () => {
         answers: ["", ""],
         solution: 0,
         background: "",
+        typeface: "",
         cooldown: 5,
         time: 20,
       },
@@ -128,7 +134,7 @@ const EditQuizz = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ subject, questions, background }),
+        body: JSON.stringify({ subject, questions, background, typeface }),
       })
 
       if (res.ok) {
@@ -200,6 +206,14 @@ const EditQuizz = () => {
         />
       </div>
 
+      <div className="rounded-md bg-white p-4 shadow-sm">
+        <FontSelect
+          label="Quiz Typeface (Optional)"
+          value={typeface}
+          onChange={setTypeface}
+        />
+      </div>
+
       <div className="flex flex-col gap-4">
         {questions.map((q, qIndex) => (
           <div
@@ -257,6 +271,16 @@ const EditQuizz = () => {
                 }
                 className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 placeholder="https://..."
+              />
+            </div>
+
+            <div>
+              <FontSelect
+                label="Typeface (Optional)"
+                value={q.typeface || ""}
+                onChange={(value) =>
+                  handleQuestionChange(qIndex, "typeface", value)
+                }
               />
             </div>
 

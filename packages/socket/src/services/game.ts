@@ -18,6 +18,7 @@ class Game {
 
   gameId: string;
   background: string;
+  typeface: string;
   manager: {
     id: string;
     clientId: string;
@@ -64,6 +65,7 @@ class Game {
     this.inviteCode = "";
     this.started = false;
     this.background = Config.game().background || "";
+    this.typeface = Config.game().typeface || "playpen-sans";
 
     this.lastBroadcastStatus = null;
     this.managerStatus = null;
@@ -99,6 +101,7 @@ class Game {
       gameId: this.gameId,
       inviteCode: roomInvite,
       background: this.getBackground(-1),
+      typeface: this.getTypeface(-1),
     });
 
     console.log(
@@ -157,6 +160,7 @@ class Game {
     socket.emit("game:successJoin", {
       gameId: this.gameId,
       background: this.getBackground(-1),
+      typeface: this.getTypeface(-1),
     });
   }
 
@@ -343,6 +347,7 @@ class Game {
       current: this.round.currentQuestion + 1,
       total: this.quizz.questions.length,
       background: this.getBackground(this.round.currentQuestion),
+      typeface: this.getTypeface(this.round.currentQuestion),
     });
 
     this.managerStatus = null;
@@ -450,6 +455,8 @@ class Game {
     this.tempOldLeaderboard = oldLeaderboard;
 
     this.round.playersAnswers = [];
+
+    this.io.to(this.manager.id).emit("manager:updatePlayers", sortedPlayers);
   }
   selectAnswer(socket: Socket, answerId: number) {
     const player = this.players.find((player) => player.id === socket.id);
@@ -520,6 +527,13 @@ class Game {
     if (isLastRound) {
       this.started = false;
 
+      this.io.to(this.gameId).emit("game:updateQuestion", {
+        current: this.round.currentQuestion + 1,
+        total: this.quizz.questions.length,
+        background: this.getBackground(-1),
+        typeface: this.getTypeface(-1),
+      });
+
       this.broadcastStatus(STATUS.FINISHED, {
         subject: this.quizz.subject,
         top: this.leaderboard.slice(0, 3),
@@ -546,6 +560,14 @@ class Game {
     const quizBackground = this.quizz.background;
 
     return questionBackground || quizBackground || this.background;
+  }
+
+  getTypeface(questionIndex: number) {
+    const question = this.quizz.questions[questionIndex];
+    const questionTypeface = question?.typeface;
+    const quizTypeface = this.quizz.typeface;
+
+    return questionTypeface || quizTypeface || this.typeface;
   }
 }
 

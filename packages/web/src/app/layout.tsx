@@ -1,13 +1,56 @@
 import Toaster from "@rahoot/web/components/Toaster"
 import { SocketProvider } from "@rahoot/web/contexts/socketProvider"
 import type { Metadata } from "next"
-import { Montserrat } from "next/font/google"
+import {
+  Itim,
+  Kanit,
+  Mali,
+  Montserrat,
+  Playpen_Sans_Thai,
+  Pridi,
+  Sarabun,
+} from "next/font/google"
 import { PropsWithChildren } from "react"
 import "./globals.css"
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
+})
+
+const kanit = Kanit({
+  variable: "--font-kanit",
+  weight: ["400"],
+  subsets: ["latin", "thai"],
+})
+
+const pridi = Pridi({
+  variable: "--font-pridi",
+  weight: ["400"],
+  subsets: ["latin", "thai"],
+})
+
+const itim = Itim({
+  variable: "--font-itim",
+  weight: ["400"],
+  subsets: ["latin", "thai"],
+})
+
+const mali = Mali({
+  variable: "--font-mali",
+  weight: ["400"],
+  subsets: ["latin", "thai"],
+})
+
+const playpenSans = Playpen_Sans_Thai({
+  variable: "--font-playpen-sans",
+  subsets: ["latin", "thai"],
+})
+
+const sarabun = Sarabun({
+  variable: "--font-sarabun",
+  weight: ["400"],
+  subsets: ["latin", "thai"],
 })
 
 export const metadata: Metadata = {
@@ -17,7 +60,9 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: PropsWithChildren) => (
   <html lang="en" suppressHydrationWarning={true} data-lt-installed="true">
-    <body className={`${montserrat.variable} bg-secondary antialiased`}>
+    <body
+      className={`${montserrat.variable} ${kanit.variable} ${pridi.variable} ${itim.variable} ${mali.variable} ${playpenSans.variable} ${sarabun.variable} bg-secondary antialiased`}
+    >
       <SocketProvider>
         <main className="text-base-[8px] flex flex-col">{children}</main>
         <Toaster />

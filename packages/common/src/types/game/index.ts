@@ -15,10 +15,12 @@ export type Answer = {
 export type Quizz = {
   subject: string;
   background?: string;
+  typeface?: string;
   questions: {
     question: string;
     image?: string;
     background?: string;
+    typeface?: string;
     answers: string[];
     solution: number;
     cooldown: number;
@@ -32,4 +34,5 @@ export type GameUpdateQuestion = {
   current: number;
   total: number;
   background?: string;
+  typeface?: string;
 };

@@ -29,6 +29,7 @@ const ManagerGame = () => {
     setStatus,
     setPlayers,
     setBackground,
+    setTypeface,
     reset,
   } = useManagerStore()
   const { setQuestionStates } = useQuestionStore()
@@ -53,11 +54,29 @@ const ManagerGame = () => {
       setPlayers(players)
       setQuestionStates(currentQuestion)
       setBackground(currentQuestion.background || null)
+      setTypeface(currentQuestion.typeface || null)
     },
   )
 
   useEvent("game:updateQuestion", (data) => {
     setBackground(data.background || null)
+    setTypeface(data.typeface || null)
+  })
+
+  useEvent("manager:newPlayer", (player) => {
+    setPlayers([...players, player])
+  })
+
+  useEvent("manager:removePlayer", (playerId) => {
+    setPlayers(players.filter((p) => p.id !== playerId))
+  })
+
+  useEvent("manager:playerKicked", (playerId) => {
+    setPlayers(players.filter((p) => p.id !== playerId))
+  })
+
+  useEvent("manager:updatePlayers", (players) => {
+    setPlayers(players)
   })
 
   useEvent("game:reset", (message) => {

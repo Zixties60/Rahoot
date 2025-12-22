@@ -30,7 +30,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { managerPassword, music, background } = body
+    const { managerPassword, music, background, typeface } = body
 
     if (managerPassword && typeof managerPassword !== "string") {
       return NextResponse.json(
@@ -49,6 +49,13 @@ export async function POST(request: Request) {
     if (background !== undefined && typeof background !== "string") {
       return NextResponse.json(
         { error: "Invalid background format" },
+        { status: 400 },
+      )
+    }
+
+    if (typeface !== undefined && typeof typeface !== "string") {
+      return NextResponse.json(
+        { error: "Invalid typeface format" },
         { status: 400 },
       )
     }
@@ -72,6 +79,10 @@ export async function POST(request: Request) {
 
     if (background !== undefined) {
       newConfig.background = background
+    }
+
+    if (typeface !== undefined) {
+      newConfig.typeface = typeface
     }
 
     fs.writeFileSync(configPath, JSON.stringify(newConfig, null, 2))

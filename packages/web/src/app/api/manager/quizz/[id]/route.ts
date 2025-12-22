@@ -36,7 +36,8 @@ export async function PUT(
   try {
     const { id } = await params
     const body = await req.json()
-    const { subject, questions, background } = body as Quizz
+    console.log("Edit Quiz Body:", JSON.stringify(body, null, 2))
+    const { subject, questions, background, typeface } = body as Quizz
 
     if (!subject || !questions) {
       return NextResponse.json({ error: "Invalid quiz data" }, { status: 400 })
@@ -49,7 +50,7 @@ export async function PUT(
     }
 
     const quizzContent = JSON.stringify(
-      { subject, questions, background },
+      { subject, questions, background, typeface },
       null,
       2,
     )
