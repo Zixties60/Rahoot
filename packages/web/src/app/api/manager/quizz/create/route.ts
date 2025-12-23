@@ -1,4 +1,5 @@
 import { Quizz } from "@rahoot/common/types/game"
+import { auth } from "@rahoot/web/auth"
 import fs from "fs"
 import { NextResponse } from "next/server"
 import path from "path"
@@ -12,6 +13,11 @@ const getQuizzPath = () => {
 }
 
 export async function POST(request: Request) {
+  const session = await auth()
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const body: Quizz = await request.json()
     console.log("Create Quiz Body:", JSON.stringify(body, null, 2))

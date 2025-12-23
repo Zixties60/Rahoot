@@ -1,3 +1,4 @@
+import { auth } from "@rahoot/web/auth"
 import {
   getGameConfigPath,
   readConfig,
@@ -5,21 +6,12 @@ import {
 } from "@rahoot/web/utils/config"
 import { NextResponse } from "next/server"
 
-export async function GET() {
-  try {
-    const configPath = getGameConfigPath()
-    const config = readConfig(configPath)
-    return NextResponse.json({ managerPassword: config.managerPassword || "" })
-  } catch (error) {
-    console.error("Error reading config:", error)
-    return NextResponse.json(
-      { error: "Failed to read configuration" },
-      { status: 500 },
-    )
-  }
-}
-
 export async function POST(request: Request) {
+  const session = await auth()
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const body = await request.json()
     const { managerPassword } = body

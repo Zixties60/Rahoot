@@ -1,4 +1,5 @@
 import { Quizz } from "@rahoot/common/types/game"
+import { auth } from "@rahoot/web/auth"
 import fs from "fs" // eslint-disable-line no-restricted-imports
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
@@ -11,6 +12,11 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const session = await auth()
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const { id } = await params
     const filePath = path.join(getConfigPath(), "quizz", `${id}.json`)
@@ -33,6 +39,11 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const session = await auth()
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const { id } = await params
     const body = await req.json()
@@ -70,6 +81,11 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const session = await auth()
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const { id } = await params
     const filePath = path.join(getConfigPath(), "quizz", `${id}.json`)

@@ -20,7 +20,7 @@ const ThemeSection = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/manager/settings/theme")
+    fetch("/api/settings/theme")
       .then((res) => res.json())
       .then((data) => {
         if (data.background) setBackground(data.background)

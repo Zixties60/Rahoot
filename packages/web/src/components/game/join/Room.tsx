@@ -21,24 +21,20 @@ const Room = ({ pin }: Props) => {
   const { join } = usePlayerStore()
   const [digits, setDigits] = useState<string[]>(() => {
     const arr = Array(6).fill("")
-    if (pin) {
-      const chars = pin.slice(0, 6).split("")
-      chars.forEach((c, i) => (arr[i] = c))
-    }
     return arr
   })
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
+
+  useEffect(() => {
+    if (pin) {
+      socket?.emit("player:join", pin)
+    }
+  }, [pin])
 
   const handleJoin = () => {
     const invitation = digits.join("")
     socket?.emit("player:join", invitation)
   }
-
-  useEffect(() => {
-    if (pin) {
-      handleJoin()
-    }
-  }, [pin])
 
   const handleChange = (index: number, val: string) => {
     const value = val.slice(-1)
@@ -99,7 +95,6 @@ const Room = ({ pin }: Props) => {
             onKeyDown={(e) => handleKeyDown(index, e)}
             onPaste={handlePaste}
             className="h-12 w-10 p-0 text-center text-xl"
-            placeholder=""
             maxLength={1}
             inputMode="numeric"
           />

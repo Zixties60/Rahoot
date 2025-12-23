@@ -1,25 +1,13 @@
-import {
-  getAssetsConfigPath,
-  readConfig,
-  writeConfig,
-} from "@rahoot/web/utils/config"
+import { auth } from "@rahoot/web/auth"
+import { getAssetsConfigPath, writeConfig } from "@rahoot/web/utils/config"
 import { NextResponse } from "next/server"
 
-export async function GET() {
-  try {
-    const configPath = getAssetsConfigPath()
-    const config = readConfig(configPath)
-    return NextResponse.json(config)
-  } catch (error) {
-    console.error("Error reading config:", error)
-    return NextResponse.json(
-      { error: "Failed to read configuration" },
-      { status: 500 },
-    )
-  }
-}
-
 export async function POST(request: Request) {
+  const session = await auth()
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const body = await request.json()
     // Here we can add validation for assets structure if needed

@@ -46,7 +46,7 @@ const AssetsSection = () => {
   const [editingAvatar, setEditingAvatar] = useState<AvatarWithId | null>(null)
 
   useEffect(() => {
-    fetch("/api/manager/settings/assets")
+    fetch("/api/settings/assets")
       .then((res) => res.json())
       .then((data: AssetsConfig) => {
         if (data.avatars) {

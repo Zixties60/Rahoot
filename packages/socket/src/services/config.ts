@@ -39,6 +39,32 @@ class Config {
       );
     }
 
+    const isAssetsConfigExists = fs.existsSync(getPath("assets.json"));
+
+    if (!isAssetsConfigExists) {
+      fs.writeFileSync(
+        getPath("assets.json"),
+        JSON.stringify(
+          {
+            avatars: [],
+            sounds: {
+              answersMusic: "",
+              answersSound: "",
+              resultsResult: "",
+              showSound: "",
+              boumpSound: "",
+              podiumThree: "",
+              podiumSecond: "",
+              podiumFirst: "",
+              snearRoll: "",
+            },
+          },
+          null,
+          2
+        )
+      );
+    }
+
     const isQuizzExists = fs.existsSync(getPath("quizz"));
 
     if (!isQuizzExists) {
