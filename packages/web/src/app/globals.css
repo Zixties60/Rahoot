@@ -6,6 +6,7 @@
   --color-onPrimary: #ffffff;
   --color-onSecondary: #1a140b;
   --color-background: #1a140b;
+  --font-typeface: "itim";
 }
 
 button:not(:disabled),
@@ -201,5 +202,5 @@ button:not(:disabled),
   }
 }
 body {
-  font-family: var(--font-playpen-sans-thai);
+  font-family: var(--font-typeface);
 }

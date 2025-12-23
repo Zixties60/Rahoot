@@ -29,7 +29,7 @@ type ManagerStore<T> = {
 const initialState = {
   gameId: null,
   background: null,
-  typeface: "playpen-sans",
+  typeface: "itim",
   theme: "orange",
   managerEffect: true,
   managerMusic: true,

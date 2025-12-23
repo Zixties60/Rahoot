@@ -58,7 +58,10 @@ const ThemeSection = () => {
         )
       }
     }
-  }, [theme])
+    if (typeface) {
+      document.documentElement.style.setProperty("--font-typeface", typeface)
+    }
+  }, [theme, typeface])
 
   const handleSave = async () => {
     try {

@@ -21,7 +21,6 @@ const Responses = ({
   musicEnabled,
 }: Props) => {
   const [percentages, setPercentages] = useState<Record<string, string>>({})
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false)
 
   const { getSound } = useAssets()
 
@@ -29,42 +28,13 @@ const Responses = ({
     volume: 0.2,
   })
 
-  const [playMusic, { stop: stopMusic }] = useSound(
-    getSound("answersMusic") || "",
-    {
-      volume: 0.2,
-      onplay: () => {
-        setIsMusicPlaying(true)
-      },
-      onend: () => {
-        setIsMusicPlaying(false)
-      },
-      interrupt: true,
-      loop: true,
-      html5: true,
-    },
-  )
-
   useEffect(() => {
-    stopMusic()
     if (effectEnabled) {
       sfxResults()
     }
 
     setPercentages(calculatePercentages(responses))
-  }, [responses, playMusic, stopMusic, sfxResults, effectEnabled])
-
-  useEffect(() => {
-    if (!isMusicPlaying && musicEnabled) {
-      playMusic()
-    } else if (!musicEnabled) {
-      stopMusic()
-    }
-  }, [isMusicPlaying, playMusic, musicEnabled, stopMusic])
-
-  useEffect(() => {
-    stopMusic()
-  }, [playMusic, stopMusic])
+  }, [responses, sfxResults, effectEnabled])
 
   return (
     <div className="flex h-full flex-1 flex-col justify-between pb-14">

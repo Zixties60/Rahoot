@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import ReactConfetti from "react-confetti"
 import useSound from "use-sound"
+import { Player } from "@rahoot/common/types/game"
 
 type Props = {
   data: ManagerStatusDataMap["FINISHED"] | ManagerStatusDataMap["GAME_FINISHED"]
@@ -22,12 +23,12 @@ type Props = {
 
 const Podium = ({ data, effectEnabled }: Props) => {
   const { subject, top } = data
-  const allPlayers = "allPlayers" in data ? data.allPlayers : undefined
   const [apparition, setApparition] = useState(0)
   const [showAllPlayers, setShowAllPlayers] = useState(false)
   const router = useRouter()
   const { players, gameId, reset } = useManagerStore()
   const { socket } = useSocket()
+  const [allPlayers, setAllPlayers] = useState<Player[]>([])
 
   const { width, height } = useScreenSize()
   const { getSound } = useAssets()
@@ -50,6 +51,10 @@ const Podium = ({ data, effectEnabled }: Props) => {
   const [sfxFirst] = useSound(getSound("podiumFirst") || "", {
     volume: 0.2,
   })
+
+  useEffect(() => {
+    setAllPlayers(data.allPlayers || players)
+  }, [])
 
   useEffect(() => {
     switch (apparition) {
@@ -256,12 +261,12 @@ const Podium = ({ data, effectEnabled }: Props) => {
         >
           Back to Manager
         </Button>
-        {/* <Button
+        <Button
           onClick={() => setApparition(0)}
           className="bg-white px-4 py-2 text-black!"
         >
           Re-animate
-        </Button> */}
+        </Button>
       </div>
 
       <div className="absolute right-4 bottom-4 z-40 flex gap-4">
@@ -275,7 +280,7 @@ const Podium = ({ data, effectEnabled }: Props) => {
 
       {showAllPlayers && (
         <AllPlayersModal
-          players={allPlayers || players}
+          players={allPlayers}
           onClose={() => setShowAllPlayers(false)}
         />
       )}

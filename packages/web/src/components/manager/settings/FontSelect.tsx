@@ -12,9 +12,8 @@ const FONTS = [
   { name: "Sarabun", value: "sarabun" },
   { name: "Kanit", value: "kanit" },
   { name: "Pridi", value: "pridi" },
-  { name: "Itim", value: "itim" },
   { name: "Mali", value: "mali" },
-  { name: "Playpen Sans (Default)", value: "playpen-sans" },
+  { name: "Itim (Default)", value: "itim" },
 ]
 
 const FontSelect = ({ label, value, onChange }: FontSelectProps) => {
@@ -49,6 +48,8 @@ const FontSelect = ({ label, value, onChange }: FontSelectProps) => {
           style={{ fontFamily: `var(--font-${value})` }}
         >
           Preview: The quick brown fox jumps over the lazy dog. 1234567890
+          <br />
+          โดยที่ประชาชนแห่งสหประชาชาติได้ยืนยันอีกครั้งไว้ในกฎบัตรถึงศรัทธาในสิทธิมนุษยชนขั้นพื้นฐาน
         </div>
       )}
     </div>

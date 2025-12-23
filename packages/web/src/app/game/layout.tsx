@@ -7,6 +7,7 @@ import { PropsWithChildren, useEffect, useState } from "react"
 const GameLayout = ({ children }: PropsWithChildren) => {
   const { isConnected, connect } = useSocket()
   const [theme, setThemeState] = useState("orange")
+  const [typeface, setTypefaceState] = useState("itim")
 
   useEffect(() => {
     fetch("/api/settings/theme", { cache: "no-store" })
@@ -14,6 +15,9 @@ const GameLayout = ({ children }: PropsWithChildren) => {
       .then((data) => {
         if (data.theme) {
           setThemeState(data.theme)
+        }
+        if (data.typeface) {
+          setTypefaceState(data.typeface)
         }
       })
   }, [])
@@ -41,7 +45,11 @@ const GameLayout = ({ children }: PropsWithChildren) => {
         )
       }
     }
-  }, [theme])
+
+    if (typeface) {
+      document.documentElement.style.setProperty("--font-typeface", typeface)
+    }
+  }, [theme, typeface])
 
   useEffect(() => {
     if (!isConnected) {

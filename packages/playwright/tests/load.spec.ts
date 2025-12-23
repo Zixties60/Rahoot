@@ -3,8 +3,8 @@ import { io } from "socket.io-client";
 
 const MANAGER_PASSWORD = process.env.MANAGER_PASSWORD || "P@ssw0rd"; // Default from old script
 const SERVER_URL = "http://localhost:3001";
-const BROWSER_PLAYER_COUNT = 200; // Number of players running in real browser tabs
-const SOCKET_PLAYER_COUNT = 0; // Number of socket-only players
+const BROWSER_PLAYER_COUNT = 10; // Number of players running in real browser tabs
+const SOCKET_PLAYER_COUNT = 290; // Number of socket-only players
 
 test("Load Test: Manager + Hybrid Players", async ({ browser }) => {
   // Extended timeout for load test
@@ -159,8 +159,15 @@ async function runBrowserPlayer(browser: any, pin: string, username: string) {
           const count = await answerButtons.count();
           if (count > 0) {
             const idx = Math.floor(Math.random() * count);
-            await answerButtons.nth(idx).click();
-            console.log(`Browser Player ${username}: Answered!`);
+            const delay = Math.random() * 5000;
+            // Use Playwright's waitForTimeout to pause this specific page execution context
+            await page.waitForTimeout(delay);
+
+            // Check if button is still visible
+            if (await answerButtons.nth(idx).isVisible()) {
+              await answerButtons.nth(idx).click();
+              console.log(`Browser Player ${username}: Answered!`);
+            }
 
             // Wait for result/next question (buttons disappear or change state)
             await expect(answerButtons.first()).toBeHidden({ timeout: 30000 });
@@ -231,7 +238,7 @@ async function startSocketPlayers(inviteCode: string, count: number) {
           if (status.name === "SELECT_ANSWER" && myGameId) {
             const answers = status.data.answers || [];
             const answerKey = Math.floor(Math.random() * answers.length);
-            const delay = Math.random() * 2000 + 500;
+            const delay = Math.random() * 5000;
 
             setTimeout(() => {
               socket.emit("player:selectedAnswer", {

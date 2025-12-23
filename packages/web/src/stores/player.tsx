@@ -38,7 +38,7 @@ type PlayerStore<T> = {
 const initialState = {
   gameId: null,
   background: null,
-  typeface: "playpen-sans",
+  typeface: "itim",
   theme: "orange",
   playerEffect: true,
   playerMusic: true,

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "test:load": "playwright test tests/load.spec.ts",
+    "test:join": "playwright test tests/join.spec.ts",
     "test": "playwright test"
   },
   "devDependencies": {

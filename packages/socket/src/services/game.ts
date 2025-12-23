@@ -70,7 +70,7 @@ class Game {
     this.inviteCode = "";
     this.started = false;
     this.background = Config.game().background || "";
-    this.typeface = Config.game().typeface || "playpen-sans";
+    this.typeface = Config.game().typeface || "itim";
     this.theme = Config.game().theme || "yellow-orange";
     this.playerEffect = Config.game().playerEffect !== false;
     this.playerMusic = Config.game().playerMusic !== false;
@@ -568,7 +568,7 @@ class Game {
       this.leaderboard.forEach((player, index) => {
         this.sendStatus(player.id, STATUS.FINISHED, {
           subject: this.quizz.subject,
-          top: this.leaderboard.slice(0, 5),
+          top: this.leaderboard.slice(0, 3),
           myRank: index + 1,
           myPoints: player.points,
         });
@@ -576,7 +576,7 @@ class Game {
 
       this.sendStatus(this.manager.id, STATUS.FINISHED, {
         subject: this.quizz.subject,
-        top: this.leaderboard.slice(0, 5),
+        top: this.leaderboard.slice(0, 3),
         allPlayers: this.players,
       });
 
@@ -618,7 +618,7 @@ class Game {
     this.leaderboard.forEach((player, index) => {
       this.sendStatus(player.id, STATUS.GAME_FINISHED, {
         subject: this.quizz.subject,
-        top: this.leaderboard.slice(0, 5),
+        top: this.leaderboard.slice(0, 3),
         myRank: index + 1,
         myPoints: player.points,
       });
@@ -626,7 +626,7 @@ class Game {
 
     this.sendStatus(this.manager.id, STATUS.GAME_FINISHED, {
       subject: this.quizz.subject,
-      top: this.leaderboard.slice(0, 5),
+      top: this.leaderboard.slice(0, 3),
       allPlayers: this.players,
     });
   }
@@ -649,7 +649,7 @@ class Game {
   reloadConfig() {
     const config = Config.game();
     this.background = config.background || "";
-    this.typeface = config.typeface || "playpen-sans";
+    this.typeface = config.typeface || "itim";
     this.theme = config.theme || "yellow-orange";
     this.playerEffect = config.playerEffect !== false;
     this.playerMusic = config.playerMusic !== false;

@@ -2,16 +2,7 @@ import Toaster from "@rahoot/web/components/Toaster"
 import { AssetsProvider } from "@rahoot/web/contexts/assetsProvider"
 import { SocketProvider } from "@rahoot/web/contexts/socketProvider"
 import type { Metadata } from "next"
-import {
-  Itim,
-  Kanit,
-  Mali,
-  Montserrat,
-  Noto_Color_Emoji,
-  Playpen_Sans_Thai,
-  Pridi,
-  Sarabun,
-} from "next/font/google"
+import { Itim, Kanit, Mali, Montserrat, Pridi, Sarabun } from "next/font/google"
 import { PropsWithChildren } from "react"
 import "./globals.css"
 
@@ -22,13 +13,13 @@ const montserrat = Montserrat({
 
 const kanit = Kanit({
   variable: "--font-kanit",
-  weight: ["400"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   subsets: ["latin", "thai"],
 })
 
 const pridi = Pridi({
   variable: "--font-pridi",
-  weight: ["400"],
+  weight: ["200", "300", "400", "500", "600", "700"],
   subsets: ["latin", "thai"],
 })
 
@@ -40,27 +31,14 @@ const itim = Itim({
 
 const mali = Mali({
   variable: "--font-mali",
-  weight: ["400"],
+  weight: ["200", "300", "400", "500", "600", "700"],
   subsets: ["latin", "thai"],
-})
-
-const playpenSans = Playpen_Sans_Thai({
-  variable: "--font-playpen-sans-thai",
-  weight: ["400"],
-  subsets: ["latin", "thai"],
-  adjustFontFallback: false,
 })
 
 const sarabun = Sarabun({
   variable: "--font-sarabun",
-  weight: ["400"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
   subsets: ["latin", "thai"],
-})
-
-const notoColorEmoji = Noto_Color_Emoji({
-  variable: "--font-noto-color-emoji",
-  weight: ["400"],
-  subsets: ["emoji"],
 })
 
 export const metadata: Metadata = {
@@ -71,7 +49,7 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: PropsWithChildren) => (
   <html lang="en" suppressHydrationWarning={true} data-lt-installed="true">
     <body
-      className={`${montserrat.variable} ${kanit.variable} ${pridi.variable} ${itim.variable} ${mali.variable} ${playpenSans.variable} ${sarabun.variable} ${notoColorEmoji.variable} bg-background antialiased`}
+      className={`${montserrat.variable} ${kanit.variable} ${pridi.variable} ${itim.variable} ${mali.variable} ${sarabun.variable} bg-background antialiased`}
     >
       <SocketProvider>
         <AssetsProvider>

@@ -30,7 +30,7 @@ class Config {
             managerEffect: true,
             managerMusic: true,
             background: "",
-            typeface: "playpen-sans",
+            typeface: "itim",
             theme: "yellow-orange",
           },
           null,
