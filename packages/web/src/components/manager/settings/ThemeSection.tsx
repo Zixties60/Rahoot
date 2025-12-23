@@ -12,7 +12,7 @@ const ThemeSection = () => {
   const { gameId } = useManagerStore()
   const [background, setBackground] = useState("")
   const [typeface, setTypeface] = useState("")
-  const [theme, setTheme] = useState("yellow-orange")
+  const [theme, setTheme] = useState("orange")
   const [playerEffect, setPlayerEffect] = useState(true)
   const [playerMusic, setPlayerMusic] = useState(true)
   const [managerEffect, setManagerEffect] = useState(true)
@@ -43,6 +43,18 @@ const ThemeSection = () => {
         document.documentElement.style.setProperty(
           "--color-primary",
           themeConfig.primary,
+        )
+        document.documentElement.style.setProperty(
+          "--color-secondary",
+          themeConfig.secondary,
+        )
+        document.documentElement.style.setProperty(
+          "--color-onPrimary",
+          themeConfig.onPrimary,
+        )
+        document.documentElement.style.setProperty(
+          "--color-onSecondary",
+          themeConfig.onSecondary,
         )
       }
     }
@@ -108,17 +120,31 @@ const ThemeSection = () => {
         <label className="mb-1 block text-sm font-medium text-gray-700">
           Color Theme
         </label>
-        <div className="flex gap-2">
+        <div className="flex items-center justify-center gap-4">
           {Object.keys(THEME_CONFIG).map((key) => (
             <button
               key={key}
               onClick={() => setTheme(key)}
-              className={`h-8 w-8 rounded-full border-2 ${
+              className={`relative flex h-16 w-16 items-center justify-center rounded-full border-2 text-3xl font-bold ${
                 theme === key ? "border-black" : "border-transparent"
               }`}
-              style={{ backgroundColor: THEME_CONFIG[key].primary }}
+              style={{
+                backgroundColor: THEME_CONFIG[key].primary,
+                color: THEME_CONFIG[key].onPrimary,
+              }}
               title={key}
-            />
+            >
+              1
+              <div
+                className="absolute -right-2 -bottom-2 z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-sm font-bold shadow-sm"
+                style={{
+                  backgroundColor: THEME_CONFIG[key].secondary,
+                  color: THEME_CONFIG[key].onSecondary,
+                }}
+              >
+                2
+              </div>
+            </button>
           ))}
         </div>
       </div>
@@ -132,12 +158,14 @@ const ThemeSection = () => {
           <button
             onClick={() => setPlayerEffect(!playerEffect)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
-              playerEffect ? "bg-blue-600" : "bg-gray-200"
+              playerEffect ? "bg-primary" : "bg-gray-200"
             }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                playerEffect ? "translate-x-6" : "translate-x-1"
+              className={`inline-block h-4 w-4 transform rounded-full transition-transform ${
+                playerEffect
+                  ? "bg-onPrimary translate-x-6"
+                  : "translate-x-1 bg-white"
               }`}
             />
           </button>
@@ -147,12 +175,14 @@ const ThemeSection = () => {
           <button
             onClick={() => setPlayerMusic(!playerMusic)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
-              playerMusic ? "bg-blue-600" : "bg-gray-200"
+              playerMusic ? "bg-primary" : "bg-gray-200"
             }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                playerMusic ? "translate-x-6" : "translate-x-1"
+              className={`inline-block h-4 w-4 transform rounded-full transition-transform ${
+                playerMusic
+                  ? "bg-primary translate-x-6"
+                  : "translate-x-1 bg-white"
               }`}
             />
           </button>
@@ -166,12 +196,14 @@ const ThemeSection = () => {
           <button
             onClick={() => setManagerEffect(!managerEffect)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
-              managerEffect ? "bg-blue-600" : "bg-gray-200"
+              managerEffect ? "bg-primary" : "bg-gray-200"
             }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                managerEffect ? "translate-x-6" : "translate-x-1"
+              className={`inline-block h-4 w-4 transform rounded-full transition-transform ${
+                managerEffect
+                  ? "bg-onPrimary translate-x-6"
+                  : "translate-x-1 bg-white"
               }`}
             />
           </button>
@@ -181,12 +213,14 @@ const ThemeSection = () => {
           <button
             onClick={() => setManagerMusic(!managerMusic)}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none ${
-              managerMusic ? "bg-blue-600" : "bg-gray-200"
+              managerMusic ? "bg-primary" : "bg-gray-200"
             }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                managerMusic ? "translate-x-6" : "translate-x-1"
+              className={`inline-block h-4 w-4 transform rounded-full transition-transform ${
+                managerMusic
+                  ? "bg-onPrimary translate-x-6"
+                  : "translate-x-1 bg-white"
               }`}
             />
           </button>

@@ -60,10 +60,10 @@ COPY --from=builder /app/packages/web/public ./packages/web/public
 COPY --from=builder /app/packages/socket/dist ./packages/socket/dist
 
 # Copy the game default config
-COPY --from=builder /app/config ./config
+# COPY --from=builder /app/config ./config
 
 # Expose the web and socket ports
-EXPOSE 3000 5505
+EXPOSE 3000 3001
 
 # Environment variables
 ENV NODE_ENV=production

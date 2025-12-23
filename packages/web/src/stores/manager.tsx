@@ -30,7 +30,7 @@ const initialState = {
   gameId: null,
   background: null,
   typeface: "playpen-sans",
-  theme: "yellow-orange",
+  theme: "orange",
   managerEffect: true,
   managerMusic: true,
   status: null,

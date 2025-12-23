@@ -156,7 +156,7 @@ const EditQuizz = () => {
     <div className="relative z-10 flex w-full max-w-2xl flex-col gap-6 p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">Edit Quiz</h1>
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <Button
             onClick={() => {
               if (
@@ -177,6 +177,18 @@ const EditQuizz = () => {
           >
             Delete
           </Button>
+          <Button
+            onClick={handleSave}
+            className="bg-secondary! text-onSecondary! w-full"
+            startIcon={<Save />}
+          >
+            Save
+          </Button>
+          <Button
+            onClick={() => router.back()}
+            className="w-full bg-gray-500"
+            startIcon={<Close />}
+          />
         </div>
       </div>
 
@@ -319,12 +331,13 @@ const EditQuizz = () => {
                   </div>
                 ))}
                 {q.answers.length < 4 && (
-                  <button
+                  <Button
                     onClick={() => handleAddAnswer(qIndex)}
-                    className="text-primary w-fit text-left text-sm font-medium hover:underline"
+                    className="w-fit text-sm"
+                    startIcon={<Add fontSize="small" />}
                   >
-                    + Add Answer
-                  </button>
+                    Add Answer
+                  </Button>
                 )}
               </div>
             </div>
@@ -346,6 +359,19 @@ const EditQuizz = () => {
                   }
                   className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 />
+                <div className="mt-2 flex gap-2">
+                  {[3, 5, 10].map((val) => (
+                    <Button
+                      key={val}
+                      onClick={() =>
+                        handleQuestionChange(qIndex, "cooldown", val)
+                      }
+                      className="bg-gray-200! px-2 py-1 text-xs text-black!"
+                    >
+                      {val}s
+                    </Button>
+                  ))}
+                </div>
               </div>
               <div className="flex-1">
                 <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -363,6 +389,17 @@ const EditQuizz = () => {
                   }
                   className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 />
+                <div className="mt-2 flex gap-2">
+                  {[15, 20, 30].map((val) => (
+                    <Button
+                      key={val}
+                      onClick={() => handleQuestionChange(qIndex, "time", val)}
+                      className="bg-gray-200! px-2 py-1 text-xs text-black!"
+                    >
+                      {val}s
+                    </Button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -385,7 +422,11 @@ const EditQuizz = () => {
         >
           Cancel
         </Button>
-        <Button onClick={handleSave} className="w-full" startIcon={<Save />}>
+        <Button
+          onClick={handleSave}
+          className="bg-secondary! text-onSecondary! w-full"
+          startIcon={<Save />}
+        >
           Save Quiz
         </Button>
       </div>

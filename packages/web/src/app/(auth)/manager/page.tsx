@@ -8,7 +8,6 @@ import Button from "@rahoot/web/components/Button"
 import SelectQuizz from "@rahoot/web/components/game/create/SelectQuizz"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/stores/manager"
-import { THEME_CONFIG } from "@rahoot/web/utils/constants"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
@@ -22,6 +21,7 @@ const Manager = () => {
     setTheme,
     setManagerEffect,
     setManagerMusic,
+    setPlayers,
   } = useManagerStore()
   const router = useRouter()
   const { socket } = useSocket()
@@ -46,10 +46,10 @@ const Manager = () => {
     })
     setBackground(data.background)
     setTypeface(data.typeface)
-    setTypeface(data.typeface)
     setTheme(data.theme)
     setManagerEffect(data.managerEffect)
     setManagerMusic(data.managerMusic)
+    setPlayers([])
     router.push(`/game/manager/${data.gameId}`)
   })
 

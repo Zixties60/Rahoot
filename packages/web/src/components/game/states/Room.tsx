@@ -6,14 +6,17 @@ import { Player } from "@rahoot/common/types/game"
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/stores/manager"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import QRCode from "react-qr-code"
+import useSound from "use-sound"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 
 type Props = {
   data: ManagerStatusDataMap["SHOW_ROOM"]
+  musicEnabled: boolean
 }
 
-const Room = ({ data: { text, inviteCode } }: Props) => {
+const Room = ({ data: { text, inviteCode }, musicEnabled }: Props) => {
   const { gameId } = useManagerStore()
   const { socket } = useSocket()
   const { players } = useManagerStore()
@@ -21,8 +24,32 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
   const [totalPlayers, setTotalPlayers] = useState(0)
   const [hideRoomId, setHideRoomId] = useState<Boolean>(true)
 
+  const { getSound } = useAssets()
+
+  const [playMusic, { stop: stopMusic }] = useSound(
+    getSound("waitingRoomMusic") || "",
+    {
+      volume: 0.2,
+      interrupt: true,
+      loop: true,
+      html5: true,
+    },
+  )
+
   const origin = typeof window !== "undefined" ? window.location.origin : ""
   const joinUrl = `${origin}?pin=${inviteCode}`
+
+  useEffect(() => {
+    if (musicEnabled) {
+      playMusic()
+    } else {
+      stopMusic()
+    }
+
+    return () => {
+      stopMusic()
+    }
+  }, [playMusic, musicEnabled, stopMusic])
 
   useEvent("manager:newPlayer", (player) => {
     setPlayerList([...playerList, player])
@@ -87,10 +114,10 @@ const Room = ({ data: { text, inviteCode } }: Props) => {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        {playerList.map((player) => (
+        {playerList.map((player, index) => (
           <div
             key={player.id}
-            className="shadow-inset bg-primary flex flex-row items-center gap-2 rounded-md px-4 py-3 font-bold text-white"
+            className={`shadow-inset flex flex-row items-center gap-2 rounded-md px-4 py-3 font-bold ${index % 2 === 0 ? "bg-primary text-onPrimary" : "bg-secondary text-onSecondary"} `}
             onClick={handleKick(player.id)}
           >
             <Avatar id={player.avatarId} className="h-8 w-8" />

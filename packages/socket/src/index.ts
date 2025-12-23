@@ -25,6 +25,10 @@ io.on("connection", (socket) => {
     `A user connected: socketId: ${socket.id}, clientId: ${socket.handshake.auth.clientId}`
   );
 
+  socket.onAny((event, ...args) => {
+    console.log(`[${socket.id}] Event: ${event}`, args);
+  });
+
   socket.on("player:reconnect", ({ gameId }) => {
     const game = registry.getPlayerGame(gameId, socket.handshake.auth.clientId);
 

@@ -8,6 +8,7 @@ export interface Avatar {
 }
 
 interface Sounds {
+  waitingRoomMusic: string
   answersMusic: string
   answersSound: string
   resultsResult: string

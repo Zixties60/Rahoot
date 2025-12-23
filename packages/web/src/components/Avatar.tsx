@@ -30,7 +30,7 @@ const Avatar = ({ id, url, background, className }: Props) => {
   return (
     <div
       className={clsx(
-        "flex aspect-square items-center justify-center rounded-xl border-2 border-white/20 p-1 shadow-md",
+        "flex aspect-square items-center justify-center rounded-xl border-2 border-gray-300 p-1 shadow-md",
         className,
       )}
       style={{

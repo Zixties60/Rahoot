@@ -1,8 +1,4 @@
-import {
-  getGameConfigPath,
-  readConfig,
-  writeConfig,
-} from "@rahoot/web/utils/config"
+import { getGameConfigPath, readConfig } from "@rahoot/web/utils/config"
 import { NextResponse } from "next/server"
 
 export async function GET() {
@@ -12,7 +8,7 @@ export async function GET() {
     return NextResponse.json({
       background: config.background || "",
       typeface: config.typeface || "",
-      theme: config.theme || "yellow-orange",
+      theme: config.theme || "orange",
       playerEffect: config.playerEffect ?? true,
       playerMusic: config.playerMusic ?? true,
       managerEffect: config.managerEffect ?? true,

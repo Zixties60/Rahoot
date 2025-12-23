@@ -1,6 +1,6 @@
 "use client"
 
-import { Add, Close, Save } from "@mui/icons-material"
+import { Add, Clear, Close, Delete, Save } from "@mui/icons-material"
 import { Quizz } from "@rahoot/common/types/game"
 import Button from "@rahoot/web/components/Button"
 import FontSelect from "@rahoot/web/components/manager/settings/FontSelect"
@@ -126,6 +126,21 @@ const CreateQuizz = () => {
     <div className="relative z-10 flex w-full max-w-2xl flex-col gap-6 p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">Create New Quiz</h1>
+
+        <div className="flex gap-4">
+          <Button
+            onClick={handleSave}
+            className="bg-secondary! text-onSecondary! w-full"
+            startIcon={<Save />}
+          >
+            Save
+          </Button>
+          <Button
+            onClick={() => router.back()}
+            className="w-full bg-gray-500"
+            startIcon={<Close />}
+          />
+        </div>
       </div>
 
       <div className="rounded-md bg-white p-4 shadow-sm">
@@ -170,12 +185,11 @@ const CreateQuizz = () => {
           >
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">Question {qIndex + 1}</h3>
-              <button
+              <Button
                 onClick={() => handleRemoveQuestion(qIndex)}
-                className="text-sm text-red-500 hover:underline"
-              >
-                Remove Question
-              </button>
+                className="bg-red-500"
+                startIcon={<Delete fontSize="small" />}
+              />
             </div>
 
             <div>
@@ -259,22 +273,22 @@ const CreateQuizz = () => {
                       placeholder={`Answer ${aIndex + 1}`}
                     />
                     {q.answers.length > 2 && (
-                      <button
+                      <Button
                         onClick={() => handleRemoveAnswer(qIndex, aIndex)}
-                        className="px-2 text-red-500"
-                      >
-                        ✕
-                      </button>
+                        className="bg-red-500 text-sm"
+                        startIcon={<Clear fontSize="small" />}
+                      />
                     )}
                   </div>
                 ))}
                 {q.answers.length < 4 && (
-                  <button
+                  <Button
                     onClick={() => handleAddAnswer(qIndex)}
-                    className="text-primary w-fit text-left text-sm font-medium hover:underline"
+                    className="w-fit text-sm"
+                    startIcon={<Add fontSize="small" />}
                   >
-                    + Add Answer
-                  </button>
+                    Add Answer
+                  </Button>
                 )}
               </div>
             </div>
@@ -296,6 +310,19 @@ const CreateQuizz = () => {
                   }
                   className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 />
+                <div className="mt-2 flex gap-2">
+                  {[3, 5, 10].map((val) => (
+                    <Button
+                      key={val}
+                      onClick={() =>
+                        handleQuestionChange(qIndex, "cooldown", val)
+                      }
+                      className="bg-gray-200! px-2 py-1 text-xs text-black!"
+                    >
+                      {val}s
+                    </Button>
+                  ))}
+                </div>
               </div>
               <div className="flex-1">
                 <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -313,6 +340,17 @@ const CreateQuizz = () => {
                   }
                   className="focus:border-primary w-full rounded-md border border-gray-300 p-2 outline-none"
                 />
+                <div className="mt-2 flex gap-2">
+                  {[15, 20, 30].map((val) => (
+                    <Button
+                      key={val}
+                      onClick={() => handleQuestionChange(qIndex, "time", val)}
+                      className="bg-gray-200! px-2 py-1 text-xs text-black!"
+                    >
+                      {val}s
+                    </Button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -324,7 +362,7 @@ const CreateQuizz = () => {
         className="w-full bg-blue-500"
         startIcon={<Add />}
       >
-        + Add Question
+        Add Question
       </Button>
 
       <div className="mt-4 flex gap-2">
@@ -335,7 +373,11 @@ const CreateQuizz = () => {
         >
           Cancel
         </Button>
-        <Button onClick={handleSave} className="w-full" startIcon={<Save />}>
+        <Button
+          onClick={handleSave}
+          className="bg-secondary! text-onSecondary! w-full"
+          startIcon={<Save />}
+        >
           Save Quiz
         </Button>
       </div>

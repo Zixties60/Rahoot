@@ -48,6 +48,7 @@ class Config {
           {
             avatars: [],
             sounds: {
+              waitingRoomMusic: "",
               answersMusic: "",
               answersSound: "",
               resultsResult: "",

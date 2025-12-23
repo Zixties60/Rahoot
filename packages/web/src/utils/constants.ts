@@ -71,13 +71,62 @@ export const MANAGER_SKIP_BTN = {
   [STATUS.WAIT]: null,
 }
 
+export const SOUNDS = [
+  "waitingRoomMusic",
+  "answersMusic",
+  "answersSound",
+  "resultsResult",
+  "showSound",
+  "boumpSound",
+  "podiumThree",
+  "podiumSecond",
+  "podiumFirst",
+  "snearRoll",
+]
+
 export const THEME_CONFIG: Record<
   string,
-  { primary: string; background: string }
+  {
+    primary: string
+    secondary: string
+    background: string
+    onPrimary: string
+    onSecondary: string
+  }
 > = {
-  "yellow-orange": { primary: "#ff9900", background: "#ea580c" },
-  blue: { primary: "#3b82f6", background: "#2563eb" },
-  pink: { primary: "#ec4899", background: "#db2777" },
-  green: { primary: "#22c55e", background: "#16a34a" },
-  purple: { primary: "#a855f7", background: "#9333ea" },
+  orange: {
+    primary: "#ff9900",
+    secondary: "#0066FF",
+    background: "#ea580c",
+    onPrimary: "#ffffff",
+    onSecondary: "#ffffff",
+  },
+  blue: {
+    primary: "#3b82f6",
+    secondary: "#F6AF3B",
+    background: "#2563eb",
+    onPrimary: "#ffffff",
+    onSecondary: "#ffffff",
+  },
+  pink: {
+    primary: "#ec4899",
+    secondary: "#48EC9B",
+    background: "#db2777",
+    onPrimary: "#ffffff",
+    onSecondary: "#1a140b",
+  },
+  green: {
+    primary: "#22c55e",
+    secondary: "#C52289",
+    background: "#16a34a",
+    onPrimary: "#ffffff",
+    onSecondary: "#ffffff",
+  },
+  purple: {
+    primary: "#a855f7",
+    secondary: "#A4F755",
+    background: "#9333ea",
+    onPrimary: "#ffffff",
+    onSecondary: "#1a140b",
+  },
 }

@@ -26,7 +26,7 @@ const Podium = ({ data, effectEnabled }: Props) => {
   const [apparition, setApparition] = useState(0)
   const [showAllPlayers, setShowAllPlayers] = useState(false)
   const router = useRouter()
-  const { players, gameId } = useManagerStore()
+  const { players, gameId, reset } = useManagerStore()
   const { socket } = useSocket()
 
   const { width, height } = useScreenSize()
@@ -116,6 +116,11 @@ const Podium = ({ data, effectEnabled }: Props) => {
     // eslint-disable-next-line consistent-return
     return () => clearInterval(interval)
   }, [apparition, top.length])
+
+  const handleBackToManager = () => {
+    reset()
+    router.push("/manager")
+  }
 
   return (
     <>
@@ -246,7 +251,7 @@ const Podium = ({ data, effectEnabled }: Props) => {
       {/* Buttons */}
       <div className="absolute bottom-4 left-4 z-40 flex gap-4">
         <Button
-          onClick={() => router.push("/manager")}
+          onClick={handleBackToManager}
           className="bg-white px-4 py-2 text-black!"
         >
           Back to Manager
@@ -262,7 +267,7 @@ const Podium = ({ data, effectEnabled }: Props) => {
       <div className="absolute right-4 bottom-4 z-40 flex gap-4">
         <Button
           onClick={() => setShowAllPlayers(true)}
-          className="bg-white px-4 py-2 text-black!"
+          className="bg-secondary! text-onSecondary! px-4 py-2"
         >
           Show All Players
         </Button>

@@ -7,13 +7,12 @@
     "build": "pnpm -r run build",
     "start": "pnpm -r --parallel run start",
     "clean": "pnpm -r exec rm -rf dist node_modules",
-    "lint": "pnpm -r run lint"
+    "lint": "pnpm -r run lint",
+    "test:load": "pnpm --filter @rahoot/playwright test:load"
   },
   "devDependencies": {
     "dotenv-cli": "^11.0.0",
     "typescript": "^5.9.3"
   },
-  "dependencies": {
-    "react-qr-code": "^2.0.18"
-  }
+  "dependencies": {}
 }

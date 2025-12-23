@@ -97,7 +97,7 @@ const Answers = ({
           <img
             alt={question}
             src={image}
-            className="m-4 h-full max-h-[400px] min-h-[200px] w-auto rounded-md"
+            className="m-4 h-full max-h-[400px] w-auto rounded-md"
           />
         )}
       </div>
@@ -116,7 +116,7 @@ const Answers = ({
           </div>
         </div>
 
-        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 rounded-full px-2 text-lg font-bold text-white md:text-xl">
+        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 rounded-full px-2 text-lg font-bold text-white md:text-2xl">
           {answers.map((answer, key) => (
             <AnswerButton
               key={key}

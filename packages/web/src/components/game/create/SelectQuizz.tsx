@@ -22,7 +22,7 @@ const SelectQuizz = ({ quizzList, onSelect, onEdit }: Props) => {
                 "flex w-full items-center justify-between rounded-md p-3 outline outline-gray-300",
               )}
             >
-              <span className="font-medium">{quizz.subject}</span>
+              <span className="text-xl font-medium">{quizz.subject}</span>
 
               <div className="flex gap-2">
                 <Button
@@ -31,7 +31,7 @@ const SelectQuizz = ({ quizzList, onSelect, onEdit }: Props) => {
                   startIcon={<Edit />}
                 ></Button>
                 <Button
-                  className="text-md py-1"
+                  className="text-md bg-secondary! text-onSecondary! py-1"
                   onClick={() => onSelect(quizz.id)}
                   startIcon={<PlayArrow />}
                 >

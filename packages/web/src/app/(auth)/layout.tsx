@@ -3,13 +3,13 @@
 import logo from "@rahoot/web/assets/logo.svg"
 import Loader from "@rahoot/web/components/Loader"
 import { useSocket } from "@rahoot/web/contexts/socketProvider"
+import { THEME_CONFIG } from "@rahoot/web/utils/constants"
 import Image from "next/image"
 import { PropsWithChildren, useEffect, useState } from "react"
-import { THEME_CONFIG } from "@rahoot/web/utils/constants"
 
 const AuthLayout = ({ children }: PropsWithChildren) => {
   const { isConnected, connect } = useSocket()
-  const [theme, setThemeState] = useState("yellow-orange")
+  const [theme, setThemeState] = useState("orange")
 
   useEffect(() => {
     fetch("/api/settings/theme", { cache: "no-store" })
@@ -23,12 +23,24 @@ const AuthLayout = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (theme) {
-      const themeConfig = THEME_CONFIG[theme] || THEME_CONFIG["yellow-orange"]
+      const themeConfig = THEME_CONFIG[theme] || THEME_CONFIG["orange"]
 
       if (themeConfig) {
         document.documentElement.style.setProperty(
           "--color-primary",
           themeConfig.primary,
+        )
+        document.documentElement.style.setProperty(
+          "--color-secondary",
+          themeConfig.secondary,
+        )
+        document.documentElement.style.setProperty(
+          "--color-onPrimary",
+          themeConfig.onPrimary,
+        )
+        document.documentElement.style.setProperty(
+          "--color-onSecondary",
+          themeConfig.onSecondary,
         )
       }
     }

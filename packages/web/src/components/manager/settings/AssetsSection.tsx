@@ -23,6 +23,7 @@ import { v4 as uuidv4 } from "uuid"
 import AvatarForm from "./assets/AvatarForm"
 import AvatarItem from "./assets/AvatarItem"
 import SoundItem from "./assets/SoundItem"
+import { SOUNDS } from "@rahoot/web/utils/constants"
 
 // UI-only type with stable ID for dnd-kit
 export interface AvatarWithId extends AvatarType {
@@ -165,7 +166,11 @@ const AssetsSection = () => {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold">Avatars</h2>
-        <Button onClick={handleAddStart} startIcon={<Add />}>
+        <Button
+          onClick={handleAddStart}
+          startIcon={<Add />}
+          className="bg-secondary text-onSecondary!"
+        >
           Add Avatar
         </Button>
       </div>
@@ -218,13 +223,13 @@ const AssetsSection = () => {
         Sounds Configuration
       </h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {Object.entries(sounds).map(([key, value]) => (
+        {SOUNDS.map((sound) => (
           <SoundItem
-            key={key}
-            label={key}
-            url={value}
+            key={sound}
+            label={sound}
+            url={sounds[sound]}
             onChange={(newUrl) =>
-              setSounds((prev) => ({ ...prev, [key]: newUrl }))
+              setSounds((prev) => ({ ...prev, [sound]: newUrl }))
             }
           />
         ))}
