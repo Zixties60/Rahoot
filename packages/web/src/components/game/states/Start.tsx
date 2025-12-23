@@ -1,8 +1,8 @@
 "use client"
 
 import { CommonStatusDataMap } from "@rahoot/common/types/game/status"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 import { useEvent } from "@rahoot/web/contexts/socketProvider"
-import { SFX_BOUMP_SOUND } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 import { useState } from "react"
 import useSound from "use-sound"
@@ -16,7 +16,8 @@ const Start = ({ data: { time, subject }, effectEnabled }: Props) => {
   const [showTitle, setShowTitle] = useState(true)
   const [cooldown, setCooldown] = useState(time)
 
-  const [sfxBoump] = useSound(SFX_BOUMP_SOUND, {
+  const { getSound } = useAssets()
+  const [sfxBoump] = useSound(getSound("boumpSound") || "", {
     volume: 0.2,
   })
 

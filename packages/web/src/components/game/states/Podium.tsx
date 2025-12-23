@@ -1,6 +1,7 @@
 "use client"
 
 import Avatar from "@rahoot/web/components/Avatar"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
 import Button from "@rahoot/web/components/Button"
@@ -8,12 +9,6 @@ import AllPlayersModal from "@rahoot/web/components/game/modals/AllPlayersModal"
 import { useSocket } from "@rahoot/web/contexts/socketProvider"
 import useScreenSize from "@rahoot/web/hooks/useScreenSize"
 import { useManagerStore } from "@rahoot/web/stores/manager"
-import {
-  SFX_PODIUM_FIRST,
-  SFX_PODIUM_SECOND,
-  SFX_PODIUM_THREE,
-  SFX_SNEAR_ROOL,
-} from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -35,20 +30,24 @@ const Podium = ({ data, effectEnabled }: Props) => {
   const { socket } = useSocket()
 
   const { width, height } = useScreenSize()
+  const { getSound } = useAssets()
 
-  const [sfxtThree] = useSound(SFX_PODIUM_THREE, {
+  const [sfxtThree] = useSound(getSound("podiumThree") || "", {
     volume: 0.2,
   })
 
-  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, {
+  const [sfxSecond] = useSound(getSound("podiumSecond") || "", {
     volume: 0.2,
   })
 
-  const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX_SNEAR_ROOL, {
-    volume: 0.2,
-  })
+  const [sfxRool, { stop: sfxRoolStop }] = useSound(
+    getSound("snearRoll") || "",
+    {
+      volume: 0.2,
+    },
+  )
 
-  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, {
+  const [sfxFirst] = useSound(getSound("podiumFirst") || "", {
     volume: 0.2,
   })
 

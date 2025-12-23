@@ -6,9 +6,9 @@ import Avatar from "@rahoot/web/components/Avatar"
 import Button from "@rahoot/web/components/Button"
 import Form from "@rahoot/web/components/Form"
 import Input from "@rahoot/web/components/Input"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
-import { AVATARS } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 
 import { useRouter } from "next/navigation"
@@ -28,6 +28,7 @@ const PlayerProfile = () => {
     setPlayerMusic,
   } = usePlayerStore()
   const router = useRouter()
+  const { assets } = useAssets()
   const [username, setUsername] = useState("")
   const [selectedAvatarId, setSelectedAvatarId] = useState(
     Math.floor(Math.random() * 8),
@@ -78,7 +79,7 @@ const PlayerProfile = () => {
           Avatar
         </label>
         <div className="grid grid-cols-4 gap-2">
-          {AVATARS.map((_, i) => (
+          {assets?.avatars.map((_, i) => (
             <button
               key={i}
               type="button"

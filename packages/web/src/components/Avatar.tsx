@@ -1,16 +1,29 @@
-import { AVATARS } from "@rahoot/web/utils/constants"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 import clsx from "clsx"
 import Image from "next/image"
 
 type Props = {
-  id: number
+  id?: number
+  url?: string
+  background?: string
   className?: string
 }
 
-const Avatar = ({ id, className }: Props) => {
-  const avatar = AVATARS[id]
+const Avatar = ({ id, url, background, className }: Props) => {
+  const { getAvatar } = useAssets()
 
-  if (!avatar) {
+  let avatarUrl = url
+  let avatarBg = background
+
+  if (id !== undefined && (!avatarUrl || !avatarBg)) {
+    const asset = getAvatar(id) // id here is treated as index
+    if (asset) {
+      avatarUrl = asset.url
+      avatarBg = asset.background
+    }
+  }
+
+  if (!avatarUrl || !avatarBg) {
     return null
   }
 
@@ -21,13 +34,15 @@ const Avatar = ({ id, className }: Props) => {
         className,
       )}
       style={{
-        backgroundColor: avatar.background,
+        backgroundColor: avatarBg,
       }}
     >
       <Image
-        src={avatar.image}
+        src={avatarUrl}
         alt="Avatar"
         className="h-full w-full object-contain"
+        width={100}
+        height={100}
       />
     </div>
   )

@@ -1,4 +1,5 @@
 import Toaster from "@rahoot/web/components/Toaster"
+import { AssetsProvider } from "@rahoot/web/contexts/assetsProvider"
 import { SocketProvider } from "@rahoot/web/contexts/socketProvider"
 import type { Metadata } from "next"
 import {
@@ -6,10 +7,10 @@ import {
   Kanit,
   Mali,
   Montserrat,
+  Noto_Color_Emoji,
   Playpen_Sans_Thai,
   Pridi,
   Sarabun,
-  Noto_Color_Emoji,
 } from "next/font/google"
 import { PropsWithChildren } from "react"
 import "./globals.css"
@@ -73,8 +74,10 @@ const RootLayout = ({ children }: PropsWithChildren) => (
       className={`${montserrat.variable} ${kanit.variable} ${pridi.variable} ${itim.variable} ${mali.variable} ${playpenSans.variable} ${sarabun.variable} ${notoColorEmoji.variable} bg-secondary antialiased`}
     >
       <SocketProvider>
-        <main className="text-base-[8px] flex flex-col">{children}</main>
-        <Toaster />
+        <AssetsProvider>
+          <main className="text-base-[8px] flex flex-col">{children}</main>
+          <Toaster />
+        </AssetsProvider>
       </SocketProvider>
     </body>
   </html>

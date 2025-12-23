@@ -1,23 +1,23 @@
-import fs from "fs"
+import {
+  getGameConfigPath,
+  readConfig,
+  writeConfig,
+} from "@rahoot/web/utils/config"
 import { NextResponse } from "next/server"
-import path from "path"
-
-const getConfigPath = () => {
-  const inContainerPath = process.env.CONFIG_PATH
-  return inContainerPath
-    ? path.resolve(inContainerPath, "game.json")
-    : path.resolve(process.cwd(), "../../config/game.json")
-}
 
 export async function GET() {
   try {
-    const configPath = getConfigPath()
-    if (!fs.existsSync(configPath)) {
-      return NextResponse.json({ managerPassword: "" })
-    }
-    const fileContent = fs.readFileSync(configPath, "utf-8")
-    const config = JSON.parse(fileContent)
-    return NextResponse.json(config)
+    const configPath = getGameConfigPath()
+    const config = readConfig(configPath)
+    return NextResponse.json({
+      background: config.background || "",
+      typeface: config.typeface || "",
+      theme: config.theme || "yellow-orange",
+      playerEffect: config.playerEffect ?? true,
+      playerMusic: config.playerMusic ?? true,
+      managerEffect: config.managerEffect ?? true,
+      managerMusic: config.managerMusic ?? true,
+    })
   } catch (error) {
     console.error("Error reading config:", error)
     return NextResponse.json(
@@ -31,7 +31,6 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
     const {
-      managerPassword,
       background,
       typeface,
       theme,
@@ -40,13 +39,6 @@ export async function POST(request: Request) {
       managerEffect,
       managerMusic,
     } = body
-
-    if (managerPassword && typeof managerPassword !== "string") {
-      return NextResponse.json(
-        { error: "Invalid password format" },
-        { status: 400 },
-      )
-    }
 
     if (
       (playerEffect !== undefined && typeof playerEffect !== "boolean") ||
@@ -81,48 +73,22 @@ export async function POST(request: Request) {
       )
     }
 
-    const configPath = getConfigPath()
-    const currentConfig = fs.existsSync(configPath)
-      ? JSON.parse(fs.readFileSync(configPath, "utf8"))
-      : {}
+    const configPath = getGameConfigPath()
+    const currentConfig = readConfig(configPath)
 
     const newConfig = {
       ...currentConfig,
     }
 
-    if (managerPassword) {
-      newConfig.managerPassword = managerPassword
-    }
+    if (background !== undefined) newConfig.background = background
+    if (typeface !== undefined) newConfig.typeface = typeface
+    if (theme !== undefined) newConfig.theme = theme
+    if (playerEffect !== undefined) newConfig.playerEffect = playerEffect
+    if (playerMusic !== undefined) newConfig.playerMusic = playerMusic
+    if (managerEffect !== undefined) newConfig.managerEffect = managerEffect
+    if (managerMusic !== undefined) newConfig.managerMusic = managerMusic
 
-    if (playerEffect !== undefined) {
-      newConfig.playerEffect = playerEffect
-    }
-
-    if (playerMusic !== undefined) {
-      newConfig.playerMusic = playerMusic
-    }
-
-    if (managerEffect !== undefined) {
-      newConfig.managerEffect = managerEffect
-    }
-
-    if (managerMusic !== undefined) {
-      newConfig.managerMusic = managerMusic
-    }
-
-    if (background !== undefined) {
-      newConfig.background = background
-    }
-
-    if (typeface !== undefined) {
-      newConfig.typeface = typeface
-    }
-
-    if (theme !== undefined) {
-      newConfig.theme = theme
-    }
-
-    fs.writeFileSync(configPath, JSON.stringify(newConfig, null, 2))
+    writeConfig(configPath, newConfig)
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -1,7 +1,7 @@
 "use client"
 
 import { CommonStatusDataMap } from "@rahoot/common/types/game/status"
-import { SFX_SHOW_SOUND } from "@rahoot/web/utils/constants"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 import Image from "next/image"
 import { useEffect } from "react"
 import useSound from "use-sound"
@@ -15,7 +15,8 @@ const Question = ({
   data: { question, image, cooldown },
   effectEnabled,
 }: Props) => {
-  const [sfxShow] = useSound(SFX_SHOW_SOUND, { volume: 0.5 })
+  const { getSound } = useAssets()
+  const [sfxShow] = useSound(getSound("showSound") || "", { volume: 0.5 })
 
   useEffect(() => {
     if (effectEnabled) {

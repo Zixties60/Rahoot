@@ -1,12 +1,7 @@
 import { PlayerStatusDataMap } from "@rahoot/common/types/game/status"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 import useScreenSize from "@rahoot/web/hooks/useScreenSize"
 import { usePlayerStore } from "@rahoot/web/stores/player"
-import {
-  SFX_PODIUM_FIRST,
-  SFX_PODIUM_SECOND,
-  SFX_PODIUM_THREE,
-  SFX_RESULTS_SOUND,
-} from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 import { useEffect } from "react"
 import ReactConfetti from "react-confetti"
@@ -29,17 +24,18 @@ const PlayerResult = ({
   const player = usePlayerStore()
   const { width, height } = useScreenSize()
   const { myPoints, myRank } = data
+  const { getSound } = useAssets()
 
   const soundUrl =
     myRank === 1
-      ? SFX_PODIUM_FIRST
+      ? getSound("podiumFirst")
       : myRank === 2
-        ? SFX_PODIUM_SECOND
+        ? getSound("podiumSecond")
         : myRank === 3
-          ? SFX_PODIUM_THREE
-          : SFX_RESULTS_SOUND
+          ? getSound("podiumThree")
+          : getSound("resultsResult")
 
-  const [sfxResults] = useSound(soundUrl, {
+  const [sfxResults] = useSound(soundUrl || "", {
     volume: 0.2,
     soundEnabled: effectEnabled,
   })

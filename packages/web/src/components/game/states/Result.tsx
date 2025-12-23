@@ -3,8 +3,8 @@
 import { CommonStatusDataMap } from "@rahoot/common/types/game/status"
 import CricleCheck from "@rahoot/web/components/icons/CricleCheck"
 import CricleXmark from "@rahoot/web/components/icons/CricleXmark"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
-import { SFX_RESULTS_SOUND } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 import { useEffect } from "react"
 import useSound from "use-sound"
@@ -19,8 +19,9 @@ const Result = ({
   effectEnabled,
 }: Props) => {
   const player = usePlayerStore()
+  const { getSound } = useAssets()
 
-  const [sfxResults] = useSound(SFX_RESULTS_SOUND, {
+  const [sfxResults] = useSound(getSound("resultsResult") || "", {
     volume: 0.2,
   })
 

@@ -2,14 +2,10 @@
 
 import { CommonStatusDataMap } from "@rahoot/common/types/game/status"
 import AnswerButton from "@rahoot/web/components/AnswerButton"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { usePlayerStore } from "@rahoot/web/stores/player"
-import {
-  ANSWERS_COLORS,
-  ANSWERS_ICONS,
-  SFX_ANSWERS_MUSIC,
-  SFX_ANSWERS_SOUND,
-} from "@rahoot/web/utils/constants"
+import { ANSWERS_COLORS, ANSWERS_ICONS } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -33,15 +29,21 @@ const Answers = ({
   const [cooldown, setCooldown] = useState(time)
   const [totalAnswer, setTotalAnswer] = useState(0)
 
-  const [sfxPop] = useSound(SFX_ANSWERS_SOUND, {
+  const { getSound } = useAssets()
+
+  const [sfxPop] = useSound(getSound("answersSound") || "", {
     volume: 0.1,
   })
 
-  const [playMusic, { stop: stopMusic }] = useSound(SFX_ANSWERS_MUSIC, {
-    volume: 0.2,
-    interrupt: true,
-    loop: true,
-  })
+  const [playMusic, { stop: stopMusic }] = useSound(
+    getSound("answersMusic") || "",
+    {
+      volume: 0.2,
+      interrupt: true,
+      loop: true,
+      html5: true,
+    },
+  )
 
   const handleAnswer = (answerKey: number) => () => {
     if (!player) {
