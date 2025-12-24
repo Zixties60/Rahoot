@@ -3,7 +3,6 @@
 import { STATUS } from "@rahoot/common/types/game/status"
 import GameWrapper from "@rahoot/web/components/game/GameWrapper"
 import Answers from "@rahoot/web/components/game/states/Answers"
-import Attention from "@rahoot/web/components/game/states/Attention"
 import PlayerResult from "@rahoot/web/components/game/states/PlayerResult"
 import Prepared from "@rahoot/web/components/game/states/Prepared"
 import Question from "@rahoot/web/components/game/states/Question"
@@ -117,6 +116,7 @@ const Game = () => {
     case STATUS.SELECT_ANSWER:
       component = (
         <Answers
+          manager={false}
           data={status.data}
           effectEnabled={playerEffect}
           musicEnabled={playerMusic}

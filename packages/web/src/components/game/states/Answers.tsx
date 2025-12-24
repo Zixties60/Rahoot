@@ -14,12 +14,14 @@ import Image from "next/image"
 
 type Props = {
   data: CommonStatusDataMap["SELECT_ANSWER"]
+  manager: boolean
   effectEnabled: boolean
   musicEnabled: boolean
 }
 
 const Answers = ({
   data: { question, answers, image, time, totalPlayer },
+  manager,
   effectEnabled,
   musicEnabled,
 }: Props) => {
@@ -86,7 +88,7 @@ const Answers = ({
   })
 
   return (
-    <div className="flex h-full flex-1 flex-col justify-between pb-14">
+    <div className="flex h-full flex-1 flex-col justify-between">
       <div className="mx-auto inline-flex h-full w-full max-w-7xl flex-1 flex-col items-center justify-center gap-5">
         <div className="px-4">
           <h2 className="text-center text-3xl/12 font-bold text-white drop-shadow-lg sm:text-4xl/14 md:text-5xl/18 lg:text-6xl/22">
@@ -98,38 +100,51 @@ const Answers = ({
           <Image
             alt={question}
             src={image}
-            className="max-h-[400px] w-full rounded-md p-4 sm:h-full sm:w-auto"
-            width={400}
-            height={400}
+            className="h-full max-h-[600px] w-full rounded-md p-4 sm:w-auto"
+            width={600}
+            height={600}
           />
         )}
       </div>
 
-      <div>
-        <div className="mx-auto mb-4 flex w-full max-w-7xl justify-between gap-1 px-2 text-lg font-bold text-white md:text-xl">
-          <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
-            <span className="translate-y-1 text-sm">Time</span>
-            <span>{cooldown}</span>
+      <div className="flex h-fit flex-col items-center justify-center gap-2">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-2 px-2">
+          <div className="flex h-fit w-full items-center justify-start gap-2">
+            <div className="flex flex-col items-center gap-0">
+              <span className="text-lg font-bold text-white">Time</span>
+              <div className="bg-secondary text-onSecondary flex items-center justify-center rounded-full px-4 py-2 text-2xl font-bold">
+                <span>{cooldown}</span>
+              </div>
+            </div>
+            <div className="w-full pl-2">
+              <div
+                className="bg-secondary mt-8 h-4 self-start rounded-full"
+                style={{
+                  animation: `countdownBar ${time}s linear forwards`,
+                }}
+              />
+            </div>
+            {manager && (
+              <div className="flex flex-col items-center gap-0">
+                <span className="text-lg font-bold text-white">Answers</span>
+                <div className="bg-secondary text-onSecondary flex items-center justify-center rounded-full px-4 py-2 text-2xl font-bold">
+                  <span>{totalAnswer}</span>
+                </div>
+              </div>
+            )}
           </div>
-          <div className="flex flex-col items-center rounded-full bg-black/40 px-4 text-lg font-bold">
-            <span className="translate-y-1 text-sm">Answers</span>
-            <span>
-              {totalAnswer}/{totalPlayer}
-            </span>
+          <div className="mx-auto grid w-full grid-cols-2 gap-1 rounded-full text-xl font-bold text-white sm:mb-4 md:text-2xl">
+            {answers.map((answer, key) => (
+              <AnswerButton
+                key={key}
+                className={clsx(ANSWERS_COLORS[key])}
+                icon={ANSWERS_ICONS[key]}
+                onClick={handleAnswer(key)}
+              >
+                {answer}
+              </AnswerButton>
+            ))}
           </div>
-        </div>
-
-        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 rounded-full px-2 text-lg font-bold text-white md:text-2xl">
-          {answers.map((answer, key) => (
-            <AnswerButton
-              key={key}
-              className={clsx(ANSWERS_COLORS[key])}
-              icon={ANSWERS_ICONS[key]}
-              onClick={handleAnswer(key)}
-            >
-              {answer}
-            </AnswerButton>
-          ))}
         </div>
       </div>
     </div>

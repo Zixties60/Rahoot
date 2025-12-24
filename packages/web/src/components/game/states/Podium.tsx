@@ -143,7 +143,7 @@ const Podium = ({ data, effectEnabled }: Props) => {
         </div>
       )}
       <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-between">
-        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+        <h2 className="anim-show text-center text-5xl font-bold text-white drop-shadow-lg md:text-6xl lg:text-7xl">
           {subject}
         </h2>
 
@@ -243,7 +243,6 @@ const Podium = ({ data, effectEnabled }: Props) => {
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-800 bg-amber-700 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">3</span>
                 </p>
-
                 <p className="text-2xl font-bold text-white drop-shadow-lg">
                   {top[2].points}
                 </p>

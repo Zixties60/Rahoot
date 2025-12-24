@@ -3,6 +3,8 @@
 import {
   ArrowBack,
   ArrowForward,
+  MusicNote,
+  MusicOff,
   PlayArrow,
   SkipNext,
 } from "@mui/icons-material"
@@ -38,6 +40,7 @@ const GameWrapper = ({
   const { player } = usePlayerStore()
   const { questionStates, setQuestionStates } = useQuestionStore()
   const [isDisabled, setIsDisabled] = useState(false)
+  const { managerMusic, setManagerMusic } = useManagerStore()
   const next = statusName ? MANAGER_SKIP_BTN[statusName] : null
 
   useEvent("game:updateQuestion", ({ current, total }) => {
@@ -69,6 +72,10 @@ const GameWrapper = ({
   const backgroundUrl = manager ? managerBackground : playerBackground
   const typeface = manager ? managerTypeface : playerTypeface
   const theme = manager ? managerTheme : playerTheme
+
+  const handleToggleMusic = () => {
+    setManagerMusic(!managerMusic)
+  }
 
   return (
     <section
@@ -114,23 +121,30 @@ const GameWrapper = ({
             )}
 
             {manager && next && (
-              <Button
-                className={clsx("", {
-                  "pointer-events-none": isDisabled,
-                })}
-                onClick={handleNext}
-                startIcon={
-                  statusName === STATUS.SHOW_ROOM ? (
-                    <PlayArrow />
-                  ) : statusName === STATUS.SELECT_ANSWER ? (
-                    <SkipNext />
-                  ) : (
-                    <ArrowForward />
-                  )
-                }
-              >
-                {next}
-              </Button>
+              <div className="flex flex-row items-center justify-center gap-2">
+                <Button
+                  className={clsx("bg-white px-4 text-black!")}
+                  onClick={handleToggleMusic}
+                  startIcon={managerMusic ? <MusicNote /> : <MusicOff />}
+                />
+                <Button
+                  className={clsx("", {
+                    "pointer-events-none": isDisabled,
+                  })}
+                  onClick={handleNext}
+                  startIcon={
+                    statusName === STATUS.SHOW_ROOM ? (
+                      <PlayArrow />
+                    ) : statusName === STATUS.SELECT_ANSWER ? (
+                      <SkipNext />
+                    ) : (
+                      <ArrowForward />
+                    )
+                  }
+                >
+                  {next}
+                </Button>
+              </div>
             )}
           </div>
 

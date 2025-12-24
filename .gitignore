@@ -3,3 +3,4 @@
 .secrets
 release.json
 .DS_Store
+packages/playwright/test-results

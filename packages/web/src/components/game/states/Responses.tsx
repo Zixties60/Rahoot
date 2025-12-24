@@ -67,7 +67,7 @@ const Responses = ({
       </div>
 
       <div>
-        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 rounded-full px-2 text-lg font-bold text-white md:text-xl">
+        <div className="mx-auto mb-4 grid w-full max-w-7xl grid-cols-2 gap-1 rounded-full px-2 text-xl font-bold text-white md:text-2xl">
           {answers.map((answer, key) => (
             <AnswerButton
               key={key}

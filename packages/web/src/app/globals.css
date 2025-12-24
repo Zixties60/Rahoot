@@ -153,6 +153,15 @@ button:not(:disabled),
   }
 }
 
+@keyframes countdownBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
 @keyframes timer {
   0% {
     transform: scale(1);

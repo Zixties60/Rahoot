@@ -69,9 +69,6 @@ const PlayerResult = ({
           <h2 className="text-4xl font-bold text-white drop-shadow-lg">
             {message}
           </h2>
-
-          {/* Placeholder for subject if available in future or passed differently */}
-          {/* <h3 className="text-2xl font-bold text-white drop-shadow-md opacity-90">{data.subject}</h3> */}
         </div>
 
         <div className="flex flex-col items-center justify-center gap-4">

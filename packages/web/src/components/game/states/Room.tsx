@@ -113,7 +113,7 @@ const Room = ({ data: { text, inviteCode }, musicEnabled }: Props) => {
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 pb-8">
         {playerList.map((player, index) => (
           <div
             key={player.id}

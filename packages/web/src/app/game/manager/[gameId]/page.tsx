@@ -154,6 +154,7 @@ const ManagerGame = () => {
     case STATUS.SELECT_ANSWER:
       component = (
         <Answers
+          manager={true}
           data={status.data}
           effectEnabled={managerEffect}
           musicEnabled={managerMusic}
