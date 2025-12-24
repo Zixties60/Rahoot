@@ -23,7 +23,7 @@ const PlayerResult = ({
 }: Props) => {
   const player = usePlayerStore()
   const { width, height } = useScreenSize()
-  const { myPoints, myRank } = data
+  const { myRank, myPoints, aheadOfMe } = data
   const { getSound } = useAssets()
 
   const soundUrl =
@@ -101,6 +101,11 @@ const PlayerResult = ({
               {myPoints} Points
             </p>
           </div>
+          {aheadOfMe && (
+            <p className="text-xl font-medium text-white/90 drop-shadow-md">
+              Ahead of you: {aheadOfMe}
+            </p>
+          )}
         </div>
       </section>
     </>

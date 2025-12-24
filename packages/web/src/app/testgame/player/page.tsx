@@ -40,6 +40,7 @@ const DEFAULT_DATA: Partial<PlayerStatusDataMap> = {
   },
   FINISHED: {
     subject: "General Knowledge",
+    top: [],
     myPoints: 1000,
   },
   GAME_FINISHED: {

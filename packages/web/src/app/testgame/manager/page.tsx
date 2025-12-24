@@ -32,6 +32,7 @@ const DEFAULT_DATA: Partial<ManagerStatusDataMap> = {
     aheadOfMe: null,
   },
   SHOW_LEADERBOARD: {
+    subject: "General Knowledge",
     oldLeaderboard: [
       {
         username: "Player 1",
@@ -60,9 +61,6 @@ const DEFAULT_DATA: Partial<ManagerStatusDataMap> = {
         connected: true,
       },
     ],
-    myRank: 1,
-    myPoints: 1000,
-    aheadOfMe: null,
   },
   FINISHED: {
     subject: "General Knowledge",

@@ -42,6 +42,7 @@ export type CommonStatusDataMap = {
   WAIT: { text: string };
   FINISHED: {
     subject: string;
+    top: Player[];
   };
   GAME_FINISHED: {
     subject: string;
@@ -56,9 +57,12 @@ type PlayerExtraStatus = {
   GAME_FINISHED: {
     myRank?: number;
     myPoints?: number;
+    aheadOfMe?: string | null;
   };
   FINISHED: {
+    myRank?: number;
     myPoints?: number;
+    aheadOfMe?: string | null;
   };
   SHOW_LEADERBOARD: {
     myRank?: number;
@@ -72,7 +76,6 @@ type ManagerExtraStatus = {
     allPlayers?: Player[];
   };
   FINISHED: {
-    top: Player[];
     allPlayers?: Player[];
   };
   SHOW_ROOM: { text: string; inviteCode?: string };
