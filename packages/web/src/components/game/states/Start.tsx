@@ -38,7 +38,7 @@ const Start = ({ data: { time, subject }, effectEnabled }: Props) => {
   return (
     <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">
       {showTitle ? (
-        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+        <h2 className="anim-show text-center text-4xl/14 font-bold text-white drop-shadow-lg sm:text-5xl/18 md:text-6xl/22 lg:text-7xl/26">
           {subject}
         </h2>
       ) : (

@@ -72,8 +72,10 @@ const GameWrapper = ({
 
   return (
     <section
-      className="relative flex min-h-screen w-full flex-col justify-between"
-      style={{ fontFamily: typeface ? `var(--font-${typeface})` : undefined }}
+      className="relative flex h-full w-full flex-col justify-between"
+      style={{
+        fontFamily: typeface ? `var(--font-${typeface})` : undefined,
+      }}
     >
       <div
         className="fixed top-0 left-0 -z-10 h-full w-full opacity-70"

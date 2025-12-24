@@ -8,6 +8,7 @@ import PlayerResult from "@rahoot/web/components/game/states/PlayerResult"
 import Prepared from "@rahoot/web/components/game/states/Prepared"
 import Question from "@rahoot/web/components/game/states/Question"
 import Result from "@rahoot/web/components/game/states/Result"
+import ShowScore from "@rahoot/web/components/game/states/ShowScore"
 import Start from "@rahoot/web/components/game/states/Start"
 import Wait from "@rahoot/web/components/game/states/Wait"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
@@ -124,8 +125,13 @@ const Game = () => {
 
       break
 
+    case STATUS.SHOW_LEADERBOARD:
+      component = <ShowScore data={status.data} effectEnabled={playerEffect} />
+
+      break
+
     case STATUS.FINISHED:
-      component = <Attention data={{ text: "Look at the screen" }} />
+      component = <ShowScore data={status.data} effectEnabled={playerEffect} />
 
       break
 
@@ -137,11 +143,6 @@ const Game = () => {
           effectEnabled={playerEffect}
         />
       )
-
-      break
-
-    case STATUS.SHOW_LEADERBOARD:
-      component = <Attention data={{ text: "Look at the screen" }} />
 
       break
   }

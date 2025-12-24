@@ -1,6 +1,7 @@
 "use client"
 
 import { useSocket } from "@rahoot/web/contexts/socketProvider"
+import useScreenSize from "@rahoot/web/hooks/useScreenSize"
 import { THEME_CONFIG } from "@rahoot/web/utils/constants"
 import { PropsWithChildren, useEffect, useState } from "react"
 
@@ -8,6 +9,7 @@ const GameLayout = ({ children }: PropsWithChildren) => {
   const { isConnected, connect } = useSocket()
   const [theme, setThemeState] = useState("orange")
   const [typeface, setTypefaceState] = useState("itim")
+  const { width, height } = useScreenSize()
 
   useEffect(() => {
     fetch("/api/settings/theme", { cache: "no-store" })
@@ -57,7 +59,18 @@ const GameLayout = ({ children }: PropsWithChildren) => {
     }
   }, [connect, isConnected])
 
-  return children
+  return (
+    <div
+      style={{
+        width: width,
+        height: height,
+        maxWidth: width,
+        maxHeight: height,
+      }}
+    >
+      {children}
+    </div>
+  )
 }
 
 export default GameLayout

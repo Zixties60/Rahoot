@@ -10,6 +10,7 @@ import clsx from "clsx"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import useSound from "use-sound"
+import Image from "next/image"
 
 type Props = {
   data: CommonStatusDataMap["SELECT_ANSWER"]
@@ -88,16 +89,18 @@ const Answers = ({
     <div className="flex h-full flex-1 flex-col justify-between pb-14">
       <div className="mx-auto inline-flex h-full w-full max-w-7xl flex-1 flex-col items-center justify-center gap-5">
         <div className="px-4">
-          <h2 className="text-center text-3xl/16 font-bold text-white drop-shadow-lg md:text-4xl/24 lg:text-6xl/24">
+          <h2 className="text-center text-3xl/12 font-bold text-white drop-shadow-lg sm:text-4xl/14 md:text-5xl/18 lg:text-6xl/22">
             {question}
           </h2>
         </div>
 
-        {Boolean(image) && (
-          <img
+        {image && (
+          <Image
             alt={question}
             src={image}
-            className="m-4 h-full max-h-[400px] w-auto rounded-md"
+            className="max-h-[400px] w-full rounded-md p-4 sm:h-full sm:w-auto"
+            width={400}
+            height={400}
           />
         )}
       </div>

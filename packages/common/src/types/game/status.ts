@@ -42,15 +42,13 @@ export type CommonStatusDataMap = {
   WAIT: { text: string };
   FINISHED: {
     subject: string;
-    top: Player[];
   };
   GAME_FINISHED: {
     subject: string;
     top: Player[];
   };
   SHOW_LEADERBOARD: {
-    oldLeaderboard: Player[];
-    leaderboard: Player[];
+    subject: string;
   };
 };
 
@@ -60,12 +58,12 @@ type PlayerExtraStatus = {
     myPoints?: number;
   };
   FINISHED: {
-    myRank?: number;
     myPoints?: number;
   };
   SHOW_LEADERBOARD: {
     myRank?: number;
     myPoints?: number;
+    aheadOfMe?: string | null;
   };
 };
 
@@ -74,6 +72,7 @@ type ManagerExtraStatus = {
     allPlayers?: Player[];
   };
   FINISHED: {
+    top: Player[];
     allPlayers?: Player[];
   };
   SHOW_ROOM: { text: string; inviteCode?: string };
@@ -83,6 +82,10 @@ type ManagerExtraStatus = {
     correct: number;
     answers: string[];
     image?: string;
+  };
+  SHOW_LEADERBOARD: {
+    oldLeaderboard: Player[];
+    leaderboard: Player[];
   };
 };
 

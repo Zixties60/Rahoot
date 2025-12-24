@@ -568,8 +568,7 @@ class Game {
       this.leaderboard.forEach((player, index) => {
         this.sendStatus(player.id, STATUS.FINISHED, {
           subject: this.quizz.subject,
-          top: this.leaderboard.slice(0, 3),
-          myRank: index + 1,
+          top: [],
           myPoints: player.points,
         });
       });
@@ -588,15 +587,19 @@ class Game {
       : this.leaderboard;
 
     this.leaderboard.forEach((player, index) => {
+      const aheadPlayer = this.leaderboard[index - 1];
       this.sendStatus(player.id, STATUS.SHOW_LEADERBOARD, {
-        oldLeaderboard: oldLeaderboard.slice(0, 5),
-        leaderboard: this.leaderboard.slice(0, 5),
+        subject: this.quizz.subject,
+        oldLeaderboard: [],
+        leaderboard: [],
         myRank: index + 1,
         myPoints: player.points,
+        aheadOfMe: aheadPlayer ? aheadPlayer.username : null,
       });
     });
 
     this.sendStatus(this.manager.id, STATUS.SHOW_LEADERBOARD, {
+      subject: this.quizz.subject,
       oldLeaderboard: oldLeaderboard.slice(0, 5),
       leaderboard: this.leaderboard.slice(0, 5),
     });
@@ -618,7 +621,7 @@ class Game {
     this.leaderboard.forEach((player, index) => {
       this.sendStatus(player.id, STATUS.GAME_FINISHED, {
         subject: this.quizz.subject,
-        top: this.leaderboard.slice(0, 3),
+        top: [],
         myRank: index + 1,
         myPoints: player.points,
       });

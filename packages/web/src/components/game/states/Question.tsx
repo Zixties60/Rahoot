@@ -28,7 +28,7 @@ const Question = ({
     <section className="relative mx-auto flex h-full w-full max-w-7xl flex-1 flex-col items-center px-4">
       <div className="flex flex-1 flex-col items-center justify-center gap-5">
         <div className="anim-show px-4">
-          <h2 className="text-center text-3xl/16 font-bold text-white drop-shadow-lg md:text-4xl/24 lg:text-6xl/24">
+          <h2 className="text-center text-3xl/12 font-bold text-white drop-shadow-lg sm:text-4xl/14 md:text-5xl/18 lg:text-6xl/22">
             {question}
           </h2>
         </div>
@@ -37,9 +37,9 @@ const Question = ({
           <Image
             alt={question}
             src={image}
+            className="max-h-[400px] w-full rounded-md p-4 sm:h-full sm:w-auto"
             width={400}
             height={400}
-            className="m-4 h-full max-h-[400px] min-h-[200px] w-auto rounded-md object-cover"
           />
         )}
       </div>

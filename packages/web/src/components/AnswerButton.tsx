@@ -1,27 +1,35 @@
 import clsx from "clsx"
-import { ButtonHTMLAttributes, ElementType, PropsWithChildren } from "react"
+import { motion } from "motion/react"
+import { ElementType, Key, ReactNode } from "react"
 
-type Props = PropsWithChildren &
-  ButtonHTMLAttributes<HTMLButtonElement> & {
-    icon: ElementType
-  }
+type Props = {
+  key?: Key
+  className?: string
+  icon: ElementType
+  children: ReactNode
+  onClick?: () => void
+}
 
 const AnswerButton = ({
+  key,
   className,
   icon: Icon,
   children,
-  ...otherProps
+  onClick,
 }: Props) => (
-  <button
+  <motion.button
+    initial={{ scale: 1 }}
+    whileTap={{ scale: 0.95 }}
+    key={key}
+    onClick={onClick}
     className={clsx(
       "shadow-inset flex items-center gap-3 rounded px-4 py-6 text-left",
       className,
     )}
-    {...otherProps}
   >
     <Icon className="h-6 w-6" />
     <span className="drop-shadow-md">{children}</span>
-  </button>
+  </motion.button>
 )
 
 export default AnswerButton

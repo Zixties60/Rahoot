@@ -82,12 +82,12 @@ const PlayerResult = ({
                 "border-amber-400 bg-amber-300": isGold,
                 "border-zinc-400 bg-zinc-500": isSilver,
                 "border-amber-800 bg-amber-700": isBronze,
-                "border-white/20 bg-white/10":
+                "border-white/20 bg-white/10 px-4":
                   !isGold && !isSilver && !isBronze,
               },
             )}
           >
-            <span className="drop-shadow-md">#{myRank || " -"}</span>
+            <span className="text-7xl drop-shadow-md">#{myRank || " -"}</span>
           </div>
 
           <div className="flex flex-col items-center gap-1">
