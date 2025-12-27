@@ -1,6 +1,15 @@
 "use client"
 
-import { Add, Clear, Close, Delete, Save } from "@mui/icons-material"
+import {
+  Add,
+  CheckCircle,
+  Clear,
+  Close,
+  Delete,
+  RadioButtonUnchecked,
+  Save,
+  TaskAlt,
+} from "@mui/icons-material"
 import { Quizz } from "@rahoot/common/types/game"
 import Button from "@rahoot/web/components/Button"
 import FontSelect from "@rahoot/web/components/manager/settings/FontSelect"
@@ -303,29 +312,36 @@ const EditQuizz = () => {
               <div className="flex flex-col gap-2">
                 {q.answers.map((answer, aIndex) => (
                   <div key={aIndex} className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      name={`solution-${qIndex}`}
-                      checked={q.solution === aIndex}
-                      onChange={() =>
+                    <div
+                      onClick={() =>
                         handleQuestionChange(qIndex, "solution", aIndex)
                       }
-                      className="h-4 w-4"
-                    />
+                      className="cursor-pointer"
+                    >
+                      {q.solution === aIndex ? (
+                        <CheckCircle className="text-green-500" />
+                      ) : (
+                        <RadioButtonUnchecked className="text-gray-400" />
+                      )}
+                    </div>
                     <input
                       type="text"
                       value={answer}
                       onChange={(e) =>
                         handleAnswerChange(qIndex, aIndex, e.target.value)
                       }
-                      className="focus:border-primary flex-1 rounded-md border border-gray-300 p-2 outline-none"
+                      className={`flex-1 rounded-md border p-2 outline-none ${
+                        q.solution === aIndex
+                          ? "focus:border-primary border-gray-300 ring-3 ring-green-500 ring-offset-2"
+                          : "focus:border-primary border-gray-300"
+                      }`}
                       placeholder={`Answer ${aIndex + 1}`}
                     />
                     {q.answers.length > 2 && (
                       <Button
                         onClick={() => handleRemoveAnswer(qIndex, aIndex)}
-                        className="bg-red-500 text-sm"
-                        startIcon={<Clear fontSize="small" />}
+                        className="bg-red-100 text-sm font-bold text-red-500!"
+                        startIcon={<Delete fontSize="small" />}
                       />
                     )}
                   </div>
