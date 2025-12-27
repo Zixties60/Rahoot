@@ -92,6 +92,7 @@ const GameWrapper = ({
           className="pointer-events-none h-full w-full object-cover opacity-60"
           src={backgroundUrl || background}
           alt="background"
+          priority={true}
           fill
         />
       </div>
