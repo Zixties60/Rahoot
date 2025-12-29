@@ -8,15 +8,14 @@ export const calculatePercentages = (
     return {}
   }
 
-  const totalSum = values.reduce(
-    (accumulator, currentValue) => accumulator + currentValue,
-    0,
-  )
+  const max = Math.max(...values, 0)
 
   const result: Record<string, string> = {}
 
   keys.forEach((key) => {
-    result[key] = `${((objectResponses[key] / totalSum) * 100).toFixed()}%`
+    // If max is 0, avoid division by zero and set to 0%
+    result[key] =
+      max === 0 ? "0%" : `${((objectResponses[key] / max) * 100).toFixed()}%`
   })
 
   return result
