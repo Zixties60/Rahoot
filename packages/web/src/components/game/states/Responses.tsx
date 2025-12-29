@@ -55,6 +55,10 @@ const Responses = ({
               className={clsx(
                 "flex flex-col justify-end self-end overflow-hidden rounded-md",
                 ANSWERS_COLORS[key],
+                {
+                  "opacity-65": responses && correct !== key,
+                  "grayscale-50": responses && correct !== key,
+                },
               )}
               style={{ height: percentages[key] }}
             >

@@ -51,7 +51,7 @@ const Start = ({ data: { time, subject }, effectEnabled }: Props) => {
               transform: `rotate(${45 * (time - cooldown)}deg)`,
             }}
           ></div>
-          <span className="absolute text-6xl font-bold text-white drop-shadow-md md:text-8xl">
+          <span className="absolute text-6xl font-bold text-white drop-shadow-md md:text-9xl">
             {cooldown}
           </span>
         </>
