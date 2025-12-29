@@ -47,7 +47,7 @@ const Result = ({
       <h2 className="mt-1 text-4xl font-bold text-white drop-shadow-lg">
         {message}
       </h2>
-      <div className="mt-4 flex flex-col items-center gap-2">
+      {/* <div className="mt-4 flex flex-col items-center gap-2">
         <div
           className={clsx(
             "flex aspect-square h-20 items-center justify-center rounded-full border-4 text-3xl font-bold text-white drop-shadow-lg",
@@ -64,7 +64,7 @@ const Result = ({
         <p className="text-xl font-bold text-white drop-shadow-lg">
           {aheadOfMe ? `Behind ${aheadOfMe}` : "Leading!"}
         </p>
-      </div>
+      </div> */}
 
       {correct && (
         <span className="mt-2 rounded bg-black/40 px-4 py-2 text-2xl font-bold text-white drop-shadow-lg">
