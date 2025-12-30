@@ -1,11 +1,20 @@
-name: Docker Release
-on:
-  release:
-    types: [published]
+name: Manual Docker
 
-env:
-  DOCKER_PLATFORMS: |
-    linux/amd64
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Platform to build"
+        type: choice
+        options:
+          - linux/amd64,linux/arm64
+          - linux/amd64
+          - linux/arm64
+        default: "linux/amd64,linux/arm64"
+      tag:
+        description: "Tag for the image"
+        required: true
+        default: "latest"
 
 jobs:
   build-and-push:
@@ -17,34 +26,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Extract version and tags
-        run: |
-          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
-            VERSION=${GITHUB_REF_NAME#v}
-            echo "VERSION=$VERSION" >> $GITHUB_ENV
-            
-            # Extract major.minor (ex: 1.2.3 -> 1.2)
-            MAJOR_MINOR=$(echo $VERSION | cut -d. -f1,2)
-            echo "MAJOR_MINOR=$MAJOR_MINOR" >> $GITHUB_ENV
-          else
-            echo "VERSION=latest" >> $GITHUB_ENV
-            echo "MAJOR_MINOR=latest" >> $GITHUB_ENV
-          fi
-
       - name: Extract image name (lowercase)
         run: echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
-          platforms: ${{ env.DOCKER_PLATFORMS }}
+          platforms: ${{ inputs.platform }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
           version: latest
           install: true
-          platforms: ${{ env.DOCKER_PLATFORMS }}
+          platforms: ${{ inputs.platform }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -57,12 +52,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: ${{ env.DOCKER_PLATFORMS }}
+          platforms: ${{ inputs.platform }}
           push: true
-          tags: |
-            ghcr.io/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
-            ghcr.io/${{ env.IMAGE_NAME }}:${{ env.MAJOR_MINOR }}
-            ghcr.io/${{ env.IMAGE_NAME }}:latest
+          tags: ghcr.io/${{ env.IMAGE_NAME }}:${{ inputs.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
