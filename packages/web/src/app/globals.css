@@ -3,6 +3,10 @@
 @theme {
   --color-primary: #ff9900;
   --color-secondary: #1a140b;
+  --color-onPrimary: #ffffff;
+  --color-onSecondary: #1a140b;
+  --color-background: #1a140b;
+  --font-typeface: "itim";
 }
 
 button:not(:disabled),
@@ -54,7 +58,7 @@ button:not(:disabled),
   left: -50%;
   top: -50%;
   transition: all 0.5s;
-  animation: spotlightAnim 2.5s ease-in;
+  animation: spotlightAnim 6.5s ease-in;
 }
 
 @keyframes spotlightAnim {
@@ -149,6 +153,15 @@ button:not(:disabled),
   }
 }
 
+@keyframes countdownBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
 @keyframes timer {
   0% {
     transform: scale(1);
@@ -196,4 +209,7 @@ button:not(:disabled),
   100% {
     transform: scale(1);
   }
+}
+body {
+  font-family: var(--font-typeface);
 }

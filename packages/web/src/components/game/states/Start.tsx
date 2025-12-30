@@ -1,38 +1,44 @@
 "use client"
 
 import { CommonStatusDataMap } from "@rahoot/common/types/game/status"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
 import { useEvent } from "@rahoot/web/contexts/socketProvider"
-import { SFX_BOUMP_SOUND } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
 import { useState } from "react"
 import useSound from "use-sound"
 
 type Props = {
   data: CommonStatusDataMap["SHOW_START"]
+  effectEnabled: boolean
 }
 
-const Start = ({ data: { time, subject } }: Props) => {
+const Start = ({ data: { time, subject }, effectEnabled }: Props) => {
   const [showTitle, setShowTitle] = useState(true)
   const [cooldown, setCooldown] = useState(time)
 
-  const [sfxBoump] = useSound(SFX_BOUMP_SOUND, {
+  const { getSound } = useAssets()
+  const [sfxBoump] = useSound(getSound("boumpSound") || "", {
     volume: 0.2,
   })
 
   useEvent("game:startCooldown", () => {
-    sfxBoump()
+    if (effectEnabled) {
+      sfxBoump()
+    }
     setShowTitle(false)
   })
 
   useEvent("game:cooldown", (sec) => {
-    sfxBoump()
+    if (effectEnabled) {
+      sfxBoump()
+    }
     setCooldown(sec)
   })
 
   return (
     <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center">
       {showTitle ? (
-        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+        <h2 className="anim-show text-center text-4xl/14 font-bold text-white drop-shadow-lg sm:text-5xl/18 md:text-6xl/22 lg:text-7xl/26">
           {subject}
         </h2>
       ) : (
@@ -45,7 +51,7 @@ const Start = ({ data: { time, subject } }: Props) => {
               transform: `rotate(${45 * (time - cooldown)}deg)`,
             }}
           ></div>
-          <span className="absolute text-6xl font-bold text-white drop-shadow-md md:text-8xl">
+          <span className="absolute text-6xl font-bold text-white drop-shadow-md md:text-9xl">
             {cooldown}
           </span>
         </>

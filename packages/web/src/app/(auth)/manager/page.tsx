@@ -1,45 +1,96 @@
 "use client"
 
+import { Add, Settings } from "@mui/icons-material"
+
 import { QuizzWithId } from "@rahoot/common/types/game"
 import { STATUS } from "@rahoot/common/types/game/status"
-import ManagerPassword from "@rahoot/web/components/game/create/ManagerPassword"
+import Button from "@rahoot/web/components/Button"
 import SelectQuizz from "@rahoot/web/components/game/create/SelectQuizz"
 import { useEvent, useSocket } from "@rahoot/web/contexts/socketProvider"
 import { useManagerStore } from "@rahoot/web/stores/manager"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 const Manager = () => {
-  const { setGameId, setStatus } = useManagerStore()
+  const {
+    setGameId,
+    setStatus,
+    setBackground,
+    setTypeface,
+    setTheme,
+    setManagerEffect,
+    setManagerMusic,
+    setPlayers,
+  } = useManagerStore()
   const router = useRouter()
   const { socket } = useSocket()
 
-  const [isAuth, setIsAuth] = useState(false)
   const [quizzList, setQuizzList] = useState<QuizzWithId[]>([])
 
-  useEvent("manager:quizzList", (quizzList) => {
-    setIsAuth(true)
-    setQuizzList(quizzList)
+  useEffect(() => {
+    fetch("/api/manager/quizz", { cache: "no-store" })
+      .then((res) => {
+        if (res.ok) return res.json()
+        throw new Error("Failed to fetch quizzes")
+      })
+      .then((data) => setQuizzList(data))
+      .catch(() => toast.error("Failed to load quizzes"))
+  }, [])
+
+  useEvent("manager:gameCreated", (data) => {
+    setGameId(data.gameId)
+    setStatus(STATUS.SHOW_ROOM, {
+      text: "Waiting for the players",
+      inviteCode: data.inviteCode,
+    })
+    setBackground(data.background)
+    setTypeface(data.typeface)
+    setTheme(data.theme)
+    setManagerEffect(data.managerEffect)
+    setManagerMusic(data.managerMusic)
+    setPlayers([])
+    router.push(`/game/manager/${data.gameId}`)
   })
 
-  useEvent("manager:gameCreated", ({ gameId, inviteCode }) => {
-    setGameId(gameId)
-    setStatus(STATUS.SHOW_ROOM, { text: "Waiting for the players", inviteCode })
-    router.push(`/game/manager/${gameId}`)
-  })
+  // We rely on NextAuth middleware for authentication now.
+  // Socket "manager:auth" is no longer needed if we fetch list via API.
+  // Ideally, socket connection should be authenticated too, but for creation
+  // we just need the list. The "game:create" event might need check on server.
 
-  const handleAuth = (password: string) => {
-    socket?.emit("manager:auth", password)
-  }
   const handleCreate = (quizzId: string) => {
     socket?.emit("game:create", quizzId)
   }
 
-  if (!isAuth) {
-    return <ManagerPassword onSubmit={handleAuth} />
+  const handleEdit = (quizzId: string) => {
+    router.push(`/manager/quizz/${quizzId}`)
   }
 
-  return <SelectQuizz quizzList={quizzList} onSelect={handleCreate} />
+  return (
+    <div className="flex w-full max-w-md flex-col gap-4">
+      <div className="flex justify-between gap-2">
+        <Button
+          className="w-fit bg-gray-500"
+          onClick={() => router.push("/manager/settings")}
+          startIcon={<Settings />}
+        >
+          Settings
+        </Button>
+        <Button
+          className="bg-primary w-fit"
+          onClick={() => router.push("/manager/quizz/create")}
+          startIcon={<Add />}
+        >
+          Create Quiz
+        </Button>
+      </div>
+      <SelectQuizz
+        quizzList={quizzList}
+        onSelect={handleCreate}
+        onEdit={handleEdit}
+      />
+    </div>
+  )
 }
 
 export default Manager

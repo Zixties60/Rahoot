@@ -1,4 +1,5 @@
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
+import Avatar from "@rahoot/web/components/Avatar"
 import { AnimatePresence, motion, useSpring, useTransform } from "motion/react"
 import { useEffect, useState } from "react"
 
@@ -44,12 +45,12 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
 
   return (
     <section className="relative mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center px-2">
-      <h2 className="mb-6 text-5xl font-bold text-white drop-shadow-md">
+      <h2 className="mb-6 text-6xl font-bold text-white drop-shadow-md">
         Leaderboard
       </h2>
       <div className="flex w-full flex-col gap-2">
         <AnimatePresence mode="popLayout">
-          {displayedLeaderboard.map(({ id, username, points }) => (
+          {displayedLeaderboard.map(({ id, username, points, avatarId }) => (
             <motion.div
               key={id}
               layout
@@ -70,17 +71,22 @@ const Leaderboard = ({ data: { oldLeaderboard, leaderboard } }: Props) => {
                   damping: 25,
                 },
               }}
-              className="bg-primary flex w-full justify-between rounded-md p-3 text-2xl font-bold text-white"
+              className="bg-primary flex w-full items-center justify-between rounded-md p-3 text-2xl font-bold text-white"
             >
-              <span className="drop-shadow-md">{username}</span>
-              {isAnimating ? (
-                <AnimatedPoints
-                  from={oldLeaderboard.find((u) => u.id === id)?.points || 0}
-                  to={leaderboard.find((u) => u.id === id)?.points || 0}
-                />
-              ) : (
-                <span className="drop-shadow-md">{points}</span>
-              )}
+              <div className="flex flex-row items-center gap-4">
+                <Avatar id={avatarId} className="h-16 w-16" />
+                <span className="drop-shadow-md">{username}</span>
+              </div>
+              <div className="text-primary flex items-center rounded-md bg-white px-4 py-2">
+                {isAnimating ? (
+                  <AnimatedPoints
+                    from={oldLeaderboard.find((u) => u.id === id)?.points || 0}
+                    to={leaderboard.find((u) => u.id === id)?.points || 0}
+                  />
+                ) : (
+                  <span className="drop-shadow-md">{points}</span>
+                )}
+              </div>
             </motion.div>
           ))}
         </AnimatePresence>

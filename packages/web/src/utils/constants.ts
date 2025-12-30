@@ -1,5 +1,6 @@
 import Answers from "@rahoot/web/components/game/states/Answers"
 import Leaderboard from "@rahoot/web/components/game/states/Leaderboard"
+import PlayerResult from "@rahoot/web/components/game/states/PlayerResult"
 import Podium from "@rahoot/web/components/game/states/Podium"
 import Prepared from "@rahoot/web/components/game/states/Prepared"
 import Question from "@rahoot/web/components/game/states/Question"
@@ -42,6 +43,9 @@ export const GAME_STATE_COMPONENTS = {
   [STATUS.SHOW_START]: Start,
   [STATUS.SHOW_RESULT]: Result,
   [STATUS.SHOW_PREPARED]: Prepared,
+  [STATUS.FINISHED]: PlayerResult,
+  [STATUS.GAME_FINISHED]: PlayerResult,
+  [STATUS.SHOW_LEADERBOARD]: PlayerResult,
 }
 
 export const GAME_STATE_COMPONENTS_MANAGER = {
@@ -50,17 +54,8 @@ export const GAME_STATE_COMPONENTS_MANAGER = {
   [STATUS.SHOW_RESPONSES]: Responses,
   [STATUS.SHOW_LEADERBOARD]: Leaderboard,
   [STATUS.FINISHED]: Podium,
+  [STATUS.GAME_FINISHED]: Podium,
 }
-
-export const SFX_ANSWERS_MUSIC = "/sounds/answersMusic.mp3"
-export const SFX_ANSWERS_SOUND = "/sounds/answersSound.mp3"
-export const SFX_RESULTS_SOUND = "/sounds/results.mp3"
-export const SFX_SHOW_SOUND = "/sounds/show.mp3"
-export const SFX_BOUMP_SOUND = "/sounds/boump.mp3"
-export const SFX_PODIUM_THREE = "/sounds/three.mp3"
-export const SFX_PODIUM_SECOND = "/sounds/second.mp3"
-export const SFX_PODIUM_FIRST = "/sounds/first.mp3"
-export const SFX_SNEAR_ROOL = "/sounds/snearRoll.mp3"
 
 export const MANAGER_SKIP_BTN = {
   [STATUS.SHOW_ROOM]: "Start Game",
@@ -72,5 +67,66 @@ export const MANAGER_SKIP_BTN = {
   [STATUS.SHOW_RESPONSES]: "Next",
   [STATUS.SHOW_LEADERBOARD]: "Next",
   [STATUS.FINISHED]: null,
+  [STATUS.GAME_FINISHED]: null,
   [STATUS.WAIT]: null,
+}
+
+export const SOUNDS = [
+  "waitingRoomMusic",
+  "answersMusic",
+  "answersSound",
+  "resultsResult",
+  "showSound",
+  "boumpSound",
+  "podiumThree",
+  "podiumSecond",
+  "podiumFirst",
+  "snearRoll",
+]
+
+export const THEME_CONFIG: Record<
+  string,
+  {
+    primary: string
+    secondary: string
+    background: string
+    onPrimary: string
+    onSecondary: string
+  }
+> = {
+  orange: {
+    primary: "#ff9900",
+    secondary: "#0066FF",
+    background: "#ea580c",
+    onPrimary: "#ffffff",
+    onSecondary: "#ffffff",
+  },
+  blue: {
+    primary: "#3b82f6",
+    secondary: "#F6AF3B",
+    background: "#2563eb",
+    onPrimary: "#ffffff",
+    onSecondary: "#ffffff",
+  },
+  pink: {
+    primary: "#ec4899",
+    secondary: "#48EC9B",
+    background: "#db2777",
+    onPrimary: "#ffffff",
+    onSecondary: "#1a140b",
+  },
+  green: {
+    primary: "#22c55e",
+    secondary: "#C52289",
+    background: "#16a34a",
+    onPrimary: "#ffffff",
+    onSecondary: "#ffffff",
+  },
+  purple: {
+    primary: "#a855f7",
+    secondary: "#A4F755",
+    background: "#9333ea",
+    onPrimary: "#ffffff",
+    onSecondary: "#1a140b",
+  },
 }

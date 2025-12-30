@@ -1,3 +1,4 @@
+import { Login } from "@mui/icons-material"
 import Button from "@rahoot/web/components/Button"
 import Form from "@rahoot/web/components/Form"
 import Input from "@rahoot/web/components/Input"
@@ -30,11 +31,14 @@ const ManagerPassword = ({ onSubmit }: Props) => {
     <Form>
       <Input
         type="password"
+        autoComplete="off"
         onChange={(e) => setPassword(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Manager password"
       />
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button onClick={handleSubmit} startIcon={<Login />}>
+        Login
+      </Button>
     </Form>
   )
 }

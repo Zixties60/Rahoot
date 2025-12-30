@@ -21,8 +21,23 @@ const ManagerGame = () => {
   const router = useRouter()
   const { gameId: gameIdParam }: { gameId?: string } = useParams()
   const { socket } = useSocket()
-  const { gameId, status, setGameId, setStatus, setPlayers, reset } =
-    useManagerStore()
+  const {
+    gameId,
+    status,
+    players,
+    setGameId,
+    setStatus,
+    setPlayers,
+    setBackground,
+    setTypeface,
+    setTheme,
+
+    setManagerEffect,
+    setManagerMusic,
+    managerEffect,
+    managerMusic,
+    reset,
+  } = useManagerStore()
   const { setQuestionStates } = useQuestionStore()
 
   useEvent("game:status", ({ name, data }) => {
@@ -37,15 +52,46 @@ const ManagerGame = () => {
     }
   })
 
-  useEvent(
-    "manager:successReconnect",
-    ({ gameId, status, players, currentQuestion }) => {
-      setGameId(gameId)
-      setStatus(status.name, status.data)
-      setPlayers(players)
-      setQuestionStates(currentQuestion)
-    },
-  )
+  useEvent("manager:successReconnect", (data) => {
+    const { gameId, status, players, currentQuestion, theme } = data
+    setGameId(gameId)
+    setStatus(status.name, status.data)
+    setPlayers(players)
+    setQuestionStates(currentQuestion)
+    setBackground(currentQuestion.background || null)
+    setTypeface(currentQuestion.typeface || null)
+    setTheme(theme || null)
+    setManagerEffect(data.managerEffect)
+    setManagerMusic(data.managerMusic)
+  })
+
+  useEvent("game:updateConfig", (data) => {
+    setBackground(data.background || null)
+    setTypeface(data.typeface || null)
+    setTheme(data.theme || null)
+    setManagerEffect(data.managerEffect)
+    setManagerMusic(data.managerMusic)
+  })
+
+  useEvent("game:updateQuestion", (data) => {
+    // Background and typeface are handled by game:updateConfig
+  })
+
+  useEvent("manager:newPlayer", (player) => {
+    setPlayers([...players, player])
+  })
+
+  useEvent("manager:removePlayer", (playerId) => {
+    setPlayers(players.filter((p) => p.id !== playerId))
+  })
+
+  useEvent("manager:playerKicked", (playerId) => {
+    setPlayers(players.filter((p) => p.id !== playerId))
+  })
+
+  useEvent("manager:updatePlayers", (players) => {
+    setPlayers(players)
+  })
 
   useEvent("game:reset", (message) => {
     router.replace("/manager")
@@ -86,12 +132,12 @@ const ManagerGame = () => {
 
   switch (status?.name) {
     case STATUS.SHOW_ROOM:
-      component = <Room data={status.data} />
+      component = <Room data={status.data} musicEnabled={managerMusic} />
 
       break
 
     case STATUS.SHOW_START:
-      component = <Start data={status.data} />
+      component = <Start data={status.data} effectEnabled={managerEffect} />
 
       break
 
@@ -101,17 +147,30 @@ const ManagerGame = () => {
       break
 
     case STATUS.SHOW_QUESTION:
-      component = <Question data={status.data} />
+      component = <Question data={status.data} effectEnabled={managerEffect} />
 
       break
 
     case STATUS.SELECT_ANSWER:
-      component = <Answers data={status.data} />
+      component = (
+        <Answers
+          manager={true}
+          data={status.data}
+          effectEnabled={managerEffect}
+          musicEnabled={managerMusic}
+        />
+      )
 
       break
 
     case STATUS.SHOW_RESPONSES:
-      component = <Responses data={status.data} />
+      component = (
+        <Responses
+          data={status.data}
+          effectEnabled={managerEffect}
+          musicEnabled={managerMusic}
+        />
+      )
 
       break
 
@@ -121,13 +180,23 @@ const ManagerGame = () => {
       break
 
     case STATUS.FINISHED:
-      component = <Podium data={status.data} />
+    case STATUS.GAME_FINISHED:
+      component = <Podium data={status.data} effectEnabled={managerEffect} />
 
       break
   }
 
   return (
-    <GameWrapper statusName={status?.name} onNext={handleSkip} manager>
+    <GameWrapper
+      statusName={status?.name}
+      onNext={handleSkip}
+      onBack={
+        status?.name === STATUS.SHOW_ROOM
+          ? () => router.push("/manager")
+          : undefined
+      }
+      manager
+    >
       {component}
     </GameWrapper>
   )

@@ -1,92 +1,135 @@
 "use client"
 
+import Avatar from "@rahoot/web/components/Avatar"
+import { useAssets } from "@rahoot/web/contexts/assetsProvider"
+
 import { ManagerStatusDataMap } from "@rahoot/common/types/game/status"
+import Button from "@rahoot/web/components/Button"
+import AllPlayersModal from "@rahoot/web/components/game/modals/AllPlayersModal"
+import { useSocket } from "@rahoot/web/contexts/socketProvider"
 import useScreenSize from "@rahoot/web/hooks/useScreenSize"
-import {
-  SFX_PODIUM_FIRST,
-  SFX_PODIUM_SECOND,
-  SFX_PODIUM_THREE,
-  SFX_SNEAR_ROOL,
-} from "@rahoot/web/utils/constants"
+import { useManagerStore } from "@rahoot/web/stores/manager"
 import clsx from "clsx"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import ReactConfetti from "react-confetti"
 import useSound from "use-sound"
+import { Player } from "@rahoot/common/types/game"
 
 type Props = {
-  data: ManagerStatusDataMap["FINISHED"]
+  data: ManagerStatusDataMap["FINISHED"] | ManagerStatusDataMap["GAME_FINISHED"]
+  effectEnabled: boolean
 }
 
-const Podium = ({ data: { subject, top } }: Props) => {
+const Podium = ({ data, effectEnabled }: Props) => {
+  const { subject, top } = data
   const [apparition, setApparition] = useState(0)
+  const [showAllPlayers, setShowAllPlayers] = useState(false)
+  const router = useRouter()
+  const { players, gameId, reset } = useManagerStore()
+  const { socket } = useSocket()
+  const [allPlayers, setAllPlayers] = useState<Player[]>([])
 
   const { width, height } = useScreenSize()
+  const { getSound } = useAssets()
 
-  const [sfxtThree] = useSound(SFX_PODIUM_THREE, {
+  const [sfxtThree] = useSound(getSound("podiumThree") || "", {
     volume: 0.2,
   })
 
-  const [sfxSecond] = useSound(SFX_PODIUM_SECOND, {
+  const [sfxSecond] = useSound(getSound("podiumSecond") || "", {
     volume: 0.2,
   })
 
-  const [sfxRool, { stop: sfxRoolStop }] = useSound(SFX_SNEAR_ROOL, {
-    volume: 0.2,
-  })
+  const [sfxRool, { stop: sfxRoolStop }] = useSound(
+    getSound("snearRoll") || "",
+    {
+      volume: 0.2,
+    },
+  )
 
-  const [sfxFirst] = useSound(SFX_PODIUM_FIRST, {
+  const [sfxFirst] = useSound(getSound("podiumFirst") || "", {
     volume: 0.2,
   })
 
   useEffect(() => {
+    setAllPlayers(data.allPlayers || players)
+  }, [])
+
+  useEffect(() => {
     switch (apparition) {
-      case 4:
+      case 5:
         sfxRoolStop()
-        sfxFirst()
+        if (effectEnabled) {
+          sfxFirst()
+        }
+
+        if (gameId) {
+          socket?.emit("manager:gameFinished", { gameId })
+        }
 
         break
 
       case 3:
-        sfxRool()
+        if (effectEnabled) {
+          sfxRool()
+        }
 
         break
 
       case 2:
-        sfxSecond()
+        if (effectEnabled) {
+          sfxSecond()
+        }
 
         break
 
       case 1:
-        sfxtThree()
+        if (effectEnabled) {
+          sfxtThree()
+        }
 
         break
     }
-  }, [apparition, sfxFirst, sfxSecond, sfxtThree, sfxRool, sfxRoolStop])
+  }, [
+    apparition,
+    sfxFirst,
+    sfxSecond,
+    sfxtThree,
+    sfxRool,
+    sfxRoolStop,
+    effectEnabled,
+  ])
 
   useEffect(() => {
     if (top.length < 3) {
-      setApparition(4)
+      setApparition(5)
 
       return
     }
 
     const interval = setInterval(() => {
-      if (apparition > 4) {
+      if (apparition > 5) {
         clearInterval(interval)
 
         return
       }
 
       setApparition((value) => value + 1)
-    }, 2000)
+    }, 3000)
 
     // eslint-disable-next-line consistent-return
     return () => clearInterval(interval)
   }, [apparition, top.length])
 
+  const handleBackToManager = () => {
+    reset()
+    router.push("/manager")
+  }
+
   return (
     <>
-      {apparition >= 4 && (
+      {apparition >= 5 && (
         <ReactConfetti
           width={width}
           height={height}
@@ -100,7 +143,7 @@ const Podium = ({ data: { subject, top } }: Props) => {
         </div>
       )}
       <section className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-between">
-        <h2 className="anim-show text-center text-3xl font-bold text-white drop-shadow-lg md:text-4xl lg:text-5xl">
+        <h2 className="anim-show text-center text-5xl font-bold text-white drop-shadow-lg md:text-6xl lg:text-7xl">
           {subject}
         </h2>
 
@@ -115,16 +158,20 @@ const Podium = ({ data: { subject, top } }: Props) => {
                 { "translate-y-0! opacity-100": apparition >= 2 },
               )}
             >
-              <p
+              <div
                 className={clsx(
-                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
+                  "flex flex-col items-center justify-center gap-2 overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
                   {
-                    "anim-balanced": apparition >= 4,
+                    "anim-balanced": apparition >= 5,
                   },
                 )}
               >
+                <Avatar
+                  id={top[1].avatarId}
+                  className="h-16 w-16 md:h-20 md:w-20"
+                />
                 {top[1].username}
-              </p>
+              </div>
               <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-zinc-400 bg-zinc-500 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">2</span>
@@ -147,14 +194,18 @@ const Podium = ({ data: { subject, top } }: Props) => {
               },
             )}
           >
-            <p
+            <div
               className={clsx(
-                "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white opacity-0 drop-shadow-lg md:text-4xl",
-                { "anim-balanced opacity-100": apparition >= 4 },
+                "flex flex-col items-center justify-center gap-2 overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white opacity-0 drop-shadow-lg md:text-4xl",
+                { "anim-balanced opacity-100": apparition >= 5 },
               )}
             >
+              <Avatar
+                id={top[0].avatarId}
+                className="h-20 w-20 md:h-24 md:w-24"
+              />
               {top[0].username}
-            </p>
+            </div>
             <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
               <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-400 bg-amber-300 text-3xl font-bold text-white drop-shadow-lg">
                 <span className="drop-shadow-md">1</span>
@@ -174,21 +225,24 @@ const Podium = ({ data: { subject, top } }: Props) => {
                 },
               )}
             >
-              <p
+              <div
                 className={clsx(
-                  "overflow-visible text-center text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
+                  "flex flex-col items-center justify-center gap-2 overflow-visible text-2xl font-bold whitespace-nowrap text-white drop-shadow-lg md:text-4xl",
                   {
-                    "anim-balanced": apparition >= 4,
+                    "anim-balanced": apparition >= 5,
                   },
                 )}
               >
+                <Avatar
+                  id={top[2].avatarId}
+                  className="h-14 w-14 md:h-16 md:w-16"
+                />
                 {top[2].username}
-              </p>
+              </div>
               <div className="bg-primary flex h-full w-full flex-col items-center gap-4 rounded-t-md pt-6 text-center shadow-2xl">
                 <p className="flex aspect-square h-14 items-center justify-center rounded-full border-4 border-amber-800 bg-amber-700 text-3xl font-bold text-white drop-shadow-lg">
                   <span className="drop-shadow-md">3</span>
                 </p>
-
                 <p className="text-2xl font-bold text-white drop-shadow-lg">
                   {top[2].points}
                 </p>
@@ -197,6 +251,38 @@ const Podium = ({ data: { subject, top } }: Props) => {
           )}
         </div>
       </section>
+
+      {/* Buttons */}
+      <div className="absolute bottom-4 left-4 z-40 flex gap-4">
+        <Button
+          onClick={handleBackToManager}
+          className="bg-white px-4 py-2 text-black!"
+        >
+          Back to Manager
+        </Button>
+        <Button
+          onClick={() => setApparition(0)}
+          className="bg-white px-4 py-2 text-black!"
+        >
+          Re-animate
+        </Button>
+      </div>
+
+      <div className="absolute right-4 bottom-4 z-40 flex gap-4">
+        <Button
+          onClick={() => setShowAllPlayers(true)}
+          className="bg-secondary! text-onSecondary! px-4 py-2"
+        >
+          Show All Players
+        </Button>
+      </div>
+
+      {showAllPlayers && (
+        <AllPlayersModal
+          players={allPlayers}
+          onClose={() => setShowAllPlayers(false)}
+        />
+      )}
     </>
   )
 }
