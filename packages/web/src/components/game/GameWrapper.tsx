@@ -18,9 +18,10 @@ import { usePlayerStore } from "@rahoot/web/stores/player"
 import { useQuestionStore } from "@rahoot/web/stores/question"
 import { MANAGER_SKIP_BTN } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
-import Image from "next/image"
+import Image, { StaticImageData } from "next/image"
 import { PropsWithChildren, useEffect, useState } from "react"
 import Avatar from "../Avatar"
+import { StaticImport } from "next/dist/shared/lib/get-img-props"
 
 type Props = PropsWithChildren & {
   statusName: Status | undefined
@@ -42,6 +43,9 @@ const GameWrapper = ({
   const [isDisabled, setIsDisabled] = useState(false)
   const { managerMusic, setManagerMusic } = useManagerStore()
   const next = statusName ? MANAGER_SKIP_BTN[statusName] : null
+  const [backgroundSrc, setBackgroundSrc] = useState<string | StaticImport>(
+    background,
+  )
 
   useEvent("game:updateQuestion", ({ current, total }) => {
     setQuestionStates({
@@ -69,7 +73,13 @@ const GameWrapper = ({
     typeface: managerTypeface,
     theme: managerTheme,
   } = useManagerStore()
-  const backgroundUrl = manager ? managerBackground : playerBackground
+
+  if (manager && managerBackground) {
+    setBackgroundSrc(managerBackground)
+  } else if (playerBackground) {
+    setBackgroundSrc(playerBackground)
+  }
+
   const typeface = manager ? managerTypeface : playerTypeface
   const theme = manager ? managerTheme : playerTheme
 
@@ -90,7 +100,10 @@ const GameWrapper = ({
       >
         <Image
           className="pointer-events-none h-full w-full object-cover opacity-60"
-          src={backgroundUrl || background}
+          src={backgroundSrc}
+          onError={(e) => {
+            setBackgroundSrc(background)
+          }}
           alt="background"
           priority={true}
           fill

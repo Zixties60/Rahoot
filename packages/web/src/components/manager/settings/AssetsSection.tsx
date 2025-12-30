@@ -16,7 +16,10 @@ import {
 } from "@dnd-kit/sortable"
 import { Add, Save } from "@mui/icons-material"
 import Button from "@rahoot/web/components/Button"
-import { Avatar as AvatarType } from "@rahoot/web/contexts/assetsProvider"
+import {
+  Avatar as AvatarType,
+  useAssets,
+} from "@rahoot/web/contexts/assetsProvider"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { v4 as uuidv4 } from "uuid"
@@ -45,6 +48,7 @@ const AssetsSection = () => {
   // Form state
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingAvatar, setEditingAvatar] = useState<AvatarWithId | null>(null)
+  const { reloadAssets } = useAssets()
 
   useEffect(() => {
     fetch("/api/settings/assets")
@@ -84,6 +88,7 @@ const AssetsSection = () => {
       })
 
       if (res.ok) {
+        reloadAssets()
         toast.success("Assets config saved")
       } else {
         throw new Error("Failed to save")

@@ -1,6 +1,12 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 
 export interface Avatar {
   url: string
@@ -31,6 +37,7 @@ interface AssetsContextType {
   error: Error | null
   getAvatar: (index: number) => Avatar | undefined
   getSound: (key: keyof Sounds) => string | undefined
+  reloadAssets: () => Promise<void>
 }
 
 const AssetsContext = createContext<AssetsContextType | undefined>(undefined)
@@ -42,24 +49,26 @@ export const AssetsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  useEffect(() => {
-    const fetchAssets = async () => {
-      try {
-        const response = await fetch("/api/settings/assets")
-        if (!response.ok) {
-          throw new Error("Failed to fetch assets")
-        }
-        const data = await response.json()
-        setAssets(data)
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error("Unknown error"))
-      } finally {
-        setIsLoading(false)
+  const fetchAssets = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const response = await fetch("/api/settings/assets")
+      if (!response.ok) {
+        throw new Error("Failed to fetch assets")
       }
+      const data = await response.json()
+      setAssets(data)
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("Unknown error"))
+    } finally {
+      setIsLoading(false)
     }
-
-    fetchAssets()
   }, [])
+
+  useEffect(() => {
+    fetchAssets()
+  }, [fetchAssets])
 
   const getAvatar = (index: number) => {
     return assets?.avatars[index]
@@ -71,7 +80,14 @@ export const AssetsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AssetsContext.Provider
-      value={{ assets, isLoading, error, getAvatar, getSound }}
+      value={{
+        assets,
+        isLoading,
+        error,
+        getAvatar,
+        getSound,
+        reloadAssets: fetchAssets,
+      }}
     >
       {children}
     </AssetsContext.Provider>
