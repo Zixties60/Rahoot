@@ -18,10 +18,10 @@ import { usePlayerStore } from "@rahoot/web/stores/player"
 import { useQuestionStore } from "@rahoot/web/stores/question"
 import { MANAGER_SKIP_BTN } from "@rahoot/web/utils/constants"
 import clsx from "clsx"
-import Image, { StaticImageData } from "next/image"
+import { StaticImport } from "next/dist/shared/lib/get-img-props"
+import Image from "next/image"
 import { PropsWithChildren, useEffect, useState } from "react"
 import Avatar from "../Avatar"
-import { StaticImport } from "next/dist/shared/lib/get-img-props"
 
 type Props = PropsWithChildren & {
   statusName: Status | undefined
@@ -74,11 +74,13 @@ const GameWrapper = ({
     theme: managerTheme,
   } = useManagerStore()
 
-  if (manager && managerBackground) {
-    setBackgroundSrc(managerBackground)
-  } else if (playerBackground) {
-    setBackgroundSrc(playerBackground)
-  }
+  useEffect(() => {
+    if (manager && managerBackground) {
+      setBackgroundSrc(managerBackground)
+    } else if (playerBackground) {
+      setBackgroundSrc(playerBackground)
+    }
+  }, [manager, managerBackground, playerBackground])
 
   const typeface = manager ? managerTypeface : playerTypeface
   const theme = manager ? managerTheme : playerTheme
@@ -102,7 +104,9 @@ const GameWrapper = ({
           className="pointer-events-none h-full w-full object-cover opacity-60"
           src={backgroundSrc}
           onError={(e) => {
-            setBackgroundSrc(background)
+            if (backgroundSrc !== background) {
+              setBackgroundSrc(background)
+            }
           }}
           alt="background"
           priority={true}
