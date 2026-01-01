@@ -205,7 +205,7 @@ const ThemeSection = () => {
             <span
               className={`inline-block h-4 w-4 transform rounded-full transition-transform ${
                 managerEffect
-                  ? "bg-onPrimary translate-x-6"
+                  ? "bg-primary translate-x-6"
                   : "translate-x-1 bg-white"
               }`}
             />
